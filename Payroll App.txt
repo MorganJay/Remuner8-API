@@ -1,0 +1,185 @@
+Prospective names for Payroll Application
+
+Cashbox
+Midas
+Remunerate => Remuner8
+Kredit
+Smart Cheq
+Hi-Five
+
+
+_________________________________________________________________________________________________________________________________________________________
+
+
+*DOCUMENTATION* //Documentation was copy pasted from https://www.ensaantech.com/products/payroll-2/
+
+REMUNER8 PAYROLL MANAGEMENT SYSTEM
+Payroll Management is considered a time consuming and 
+arduous process without a quality payment management system. 
+Bringing together multiple streams of inputs, adhering to local 
+statutory requirements, validating the data prior to paying 
+your employees accurately and in a timely manner is a daunting 
+task for any HR department. Remuner8’s payroll software enables
+you to mitigate these challenges effectively by delivering 
+seamless payroll processing capabilities through a state of 
+the art payroll software in our HR Payroll system.
+
+*FEATURES*
+
+CONFIGURATION:
+Our software helps create pay groups to group your employees 
+into categories and to map payroll policies (country specific) 
+to each. You can custom define the various components (earnings & deductions) 
+and map them against these country based pay groups. Specifying formulas for calculation, 
+with minimal clicks, payroll can be initiated, confirmed and finalized. 
+Salary files can then be generated for direct deposit, cheque or bank credits.For ease of HR, a Digital Signature Tool, which supports both ‘PFX’ and ‘Dongle’ is also available.
+
+INTEGRATION:
+Payroll process gets all basic employee information including job, compensation, pay group, tax declaration, salary advances and other details from HR system/Self service to accurately calculate their pay & taxes. With tight integration with Remuner8’s leave, time and attendance module we ensure the overtime is paid and absence is deducted.
+
+IMPORT FEATURES:(NOT AVAILABLE)
+If you have third party systems to maintain and manage your leaves, time and attendance, we provide you upload facility to import the leave, time data into payroll for appropriate processing.
+
+LOAN MASTER
+Using our loan master, you can capture company provided loans, employee availed, schedules, EMI, deduction per month and include for payroll deductions.
+
+BENEFITS MASTER
+If you provide company based benefits such as insurance, medical coverage, nominees, beneficiaries, to your employees, record them using our benefit master forms. These will be used as deductions during pay processing.
+
+TAX COMPUTATIONS
+Country based tax slabs, tax declarations, investments, exemptions; other incomes are maintained and used for processing purposes.Form16 (Part-B) and Form12BA can be generated. Adrenalin 5.2.0 supports merging tool which can be used to merge Form16 and Form12BA in addition to Form24Q eTDS Quarterly return filing
+
+LETTER VIEWER
+Employee can view using their self service, all organization letters, pay slips, tax declarations, offer, promotion and other letters using this feature. Pay slips can be generated in PDF, and can be published into employee self service portal.
+
+ALL STATUTORY PAYROLL
+All statutory payroll reports such as ESI, Form 16, Form 20 can be instantly derived from the system.
+
+*BENEFITS*
+Improve process efficiency by seamless information flow to payroll
+Avoid non-conformances in internal & external HR process audits through a single HR & Payroll system
+Avoid penalties due to local regulatory non-compliances and stay abreast to changing compliances as they happen
+Stem revenue leakages through accurate capture of attendance data and by accurate calculation of payables/receivables
+Run payroll calculations accommodating for specific business needs like dual pay-group, monthly & semi-monthly processing
+Handle multi-country & multi-currency payroll with ease
+
+______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+
+
+“REMUNER8 PAYROLL MANAGEMENT SYSTEM”
+
+Introduction to Remuner8 Payroll Management System
+This Payroll Application has been designed for the purpose of maintaining details of salary such as
+various allowances and deductions that to be given to the employees of an organization.
+Also, it generates the salary Sheet of the employees of the organization that assists the accounts
+department in many ways. This Payroll system also takes care about the statutory requirements,
+i.e. GPF, CPF and INCOME TAX according to the Government Rules. The system gives
+different kinds of report, which is required for the payroll And Administration
+perspective.Payroll management system minimizes the work load involved in maintaining your
+employees overall account. It reduces human efforts and helps in maintaining an error free
+employee record.
+
+Payroll Management System
+Remuner8 Payroll management system uses software which is well supported by MYSQL. It generates
+timely and error free employee related payroll slips as follows:
+ Salary
+ Leave Requests
+ Loan Details
+ Provident Fund
+ Bonus and Incentive
+ Tax Deduction and Benefits
+Salient Feature of Payroll Management System
+ Three module software i.e. Payroll, TDS, Loan Management.
+ Pay head formula master.
+ Employee master
+ Loan master
+ Generate Pay Bill, Pay Slip, Bank Statement, TDS Schedule etc.
+ Web based software
+ Need minimum training to start.
+
+Need for Payroll Management System
+ The primary need of the payroll software is to process salary for your employee
+
+Attendance Master
+Attendance master helps you to update the monthly attendance and over time of the employee.
+
+Leave Management System 
+
+When an Employee applies for leave, he can know how many leaves are in balance 
+
+(Casual Leave, Privilege Leave, Sick Leave, etc) through Leave Management System. 
+
+We can categorize Leaves into cashable leaves/ non cashable leaves. 
+
+The management allocates the number of days for each category of leave in one year. We 
+
+can also set the carry forward limit for leaves. 
+
+Leave Application Date, leave type, like Casual Leave, Privilege Leave (shows the 
+
+Balance Leaves to the Employee while applying) 
+
+Leave Period i.e., the total number of days for which the leave is applied 
+
+ 
+
+Reason for applying the Leave 
+
+Address and Contact Number during Leave, in case of Emergency purposes 
+
+Leave Approval is done by the HR Department. The Leave which the Employee has 
+
+applied for, can be approved fully or partly the details given in the leave application are 
+
+linked to the payroll system and the Employee's Salary is generated in accordance with 
+
+his attendance 
+
+Leave Management System
+ When an Employee applies for leave he can know how many leaves are in balance
+(Casual Leave, Privilege Leave, Sick Leave, etc) through Leave Management System.
+ We can categorize Leaves into encashable leaves/ non encashable leaves.
+ The management allocates the number of days for each category of leave in one year. We
+can also set the carry forward limit for leaves.
+ Leave Application Date,Leave type, like Casual Leave, Privilege Leave (shows the
+Balance Leaves to the Employee while applying)
+ Leave Period i.e. the total number of days for which the leave is applied
+ Reason for applying the Leave
+ Address and Contact Number during Leave, in case of Emergency purposes
+ Leave Approval is done by the HR Department .The Leave which the Employee has
+applied for, can be approved fully or partly The details given in the leave application are
+linked to the payroll system and the Employee's Salary is generated in accordance with
+his attendance
+
+TDS Management
+TDS management allows us to calculate tax in single click. It also generates TDS Challan
+for the every employee. It also generates Form – 16.
+
+Loan Management
+Salary Management system allows you to manage the various loans taken by the
+employee of the organization. It calculates number of installments and the interest which
+employee need to pay against his/her sanction loan.
+
+Reports
+The system also generates different kind of statutory Reports: -
+ TDS Reports i.e. Quarterly Returns, Income Tax Sheet
+ Income Tax Schedule
+ Loan Schedule (Like Car, Scooter, Computer and Festival etc.)
+ Admin Reports i.e. Promotion, Increment, Pay Fixation and Probation Period.
+ Pay Bill Reports,
+ Pay Slip Reports,
+ Bank Statement,
+ Loan (Interest Calculation Sheet),
+ Loan Detail
+ Employee Information,
+ Form – 16,
+
+Features
+Payroll Management Software gives you the power to:
+ Manage Employee Information Efficiently.
+ Define the emoluments, deductions, leave, tax etc.
+ 
+ .
+ 
+ Generate all the Reports related to Branch, Department, employee, attendance/leave,
+payroll, Bonus etc. 
