@@ -1,0 +1,14 @@
+
+Hope you enjoy your new logo, here are the people that
+made your beautiful logo happen :)
+font name: clarikageo-medium
+font link: https://www.fontspring.com/fonts/the-refinery/clarika/clarika-geometric-medium
+font author: The Refinery
+font author site: https://www.refinerybrand.com/
+Slogan Font: officecodepro-light.otf
+
+icon designer: Lemon Liu
+icon designer link: /lemonliu
+        
+{"bg":"#0B173D","icon":"#D1A103","font":"#D1A103","slogan":"#e5b517"}
+      

@@ -1,0 +1,14 @@
+
+Hope you enjoy your new logo, here are the people that
+made your beautiful logo happen :)
+font name: OverpassMono-Bold
+font link: https://fonts.google.com/specimen/Overpass+Mono
+font author: Delve Withrington
+font author site: https://www.delvefonts.com/
+
+
+icon designer: Lemon Liu
+icon designer link: /lemonliu
+        
+{"bg":"#0B173D","font":"#D1A103","icon":"#D1A103","slogan":"#e5b517"}
+      
