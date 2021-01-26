@@ -1,0 +1,29 @@
+.background {
+  background-image: url(/images/loginBackgroundImg.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+}
+
+.formBody::selection {
+  color: rgb(255, 255, 255);
+  background: rgb(62, 121, 247);
+}
+
+.rounded {
+  border-radius: 1rem;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  line-height: 1.5715;
+  list-style: none;
+  position: relative;
+  background: #fff;
+}
+
+.form-control{
+  width: 200px;
+}
+
+@media screen and (min-width: 1000px){
+  
+}

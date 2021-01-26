@@ -25,15 +25,12 @@ a:hover {
   outline: 0px;
 }
 
-html {
+html,
+body {
   -webkit-tap-highlight-color: transparent;
   height: 100%;
   width: 100%;
   box-sizing: border-box;
-}
-
-body {
-  max-height: 100vh;
 }
 
 code {
@@ -46,5 +43,6 @@ code {
   border-color: #1861ac;
 }
 
-.authContainer {
+.App {
+  height: 100vh;
 }
