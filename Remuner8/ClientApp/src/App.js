@@ -2,22 +2,22 @@ import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
-import { FetchData } from './components/FetchData';
-import { Counter } from './components/Counter';
+import Container from 'reactstrap/lib/Container';
 
-import './custom.css'
+import './custom.css';
 
 export default class App extends Component {
-    static displayName = App.name;
+  static displayName = App.name;
 
-    render() {
-        return (
-            <h1>Hello World</h1>
-            //<Layout>
-            //  <Route exact path='/' component={Home} />
-            //  <Route path='/counter' component={Counter} />
-            //  <Route path='/fetch-data' component={FetchData} />
-            //</Layout>
-        );
-    }
+  render() {
+    return (
+      <div className="App">
+          <Layout>
+            <Route exact path="/" component={Home} />
+            {/* <Route path='/counter' component={Counter} />
+       <Route path='/fetch-data' component={FetchData} /> */}
+          </Layout>
+      </div>
+    );
+  }
 }

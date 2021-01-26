@@ -1,14 +1,50 @@
 /* Provide sufficient contrast against white background */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 a {
   color: #0366d6;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease 0s;
+}
+
+a:hover {
+  color: rgb(105, 157, 255);
+}
+
+a:active {
+  color: rgb(42, 89, 209);
+}
+a:active,
+a:hover {
+  text-decoration: none;
+  outline: 0px;
+}
+
+html {
+  -webkit-tap-highlight-color: transparent;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+body {
+  max-height: 100vh;
 }
 
 code {
-  color: #E01A76;
+  color: #e01a76;
 }
 
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;
   border-color: #1861ac;
+}
+
+.authContainer {
 }
