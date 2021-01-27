@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Home } from './components/Home';
-import Container from 'reactstrap/lib/Container';
 import LoginForm from './components/LoginForm';
-
 import './custom.css';
 
 export default class App extends Component {
@@ -15,7 +13,7 @@ export default class App extends Component {
         <LoginForm>
           <Route exact path="/" component={Home} />
           {/* <Route path='/counter' component={Counter} />
-       <Route path='/fetch-data' component={FetchData} /> */}
+          <Route path='/fetch-data' component={FetchData} /> */}
         </LoginForm>
       </div>
     );
