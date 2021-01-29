@@ -12,10 +12,11 @@ export default class LoginForm extends Component {
   static displayName = LoginForm.name;
   constructor(props) {
     super(props);
+    
     this.state = {
       userName: '',
       password: '',
-      formText: 'Your username is most likely your email.',
+      formText: 'Your username is most likely your email address',
       validate: {
         emailState: '',
         isValid: false,
@@ -32,7 +33,7 @@ export default class LoginForm extends Component {
       validate.emailState = '';
       validate.isValid = false;
       this.setState({
-        formText: 'Your username is most likely your email.',
+        formText: 'Your username is most likely your email address',
         validate,
       });
     }
@@ -105,14 +106,7 @@ export default class LoginForm extends Component {
               onChange={e => this.handleChange(e)}
             />
           </FormGroup>
-          <div className="d-grid gap-2 mt-5">
-            <input
-              className="btn btn-primary btn-block"
-              type="submit"
-              value="Sign In"
-              //onSubmit= {e => this.handleSubmit(e)}
-            />
-          </div>
+          <button className="btn btn-primary btn-block mt-5">Sign In</button>
         </Form>
         <div className="d-grid gap-2 mt-4 text-center">
           <a href="/">Forgot password?</a>
