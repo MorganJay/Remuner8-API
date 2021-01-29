@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Container } from 'reactstrap';
+import { Container, Row, Col } from 'reactstrap';
 import LoginForm from '../components/LoginForm';
 import LoginStyles from './login.module.css';
 
@@ -8,9 +8,9 @@ const Login = () => {
   return (
     <div className={LoginStyles.background}>
       <Container className="d-flex flex-column justify-content-center h-100">
-        <div className={`row justify-content-center  ${LoginStyles.formBody}`}>
-          <div className="col-9 col-sm-10 col-md-7 col-lg-5 col-xl-4">
-            <div className={`${LoginStyles.rounded} card-bordered`}>
+        <Row className={`justify-content-center  ${LoginStyles.formBody}`}>
+          <Col sm={10} md={7} lg={5} xl={4}>
+            <div className={LoginStyles.rounded}>
               <div className="card-body">
                 <div className="mb-4">
                   <div className="text-center">
@@ -31,8 +31,8 @@ const Login = () => {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
+          </Col>
+        </Row>
       </Container>
     </div>
   );

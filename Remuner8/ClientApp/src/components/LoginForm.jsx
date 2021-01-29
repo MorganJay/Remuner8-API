@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {
+  Button,
   Form,
   FormGroup,
   FormText,
@@ -7,12 +8,13 @@ import {
   Input,
   Label,
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 export default class LoginForm extends Component {
   static displayName = LoginForm.name;
   constructor(props) {
     super(props);
-    
+
     this.state = {
       userName: '',
       password: '',
@@ -45,8 +47,8 @@ export default class LoginForm extends Component {
 
   validateEmail() {
     const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const { validate } = this.state;
-    if (emailRegex.test(this.state.userName)) {
+    const { userName, validate } = this.state;
+    if (emailRegex.test(userName)) {
       validate.emailState = 'has-success';
       validate.isValid = true;
     } else {
@@ -66,50 +68,53 @@ export default class LoginForm extends Component {
   };
 
   render() {
+    const { userName, validate, formText, password } = this.state;
     return (
       <>
         <p className="text-muted text-center mb-4">
           Don't have an account yet?
-          <a href="/"> Sign Up</a>
+          <Link to="/login"> Sign Up</Link>
         </p>
         <Form action="" id="login-form" onSubmit={e => this.handleSubmit(e)}>
           <FormGroup>
-            <Label htmlFor="loginFormEmail" className="font-weight-bold">
+            <Label for="loginFormEmail" className="font-weight-bold">
               Username
             </Label>
             <Input
               type="email"
               name="userName"
               id="loginFormEmail"
+              // className="is-invalid"
               required
-              value={this.state.userName}
-              valid={this.state.validate.emailState === 'has-success'}
-              invalid={this.state.validate.emailState === 'has-danger'}
+              value={userName}
+              valid={validate.emailState === 'has-success'}
+              invalid={validate.emailState === 'has-danger'}
               onChange={e => {
                 this.handleChange(e);
               }}
             />
-            <FormFeedback valid></FormFeedback>
             <FormFeedback>Invalid Username/Email Address</FormFeedback>
-            <FormText>{this.state.formText}</FormText>
+            <FormText>{formText}</FormText>
           </FormGroup>
           <FormGroup>
-            <Label htmlFor="loginFormPassword" className="font-weight-bold">
+            <Label for="loginFormPassword" className="font-weight-bold">
               Password
             </Label>
             <Input
               type="password"
               name="password"
               id="loginFormPassword"
+              // className="is-invalid"
               required
-              value={this.state.password}
+              value={password}
               onChange={e => this.handleChange(e)}
             />
+            {/* <FormFeedback invalid>Invalid Password</FormFeedback> */}
           </FormGroup>
-          <button className="btn btn-primary btn-block mt-5">Sign In</button>
+          <Button className="btn btn-primary btn-block mt-5">Sign In</Button>
         </Form>
         <div className="d-grid gap-2 mt-4 text-center">
-          <a href="/">Forgot password?</a>
+          <Link to="/resetPassword">Forgot password?</Link>
         </div>
       </>
     );
