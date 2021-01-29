@@ -1,1 +1,2 @@
-# If you want to work on this feature with me, go ahead and add your name to the contributors list on this branch.
+# If you want to intend to work on this feature....
+## Go ahead and add your name to the contributors list on this branch.
