@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router';
-import { Home } from './components/Home';
-import LoginForm from './components/LoginForm';
+import { Route, Switch } from 'react-router';
+import { Home } from './pages/Home';
+import LoginPage from './pages/Login';
 import './custom.css';
 
 export default class App extends Component {
@@ -10,11 +10,10 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <LoginForm>
+        <Switch>
           <Route exact path="/" component={Home} />
-          {/* <Route path='/counter' component={Counter} />
-          <Route path='/fetch-data' component={FetchData} /> */}
-        </LoginForm>
+          <Route path="/login" component={LoginPage} />
+        </Switch>
       </div>
     );
   }
