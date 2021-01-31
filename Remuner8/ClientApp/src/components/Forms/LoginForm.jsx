@@ -11,7 +11,7 @@ import {
 import { Link } from 'react-router-dom';
 
 export default class LoginForm extends Component {
-  static displayName = LoginForm.name;
+  static displayName = LoginForm.name; 
   constructor(props) {
     super(props);
 
@@ -60,11 +60,6 @@ export default class LoginForm extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.validateEmail();
-    // if (this.state.validate.isValid){
-    //   this.setState({
-    //     userName: '', password: ''
-    //   })
-    // }
   };
 
   render() {
@@ -73,7 +68,7 @@ export default class LoginForm extends Component {
       <>
         <p className="text-muted text-center mb-4">
           Don't have an account yet?
-          <Link to="/login"> Sign Up</Link>
+          <Link to="/register"> Sign Up</Link>
         </p>
         <Form action="" id="login-form" onSubmit={e => this.handleSubmit(e)}>
           <FormGroup>
@@ -111,7 +106,7 @@ export default class LoginForm extends Component {
             />
             {/* <FormFeedback invalid>Invalid Password</FormFeedback> */}
           </FormGroup>
-          <Button className="btn btn-primary btn-block mt-5">Sign In</Button>
+          <Button color="primary" className="btn-block mt-5">Sign In</Button>
         </Form>
         <div className="d-grid gap-2 mt-4 text-center">
           <Link to="/resetPassword">Forgot password?</Link>

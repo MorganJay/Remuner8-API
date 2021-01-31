@@ -1,8 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Container, Row, Col } from 'reactstrap';
-import LoginForm from '../components/LoginForm';
+import LoginForm from '../components/Forms/LoginForm';
 import LoginStyles from './login.module.css';
+
+// Render register component if sign up is clicked
 
 const Login = () => {
   return (
