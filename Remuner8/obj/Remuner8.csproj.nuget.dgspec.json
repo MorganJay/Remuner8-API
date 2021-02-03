@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\JamesMorgan\\Source\\Repos\\Remuner8\\Remuner8\\Remuner8.csproj": {}
+    "C:\\Users\\JamesMorgan\\source\\repos\\Remuner8\\Remuner8\\Remuner8.csproj": {}
   },
   "projects": {
-    "C:\\Users\\JamesMorgan\\Source\\Repos\\Remuner8\\Remuner8\\Remuner8.csproj": {
+    "C:\\Users\\JamesMorgan\\source\\repos\\Remuner8\\Remuner8\\Remuner8.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\JamesMorgan\\Source\\Repos\\Remuner8\\Remuner8\\Remuner8.csproj",
+        "projectUniqueName": "C:\\Users\\JamesMorgan\\source\\repos\\Remuner8\\Remuner8\\Remuner8.csproj",
         "projectName": "Remuner8",
-        "projectPath": "C:\\Users\\JamesMorgan\\Source\\Repos\\Remuner8\\Remuner8\\Remuner8.csproj",
+        "projectPath": "C:\\Users\\JamesMorgan\\source\\repos\\Remuner8\\Remuner8\\Remuner8.csproj",
         "packagesPath": "C:\\Users\\JamesMorgan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\JamesMorgan\\Source\\Repos\\Remuner8\\Remuner8\\obj\\",
+        "outputPath": "C:\\Users\\JamesMorgan\\source\\repos\\Remuner8\\Remuner8\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
@@ -22,15 +22,15 @@
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "netcoreapp3.1"
+          "net5.0"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "netcoreapp3.1": {
-            "targetAlias": "netcoreapp3.1",
+          "net5.0": {
+            "targetAlias": "net5.0",
             "projectReferences": {}
           }
         },
@@ -41,12 +41,36 @@
         }
       },
       "frameworks": {
-        "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
+        "net5.0": {
+          "targetAlias": "net5.0",
           "dependencies": {
-            "Microsoft.AspNetCore.SpaServices.Extensions": {
+            "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[3.1.11, )"
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.AspNetCore.Identity.UI": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "target": "Package",
+              "version": "[5.0.2, )"
+            },
+            "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
+              "target": "Package",
+              "version": "[1.10.9, )"
             }
           },
           "imports": [

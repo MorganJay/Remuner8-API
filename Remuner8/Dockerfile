@@ -7,10 +7,10 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
 WORKDIR /src
-COPY ["Remuner8/Remuner8.csproj", "Remuner8/"]
-RUN dotnet restore "Remuner8/Remuner8.csproj"
+COPY ["Remuner8.csproj", ""]
+RUN dotnet restore "./Remuner8.csproj"
 COPY . .
-WORKDIR "/src/Remuner8"
+WORKDIR "/src/."
 RUN dotnet build "Remuner8.csproj" -c Release -o /app/build
 
 FROM build AS publish

@@ -2,9 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <UserSecretsId>aspnet-Remuner8-87D6D9DB-2C69-4910-87AF-D03F471AB531</UserSecretsId>
+    <UserSecretsId>aspnet-Remuner8-807FF28F-4BD6-4E90-B6A6-6B278472D24E</UserSecretsId>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>.</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
