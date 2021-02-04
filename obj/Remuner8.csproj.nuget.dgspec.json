@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\JamesMorgan\\source\\repos\\Remuner8\\Remuner8.csproj": {}
+    "C:\\Users\\JamesMorgan\\Source\\Repos\\remuner8-api\\Remuner8.csproj": {}
   },
   "projects": {
-    "C:\\Users\\JamesMorgan\\source\\repos\\Remuner8\\Remuner8.csproj": {
+    "C:\\Users\\JamesMorgan\\Source\\Repos\\remuner8-api\\Remuner8.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\JamesMorgan\\source\\repos\\Remuner8\\Remuner8.csproj",
+        "projectUniqueName": "C:\\Users\\JamesMorgan\\Source\\Repos\\remuner8-api\\Remuner8.csproj",
         "projectName": "Remuner8",
-        "projectPath": "C:\\Users\\JamesMorgan\\source\\repos\\Remuner8\\Remuner8.csproj",
+        "projectPath": "C:\\Users\\JamesMorgan\\Source\\Repos\\remuner8-api\\Remuner8.csproj",
         "packagesPath": "C:\\Users\\JamesMorgan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\JamesMorgan\\source\\repos\\Remuner8\\obj\\",
+        "outputPath": "C:\\Users\\JamesMorgan\\Source\\Repos\\remuner8-api\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\"
