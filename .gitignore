@@ -11,7 +11,7 @@ __pycache__/
 *.pyc
 
 # Cake - Uncomment if you are using it
-# tools/**
+# tools
 # !tools/packages.config
 
 # Tabs Studio
@@ -67,7 +67,7 @@ bld/
 Generated\ Files/
 
 # MSTest test Results
-[Tt]est[Rr]esult*/
+[Tt]est[Rr]esult
 [Bb]uild[Ll]og.*
 
 # NUNIT
