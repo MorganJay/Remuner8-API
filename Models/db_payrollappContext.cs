@@ -36,7 +36,7 @@ namespace Remuner8.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseMySql("name=DefaultConnection", x => x.ServerVersion("8.0.20-mysql"));
+                optionsBuilder.UseSqlServer("name=DefaultConnection", x => x.ServerVersion("8.0.20-mysql"));
             }
         }
 

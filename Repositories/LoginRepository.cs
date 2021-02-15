@@ -15,13 +15,13 @@ namespace Remuner8.Repositories
         {
             this.context = context;
         }
-       
+
         public bool ValidateCredentials(PasswordModel model)
         {
             try
             {
-                var confirmcredentials = context.Passwords.Where(s => s.Password1 == model.Password && s.Email == model.Email).FirstOrDefault();
-                if (confirmcredentials== null)
+                var confirmCredentials = context.Passwords.Where(s => s.Password1 == model.Password && s.Email == model.Email).FirstOrDefault();
+                if (confirmCredentials == null)
                 {
                     return true;
                 }
@@ -29,11 +29,8 @@ namespace Remuner8.Repositories
             }
             catch (Exception)
             {
-
                 return false;
             }
-            
         }
     }
 }
-
