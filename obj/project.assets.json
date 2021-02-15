@@ -6560,25 +6560,20 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\JamesMorgan\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {}
+    "C:\\Users\\QaweeySoetan\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\JamesMorgan\\source\\repos\\Remuner8\\Remuner8.csproj",
+      "projectUniqueName": "C:\\Users\\QaweeySoetan\\source\\repos\\remuner8webapi\\Remuner8.csproj",
       "projectName": "Remuner8",
-      "projectPath": "C:\\Users\\JamesMorgan\\source\\repos\\Remuner8\\Remuner8.csproj",
-      "packagesPath": "C:\\Users\\JamesMorgan\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\JamesMorgan\\source\\repos\\Remuner8\\obj\\",
+      "projectPath": "C:\\Users\\QaweeySoetan\\source\\repos\\remuner8webapi\\Remuner8.csproj",
+      "packagesPath": "C:\\Users\\QaweeySoetan\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\QaweeySoetan\\source\\repos\\remuner8webapi\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\"
-      ],
       "configFilePaths": [
-        "C:\\Users\\JamesMorgan\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\QaweeySoetan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net5.0"

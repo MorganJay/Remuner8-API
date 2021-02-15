@@ -8,6 +8,6 @@ namespace Remuner8.EntityModels
     public class PasswordModel
     {
         public string Email { get; set; }
-        public string Password1 { get; set; }
+        public string Password { get; set; }
     }
 }
