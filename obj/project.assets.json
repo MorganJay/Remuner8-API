@@ -29,6 +29,21 @@
           "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll": {}
         }
       },
+      "Bricelam.EntityFrameworkCore.Pluralizer/1.0.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore.Design": "2.1.0"
+        },
+        "compile": {
+          "lib/netstandard2.0/_._": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Bricelam.EntityFrameworkCore.Pluralizer.dll": {}
+        },
+        "build": {
+          "build/netstandard2.0/Bricelam.EntityFrameworkCore.Pluralizer.targets": {}
+        }
+      },
       "Humanizer.Core/2.8.26": {
         "type": "package",
         "compile": {
@@ -1915,6 +1930,20 @@
         "automapper.extensions.microsoft.dependencyinjection.nuspec",
         "icon.png",
         "lib/netstandard2.0/AutoMapper.Extensions.Microsoft.DependencyInjection.dll"
+      ]
+    },
+    "Bricelam.EntityFrameworkCore.Pluralizer/1.0.0": {
+      "sha512": "akiz3hGnpDgZssTGTnTehy7cy8gJ3RME7jULOkxWHuoSUUmkyxHO8USA/DDTz9Zc+o3RvTdY888NrjDcmb3OJA==",
+      "type": "package",
+      "path": "bricelam.entityframeworkcore.pluralizer/1.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "bricelam.entityframeworkcore.pluralizer.1.0.0.nupkg.sha512",
+        "bricelam.entityframeworkcore.pluralizer.nuspec",
+        "build/netstandard2.0/Bricelam.EntityFrameworkCore.Pluralizer.targets",
+        "lib/netstandard2.0/Bricelam.EntityFrameworkCore.Pluralizer.dll",
+        "lib/netstandard2.0/Bricelam.EntityFrameworkCore.Pluralizer.xml"
       ]
     },
     "Humanizer.Core/2.8.26": {
@@ -6850,6 +6879,7 @@
   "projectFileDependencyGroups": {
     "net5.0": [
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 8.1.0",
+      "Bricelam.EntityFrameworkCore.Pluralizer >= 1.0.0",
       "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore >= 5.0.2",
       "Microsoft.AspNetCore.Identity.EntityFrameworkCore >= 5.0.2",
       "Microsoft.AspNetCore.Identity.UI >= 5.0.2",
@@ -6908,6 +6938,12 @@
             "target": "Package",
             "version": "[8.1.0, )"
           },
+          "Bricelam.EntityFrameworkCore.Pluralizer": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[1.0.0, )"
+          },
           "Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore": {
             "target": "Package",
             "version": "[5.0.2, )"
@@ -6959,7 +6995,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
       }
     }
   }

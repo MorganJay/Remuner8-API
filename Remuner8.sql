@@ -1,4 +1,4 @@
-USE db_payrollapp;
+CREATE DATABASE Remuner8;
  CREATE TABLE Passwords(
                 email VARCHAR(50) NOT NULL PRIMARY KEY,
                 password VARCHAR(32) NOT NULL
