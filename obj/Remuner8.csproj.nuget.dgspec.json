@@ -1,21 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\QaweeySoetan\\source\\repos\\remuner8webapi\\Remuner8.csproj": {}
+    "C:\\Users\\JamesMorgan\\source\\repos\\remuner8-api\\Remuner8.csproj": {}
   },
   "projects": {
-    "C:\\Users\\QaweeySoetan\\source\\repos\\remuner8webapi\\Remuner8.csproj": {
+    "C:\\Users\\JamesMorgan\\source\\repos\\remuner8-api\\Remuner8.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\QaweeySoetan\\source\\repos\\remuner8webapi\\Remuner8.csproj",
+        "projectUniqueName": "C:\\Users\\JamesMorgan\\source\\repos\\remuner8-api\\Remuner8.csproj",
         "projectName": "Remuner8",
-        "projectPath": "C:\\Users\\QaweeySoetan\\source\\repos\\remuner8webapi\\Remuner8.csproj",
-        "packagesPath": "C:\\Users\\QaweeySoetan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\QaweeySoetan\\source\\repos\\remuner8webapi\\obj\\",
+        "projectPath": "C:\\Users\\JamesMorgan\\source\\repos\\remuner8-api\\Remuner8.csproj",
+        "packagesPath": "C:\\Users\\JamesMorgan\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\JamesMorgan\\source\\repos\\remuner8-api\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
-          "C:\\Users\\QaweeySoetan\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\JamesMorgan\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0"
@@ -75,10 +79,6 @@
             "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": {
               "target": "Package",
               "version": "[1.10.9, )"
-            },
-            "Pomelo.EntityFrameworkCore.MySql": {
-              "target": "Package",
-              "version": "[3.2.4, )"
             }
           },
           "imports": [
@@ -99,7 +99,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
         }
       }
     }
