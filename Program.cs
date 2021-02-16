@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Remuner8
+namespace Remuner8_Backend
 {
     public class Program
     {

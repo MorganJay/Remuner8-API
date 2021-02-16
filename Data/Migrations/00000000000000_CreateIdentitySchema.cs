@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 
-namespace Remuner8.Data.Migrations
+namespace Remuner8_Backend.Data.Migrations
 {
     public partial class CreateIdentitySchema : Migration
     {

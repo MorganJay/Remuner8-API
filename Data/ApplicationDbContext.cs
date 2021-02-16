@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Remuner8.Data
+namespace Remuner8_Backend.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
