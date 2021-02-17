@@ -8,9 +8,9 @@ namespace Remuner8_Backend.Repositories
     {
         private readonly Remuner8Context remuner8Context;
 
-        public RegisterRepository(Remuner8Context remuner8remuner8Context)
+        public RegisterRepository(Remuner8Context Context)
         {
-            remuner8Context = remuner8remuner8Context;
+            remuner8Context = Context;
         }
 
         public Password AddUser(Password password)

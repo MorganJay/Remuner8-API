@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using API.Authentication;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Remuner8_Backend.Models;
 using Remuner8_Backend.Repositories;
 
@@ -39,9 +41,16 @@ namespace Remuner8_Backend.Controllers
         [Route("api/[controller]")]
         public IActionResult AddUser([FromBody] Password password)
         {
-            RegisterRepository.AddUser(password);
-            return Created(HttpContext.Request.Scheme + "://" + HttpContext.Request.Host + HttpContext.Request.Path + "/" + password.Email,
-                password);
+            var userExists = RegisterRepository.GetUser(password.Email);
+            if (userExists == null)
+            {
+                RegisterRepository.AddUser(password);
+                return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "User Successfully Created" });
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User Already Exists" });
+            }
         }
 
         [HttpDelete]
@@ -60,12 +69,12 @@ namespace Remuner8_Backend.Controllers
 
         [HttpPatch]
         [Route("api/[controller]/{email}")]
-        public IActionResult EditUser(string email, Password password)
+        public IActionResult EditUser(Password password)
         {
-            var existingUser = RegisterRepository.GetUser(email);
+            var existingUser = RegisterRepository.GetUser(password.Email);
             if (existingUser != null)
             {
-                password.Password1 = existingUser.Password1;
+                // password.Password1 = existingUser.Password1;
                 RegisterRepository.EditUser(password);
             }
             return Ok(password);
