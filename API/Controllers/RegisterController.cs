@@ -62,7 +62,7 @@ namespace Remuner8_Backend.Controllers
             if (user != null)
             {
                 RegisterRepository.DeleteUser(user);
-                return Ok();
+                return Ok(new Response { Status = "Success", Message = $"User with email: {email} was not found" });
             }
             return NotFound($"User with email: {email} was not found");
         }
