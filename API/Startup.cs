@@ -8,6 +8,7 @@ using Remuner8_Backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Remuner8_Backend.Repositories;
+using API.Repositories;
 
 namespace API
 {
@@ -38,6 +39,7 @@ namespace API
             services.AddControllersWithViews();
             services.AddScoped<ILoginRepository, LoginRepository>();
             services.AddScoped<IRegisterRepository, RegisterRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
