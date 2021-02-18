@@ -1,6 +1,6 @@
 USE db_payrollapp;
  CREATE TABLE Passwords(
-                email VARCHAR(50) NOT NULL PRIMARY KEY,
+                email VARCHAR(50) NOT NULL UNIQUE PRIMARY KEY,
                 password VARCHAR(32) NOT NULL
 );
 CREATE TABLE PensionFundAdministration(
@@ -10,12 +10,12 @@ CREATE TABLE PensionFundAdministration(
 				address VARCHAR(200) NOT NULL
 );
 CREATE TABLE Departments(
-               departmentId INT NOT NULL PRIMARY KEY IDENTITY,
+               departmentId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
                departmentName VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE JobDescriptions(
-              jobDescriptionId INT NOT NULL PRIMARY KEY IDENTITY,
+              jobDescriptionId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
               jobDescriptionName VARCHAR(50) NOT NULL,
               basicSalary DECIMAL(19,4) NOT NULL,
               housingAllowance DECIMAL(19,4) NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE Bonuses(
               salaryEndDate DATE NOT NULL
  );
  CREATE TABLE UserRoles(
-			 id  INT PRIMARY KEY NOT NULL IDENTITY,
+			 id  INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
              role VARCHAR(30) NOT NULL UNIQUE
  );
  CREATE TABLE Banks(
@@ -51,20 +51,20 @@ CREATE TABLE Bonuses(
             bankName VARCHAR(50) NOT NULL UNIQUE
 );
 CREATE TABLE EmploymentType(
-			employmentTypeId INT PRIMARY KEY NOT NULL IDENTITY,
+			employmentTypeId INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
             employmentName VARCHAR(50) NOT NULL UNIQUE
  );
  
  CREATE TABLE EmployeeBiodata (
 	        employeeId VARCHAR(10) PRIMARY KEY NOT NULL, 
-            avatar VARBINARY(max),
+            avatar MEDIUMBLOB,
 			firstName VARCHAR(50) NOT NULL,
 			lastName VARCHAR(50) NOT NULL, 
             otherName VARCHAR(50) NOT NULL,
             dateOfBirth DATE NOT NULL,
             address VARCHAR(200) NOT NULL,
             phoneNumber VARCHAR(20) NOT NULL UNIQUE,
-            emailAddress VARCHAR(50) NOT NULL UNIQUE,
+            emailAddress VARCHAR(40) NOT NULL UNIQUE,
             gender CHAR(6) NOT NULL, 
 			countryName VARCHAR(30) NOT NULL,
             stateName VARCHAR(30) NOT NULL,
@@ -82,34 +82,34 @@ CREATE TABLE EmploymentType(
             FOREIGN KEY (emailAddress) REFERENCES Passwords(email)
 );
 CREATE TABLE StatutoryDeductions(
-              statutoryTypeId INT PRIMARY KEY NOT NULL IDENTITY,
+              statutoryTypeId INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
               employeeId VARCHAR(10) NOT NULL,
               amount1 DECIMAL(19,4) NOT NULL,
               amount2 DECIMAL(19,4) NOT NULL,
               pfaCode VARCHAR(10) NOT NULL ,
               pfaAccountNumber VARCHAR(10) NOT NULL,
               pfaAccountNumber1 VARCHAR (10) NOT NULL,
-              description VARCHAR(max) NOT NULL,
+              description TEXT NOT NULL,
               FOREIGN KEY (employeeId) REFERENCES EmployeeBiodata(employeeId),
               FOREIGN KEY (pfaCode) REFERENCES PensionFundAdministration(pfaCode)
 );
 CREATE TABLE PayrollTransactions(
 			employeeId VARCHAR(10) NOT NULL,
-			transactionId INT PRIMARY KEY NOT NULL IDENTITY,
-			transactionDateTime DATETIME2(0) NOT NULL,
-			deduction BIT NOT NULL,
+			transactionId INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+			transactionDateTime DATETIME NOT NULL,
+			deduction BOOL NOT NULL,
 			principal DECIMAL(15,2) NOT NULL,
 			rate DECIMAL(3,2) NOT NULL,
 			balance DECIMAL(15,2) NOT NULL,
-			statutory BIT NOT NULL,
+			statutory BOOL NOT NULL,
 			FOREIGN KEY (employeeId) REFERENCES EmployeeBiodata(employeeId)
 );
 CREATE TABLE TimeSheet(
 			employeeId VARCHAR(10) NOT NULL,
 			date DATE NOT NULL,
-			timeIn TIME(0) ,
-			timeOut TIME(0) ,
-			hoursWorked TIME(0),
+			timeIn TIME ,
+			timeOut TIME ,
+			hoursWorked TIME,
 			FOREIGN KEY (employeeId) REFERENCES EmployeeBiodata(employeeId)
  );
  CREATE TABLE Taxes(
