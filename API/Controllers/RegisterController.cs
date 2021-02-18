@@ -11,9 +11,9 @@ namespace Remuner8_Backend.Controllers
     [ApiController]
     public class RegisterController : ControllerBase
     {
-        private readonly IRegisterRepository RegisterRepository;
+        private readonly IUserAccountRepository RegisterRepository;
 
-        public RegisterController(IRegisterRepository registerRepository)
+        public RegisterController(IUserAccountRepository registerRepository)
         {
             RegisterRepository = registerRepository;
         }
