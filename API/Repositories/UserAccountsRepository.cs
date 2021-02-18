@@ -1,14 +1,16 @@
-﻿using Remuner8_Backend.Models;
+﻿using Remuner8_Backend.EntityModels;
+using Remuner8_Backend.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Remuner8_Backend.Repositories
 {
-    public class RegisterRepository : IRegisterRepository
+    public class UserAccountsRepository : IUserAccountRepository
     {
         private readonly Remuner8Context remuner8Context;
 
-        public RegisterRepository(Remuner8Context Context)
+        public UserAccountsRepository(Remuner8Context Context)
         {
             remuner8Context = Context;
         }
@@ -42,6 +44,23 @@ namespace Remuner8_Backend.Repositories
         public List<Password> GetUsers()
         {
             return remuner8Context.Passwords.ToList();
+        }
+
+        public bool ValidateCredentials(PasswordModel model)
+        {
+            try
+            {
+                var confirmCredentials = remuner8Context.Passwords.Where(s => s.Password1 == model.Password && s.Email == model.Email).FirstOrDefault();
+                if (confirmCredentials != null)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 }

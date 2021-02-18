@@ -1,4 +1,5 @@
-﻿using API.Repositories;
+﻿using API.Authentication;
+using API.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -26,13 +27,13 @@ namespace API.Controllers
         {
             try
             {
-                var employeecount=employeeRepository.EmployeeCount();
+                var employeecount=employeeRepository.EmployeeCount();   
                 return Ok(employeecount);
             }
             catch (Exception)
             {
 
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response {Status="Error" , Message="Server not Found"});
             }
         }
 

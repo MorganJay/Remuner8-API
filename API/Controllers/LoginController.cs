@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using API.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Remuner8_Backend.EntityModels;
 using Remuner8_Backend.Repositories;
@@ -12,10 +13,11 @@ namespace Remuner8_Backend.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly ILoginRepository login;
+        private readonly IUserAccountRepository login;
+
 
         // POST api/<LoginController>
-        public LoginController(ILoginRepository login)
+        public LoginController(IUserAccountRepository login)
         {
             this.login = login;
         }
@@ -28,13 +30,13 @@ namespace Remuner8_Backend.Controllers
             {
                 if (login.ValidateCredentials(model))
                 {
-                    return Ok();
+                    return Ok(new Response {Status="Success", Message="Login Successful" });
                 }
                 return NotFound();
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = " Login Not Successful " });
             }
         }
     }

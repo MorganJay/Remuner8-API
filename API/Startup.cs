@@ -37,8 +37,7 @@ namespace API
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<Remuner8Context>();
             services.AddControllersWithViews();
-            services.AddScoped<ILoginRepository, LoginRepository>();
-            services.AddScoped<IRegisterRepository, RegisterRepository>();
+            services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             // Enable CORS

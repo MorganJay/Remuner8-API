@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
+using Remuner8_Backend.EntityModels;
 using Remuner8_Backend.Models;
 
 namespace Remuner8_Backend.Repositories
 {
-    public interface IRegisterRepository
+    public interface IUserAccountRepository
     {
         List<Password> GetUsers();
 
@@ -14,5 +15,6 @@ namespace Remuner8_Backend.Repositories
         void DeleteUser(Password password);
 
         Password EditUser(Password password);
+        bool ValidateCredentials(PasswordModel model);
     }
 }
