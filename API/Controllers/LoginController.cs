@@ -15,14 +15,12 @@ namespace Remuner8_Backend.Controllers
     {
         private readonly IUserAccountRepository login;
 
-
-        // POST api/<LoginController>
         public LoginController(IUserAccountRepository login)
         {
             this.login = login;
         }
 
-        // GET: api/<PasswordController>
+        // POST api/<LoginController>
         [HttpPost]
         public ActionResult Validate([FromBody] PasswordModel model)
         {
@@ -30,13 +28,13 @@ namespace Remuner8_Backend.Controllers
             {
                 if (login.ValidateCredentials(model))
                 {
-                    return Ok(new Response {Status="Success", Message="Login Successful" });
+                    return Ok(new Response { Status = "Success", Message = "Login Successful" });
                 }
-                return NotFound();
+                return NotFound(new Response { Status = "Failure", Message = "Login Unsuccessful\nInvalid Username or Password." });
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = " Login Not Successful " });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Login Not Successful | Server Unreachable" });
             }
         }
     }
