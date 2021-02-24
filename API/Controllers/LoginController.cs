@@ -24,7 +24,7 @@ namespace Remuner8_Backend.Controllers
 
         // GET: api/<PasswordController>
         [HttpPost]
-        public ActionResult Validate([FromBody] PasswordModel model)
+        public ActionResult Validate([FromBody] PasswordReadDto model)
         {
             try
             {
