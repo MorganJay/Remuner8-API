@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.DataModels
+namespace API.Models
 {
     public class PayrollAdditionItem
     {
@@ -15,17 +15,13 @@ namespace API.DataModels
 
         [Required]
         public string Name { get; set; }
-        
+
         [Required]
         public string CategoryId { get; set; }
-        
+
         [Column("amount2", TypeName = "decimal(19, 4)")]
         public decimal Amount1 { get; set; }
 
-
         public IEnumerable<EmployeeBiodata> Assignee { get; set; }
-        
-
-
     }
 }

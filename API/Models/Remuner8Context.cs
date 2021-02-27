@@ -1,5 +1,7 @@
 ﻿using System;
-using API.DataModels;
+
+//using API.DataModels;
+using API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 

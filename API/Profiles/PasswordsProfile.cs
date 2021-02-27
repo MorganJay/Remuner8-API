@@ -1,11 +1,7 @@
-﻿using API.Dtos;
-using AutoMapper;
+﻿using AutoMapper;
+using Remuner8_Backend.Dtos;
 using Remuner8_Backend.EntityModels;
 using Remuner8_Backend.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace API.Profiles
 {

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace API.Dtos
+namespace Remuner8_Backend.Dtos
 {
     public class PasswordCreateDto
     {
