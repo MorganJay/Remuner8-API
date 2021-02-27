@@ -7,8 +7,8 @@ namespace API.Models
 {
     public partial class PayrollTransaction
     {
-        public string EmployeeId { get; set; }
         public int TransactionId { get; set; }
+        public string EmployeeId { get; set; }
         public DateTime TransactionDateTime { get; set; }
         public bool Deduction { get; set; }
         public decimal Principal { get; set; }

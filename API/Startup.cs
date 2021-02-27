@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Remuner8_Backend.Repositories;
 using API.Repositories;
 using System;
+using API.Models;
 
 namespace API
 {

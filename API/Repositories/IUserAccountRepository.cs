@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using API.Models;
 using Remuner8_Backend.EntityModels;
 using Remuner8_Backend.Models;
 

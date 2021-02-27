@@ -1,4 +1,5 @@
 ﻿using API.Dtos;
+using API.Models;
 using AutoMapper;
 using Remuner8_Backend.EntityModels;
 using Remuner8_Backend.Models;

@@ -33,11 +33,13 @@ namespace API.Models
         public decimal GrossSalary { get; set; }
         public string BankCode { get; set; }
         public string AccountNumber { get; set; }
+        public int? PayrollAdditionItemId { get; set; }
 
         public virtual Bank BankCodeNavigation { get; set; }
         public virtual Department Department { get; set; }
         public virtual Password EmailAddressNavigation { get; set; }
         public virtual JobDescription JobDescription { get; set; }
+        public virtual PayrollAdditionItem PayrollAdditionItem { get; set; }
         public virtual ICollection<PayrollTransaction> PayrollTransactions { get; set; }
         public virtual ICollection<StatutoryDeduction> StatutoryDeductions { get; set; }
     }

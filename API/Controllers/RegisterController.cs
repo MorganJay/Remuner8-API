@@ -1,5 +1,6 @@
 ﻿using API.Authentication;
 using API.Dtos;
+using API.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
