@@ -15,24 +15,30 @@ namespace Remuner8_Backend.Repositories
             remuner8Context = Context;
         }
 
-        public Password AddUser(Password password)
+        public void AddUser(Password password)
         {
+            if (password == null)
+            {
+                throw new ArgumentNullException(nameof(password)); 
+            }
             remuner8Context.Passwords.Add(password);
             remuner8Context.SaveChanges();
-            return password;
         }
 
         public void DeleteUser(Password password)
         {
+            if (password == null)
+            {
+                throw new ArgumentNullException(nameof(password));
+            }
             remuner8Context.Passwords.Remove(password);
             remuner8Context.SaveChanges();
         }
 
-        public Password EditUser(Password password)
+        public void EditUser(Password password)
         {
             remuner8Context.Passwords.Update(password);
             remuner8Context.SaveChanges();
-            return password;
         }
 
         public Password GetUser(string email)
@@ -41,12 +47,12 @@ namespace Remuner8_Backend.Repositories
             return user;
         }
 
-        public List<Password> GetUsers()
+        public IEnumerable<Password> GetUsers()
         {
             return remuner8Context.Passwords.ToList();
         }
 
-        public bool ValidateCredentials(PasswordModel model)
+        public bool ValidateCredentials(PasswordReadDto model)
         {
             try
             {

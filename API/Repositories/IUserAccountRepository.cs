@@ -6,15 +6,15 @@ namespace Remuner8_Backend.Repositories
 {
     public interface IUserAccountRepository
     {
-        List<Password> GetUsers();
+        IEnumerable<Password> GetUsers();
 
         Password GetUser(string password);
 
-        Password AddUser(Password password);
+        void AddUser(Password password);
 
         void DeleteUser(Password password);
 
-        Password EditUser(Password password);
-        bool ValidateCredentials(PasswordModel model);
+        void EditUser(Password password);
+        bool ValidateCredentials(PasswordReadDto model);
     }
 }

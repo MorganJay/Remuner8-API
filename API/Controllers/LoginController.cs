@@ -22,7 +22,7 @@ namespace Remuner8_Backend.Controllers
 
         // POST api/<LoginController>
         [HttpPost]
-        public ActionResult Validate([FromBody] PasswordModel model)
+        public ActionResult Validate([FromBody] PasswordReadDto model)
         {
             try
             {

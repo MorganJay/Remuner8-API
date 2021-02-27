@@ -1,8 +1,12 @@
 ﻿using API.Authentication;
+using API.Dtos;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Remuner8_Backend.EntityModels;
 using Remuner8_Backend.Models;
 using Remuner8_Backend.Repositories;
+using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,40 +16,44 @@ namespace Remuner8_Backend.Controllers
     public class RegisterController : ControllerBase
     {
         private readonly IUserAccountRepository RegisterRepository;
+        private readonly IMapper _mapper;
 
-        public RegisterController(IUserAccountRepository registerRepository)
+        public RegisterController(IUserAccountRepository registerRepository, IMapper mapper)
         {
             RegisterRepository = registerRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         [Route("api/[controller]")]
-        public IActionResult GetUsers()
+        public ActionResult <IEnumerable<PasswordReadDto>> GetUsers()
         {
             return Ok(RegisterRepository.GetUsers());
         }
 
         [HttpGet]
         [Route("api/[controller]/{email}")]
-        public IActionResult GetUser(string email)
+        public ActionResult <PasswordReadDto> GetUser(string email)
         {
-            var user = RegisterRepository.GetUser(email);
-            if (user != null)
+            var userItem = RegisterRepository.GetUser(email);
+            if (userItem != null)
             {
-                return Ok(user);
+                return Ok(_mapper.Map<PasswordReadDto>(userItem));
             }
             return NotFound($"User with email: {email} was not found");
         }
 
         [HttpPost]
         [Route("api/[controller]")]
-        public IActionResult AddUser([FromBody] Password password)
+        public ActionResult <PasswordReadDto> AddUser(PasswordCreateDto passwordcreatedto)
         {
-            var userExists = RegisterRepository.GetUser(password.Email);
+            var passwordmodel = _mapper.Map<Password>(passwordcreatedto);
+            var userExists = RegisterRepository.GetUser(passwordcreatedto.Email);
             if (userExists == null)
             {
-                RegisterRepository.AddUser(password);
-                return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "User Successfully Created" });
+                RegisterRepository.AddUser(passwordmodel);
+                var passwordreaddto = _mapper.Map<PasswordReadDto>(passwordmodel);
+                return (passwordreaddto);
             }
             else
             {
@@ -62,7 +70,7 @@ namespace Remuner8_Backend.Controllers
             if (user != null)
             {
                 RegisterRepository.DeleteUser(user);
-                return Ok(new Response { Status = "Success", Message = $"User with email: {email} was not found" });
+                return Ok(new Response { Status = "Success", Message = "User Deleted Successfully" });
             }
             return NotFound($"User with email: {email} was not found");
         }
