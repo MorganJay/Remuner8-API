@@ -17,7 +17,7 @@ namespace Remuner8_Backend.Repositories
 
         public void AddUser(Password password)
         {
-            if (password.Email != null)
+            if (password.Email == null)
             {
                 throw new ArgumentNullException(nameof(password.Email)); 
             }
