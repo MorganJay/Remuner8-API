@@ -1,4 +1,5 @@
 ﻿using System;
+using API.DataModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -31,6 +32,7 @@ namespace Remuner8_Backend.Models
         public virtual DbSet<Tax> Taxes { get; set; }
         public virtual DbSet<TimeSheet> TimeSheets { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
+        public virtual DbSet<PayrollAdditionItem> PayrollAdditionItems { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

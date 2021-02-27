@@ -56,10 +56,8 @@ namespace Remuner8_Backend.Controllers
                 var passwordreaddto = _mapper.Map<PasswordReadDto>(passwordmodel);
                 return (passwordreaddto);
             }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "User Already Exists" });
-            }
+            return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User Already Exists" });
+            
         }
 
         [HttpDelete]
