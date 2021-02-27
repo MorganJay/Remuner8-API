@@ -1,10 +1,5 @@
-﻿using Remuner8_Backend.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace API.Dtos
 {
@@ -13,11 +8,14 @@ namespace API.Dtos
         [Required]
         [Column("email")]
         [StringLength(50)]
+        [EmailAddress]
         public string Email { get; set; }
 
         
         [Column("password")]
-        [StringLength(32)]
-        public string Password1 { get; set; }
+        [StringLength(32, MinimumLength = 8, ErrorMessage = "Password must be 8-32 characters")]
+        [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-`~()_=+{}\|'.<>;:,/""]).{8,33}$",
+            ErrorMessage = "8 - 32 characters long, with at least one lowercase and uppercase letter, a number and a special character")]
+        public string Password { get; set; }
     }
 }

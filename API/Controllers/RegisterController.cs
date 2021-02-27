@@ -22,7 +22,6 @@ namespace Remuner8_Backend.Controllers
         {
             RegisterRepository = registerRepository;
             _mapper = mapper;
-
         }
 
         [HttpGet]
