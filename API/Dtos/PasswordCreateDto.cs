@@ -15,7 +15,7 @@ namespace API.Dtos
         [StringLength(50)]
         public string Email { get; set; }
 
-        [Required]
+        
         [Column("password")]
         [StringLength(32)]
         public string Password1 { get; set; }
