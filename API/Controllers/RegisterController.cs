@@ -26,14 +26,14 @@ namespace Remuner8_Backend.Controllers
 
         [HttpGet]
         [Route("api/[controller]")]
-        public ActionResult <IEnumerable<PasswordReadDto>> GetUsers()
+        public ActionResult<IEnumerable<PasswordReadDto>> GetUsers()
         {
             return Ok(RegisterRepository.GetUsers());
         }
 
         [HttpGet]
         [Route("api/[controller]/{email}")]
-        public ActionResult <PasswordReadDto> GetUser(string email)
+        public ActionResult<PasswordReadDto> GetUser(string email)
         {
             var userItem = RegisterRepository.GetUser(email);
             if (userItem != null)
@@ -45,18 +45,17 @@ namespace Remuner8_Backend.Controllers
 
         [HttpPost]
         [Route("api/[controller]")]
-        public ActionResult <PasswordReadDto> AddUser(PasswordCreateDto passwordcreatedto)
+        public ActionResult<PasswordReadDto> AddUser(PasswordCreateDto passwordCreateDto)
         {
-            var passwordmodel = _mapper.Map<Password>(passwordcreatedto);
-            var userExists = RegisterRepository.GetUser(passwordcreatedto.Email);
+            var passwordModel = _mapper.Map<Password>(passwordCreateDto);
+            var userExists = RegisterRepository.GetUser(passwordCreateDto.Email);
             if (userExists == null)
             {
-                RegisterRepository.AddUser(passwordmodel);
-                var passwordreaddto = _mapper.Map<PasswordReadDto>(passwordmodel);
-                return (passwordreaddto);
+                RegisterRepository.AddUser(passwordModel);
+                var passwordReadDto = _mapper.Map<PasswordReadDto>(passwordModel);
+                return (passwordReadDto);
             }
             return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User Already Exists" });
-            
         }
 
         [HttpDelete]
