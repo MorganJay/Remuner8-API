@@ -5,6 +5,7 @@ namespace API.Dtos
 {
     public class PasswordCreateDto
     {
+        [Required]
         [Column("email")]
         [StringLength(50)]
         [EmailAddress]
