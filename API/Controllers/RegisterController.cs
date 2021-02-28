@@ -1,10 +1,11 @@
-﻿using API.Authentication;
+﻿using API;
+using API.Authentication;
+using API.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Remuner8_Backend.Dtos;
 using Remuner8_Backend.EntityModels;
-using Remuner8_Backend.Models;
 using Remuner8_Backend.Repositories;
 using System.Collections.Generic;
 
@@ -52,8 +53,8 @@ namespace Remuner8_Backend.Controllers
             if (userExists == null)
             {
                 RegisterRepository.AddUser(passwordModel);
-                var passwordReadDto = _mapper.Map<PasswordReadDto>(passwordModel);
-                return (passwordReadDto);
+                // var passwordReadDto = _mapper.Map<PasswordReadDto>(passwordModel);
+                return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "User Created Successfully" });
             }
             return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User Already Exists" });
         }

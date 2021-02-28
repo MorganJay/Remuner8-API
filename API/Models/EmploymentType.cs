@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Remuner8_Backend.Models
+namespace API.Models
 {
     [Table("EmploymentType")]
     [Index(nameof(EmploymentName), Name = "UQ__Employme__7E571DB88372C814", IsUnique = true)]

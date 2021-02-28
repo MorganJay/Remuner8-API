@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Remuner8_Backend.Models
+namespace API.Models
 {
     [Table("EmployeeBiodata")]
     [Index(nameof(EmailAddress), Name = "UQ__Employee__347C3027AEE39C36", IsUnique = true)]
@@ -78,17 +78,14 @@ namespace Remuner8_Backend.Models
         [Column("grossSalary", TypeName = "decimal(19, 4)")]
         public decimal GrossSalary { get; set; }
         [Required]
-        [Column("bankCode")]
-        [StringLength(10)]
-        public string BankCode { get; set; }
+        [Column("bankName")]
+        [StringLength(150)]
+        public string BankName { get; set; }
         [Required]
         [Column("accountNumber")]
         [StringLength(10)]
         public string AccountNumber { get; set; }
 
-        [ForeignKey(nameof(BankCode))]
-        [InverseProperty(nameof(Bank.EmployeeBiodatas))]
-        public virtual Bank BankCodeNavigation { get; set; }
         [ForeignKey(nameof(DepartmentId))]
         [InverseProperty("EmployeeBiodatas")]
         public virtual Department Department { get; set; }

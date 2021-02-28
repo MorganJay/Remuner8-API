@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
+using API.Models;
 using Remuner8_Backend.EntityModels;
-using Remuner8_Backend.Models;
 
 namespace Remuner8_Backend.Repositories
 {
@@ -15,6 +15,7 @@ namespace Remuner8_Backend.Repositories
         void DeleteUser(Password password);
 
         void EditUser(Password password);
+
         bool ValidateCredentials(PasswordReadDto model);
     }
 }

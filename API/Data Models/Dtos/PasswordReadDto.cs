@@ -6,6 +6,6 @@ namespace Remuner8_Backend.EntityModels
     {
         public string Email { get; set; }
 
-        public string Password { get; set; }
+        public string Password1 { get; set; }
     }
 }

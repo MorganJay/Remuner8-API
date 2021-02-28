@@ -1,5 +1,5 @@
-﻿using Remuner8_Backend.EntityModels;
-using Remuner8_Backend.Models;
+﻿using API.Models;
+using Remuner8_Backend.EntityModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +19,7 @@ namespace Remuner8_Backend.Repositories
         {
             if (password == null)
             {
-                throw new ArgumentNullException(nameof(password)); 
+                throw new ArgumentNullException(nameof(password));
             }
             remuner8Context.Passwords.Add(password);
             remuner8Context.SaveChanges();
@@ -56,7 +56,7 @@ namespace Remuner8_Backend.Repositories
         {
             try
             {
-                var confirmCredentials = remuner8Context.Passwords.Where(s => s.Password1 == model.Password && s.Email == model.Email).FirstOrDefault();
+                var confirmCredentials = remuner8Context.Passwords.Where(s => s.Password1 == model.Password1 && s.Email == model.Email).FirstOrDefault();
                 if (confirmCredentials != null)
                 {
                     return true;

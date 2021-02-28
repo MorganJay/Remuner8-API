@@ -1,13 +1,10 @@
 ﻿using System;
-
-//using API.DataModels;
-using API.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
-namespace Remuner8_Backend.Models
+namespace API.Models
 {
     public partial class Remuner8Context : DbContext
     {
@@ -20,13 +17,22 @@ namespace Remuner8_Backend.Models
         {
         }
 
-        public virtual DbSet<Bank> Banks { get; set; }
+        public virtual DbSet<AssigneeTable> AssigneeTables { get; set; }
         public virtual DbSet<Bonus> Bonuses { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<EmployeeBiodata> EmployeeBiodatas { get; set; }
         public virtual DbSet<EmploymentType> EmploymentTypes { get; set; }
         public virtual DbSet<JobDescription> JobDescriptions { get; set; }
+        public virtual DbSet<LeaveType> LeaveTypes { get; set; }
         public virtual DbSet<Password> Passwords { get; set; }
+        public virtual DbSet<PayrollAdditionItem> PayrollAdditionItems { get; set; }
+        public virtual DbSet<PayrollAdditionItemsAssignment> PayrollAdditionItemsAssignments { get; set; }
+        public virtual DbSet<PayrollCategory> PayrollCategories { get; set; }
+        public virtual DbSet<PayrollDeductionItem> PayrollDeductionItems { get; set; }
+        public virtual DbSet<PayrollDeductionItemsAssignment> PayrollDeductionItemsAssignments { get; set; }
+        public virtual DbSet<PayrollOvertimeItem> PayrollOvertimeItems { get; set; }
+        public virtual DbSet<PayrollOvertimeItemsAssignment> PayrollOvertimeItemsAssignments { get; set; }
+        public virtual DbSet<PayrollRate> PayrollRates { get; set; }
         public virtual DbSet<PayrollTransaction> PayrollTransactions { get; set; }
         public virtual DbSet<PensionFundAdministration> PensionFundAdministrations { get; set; }
         public virtual DbSet<StatutoryDeduction> StatutoryDeductions { get; set; }
@@ -34,7 +40,6 @@ namespace Remuner8_Backend.Models
         public virtual DbSet<Tax> Taxes { get; set; }
         public virtual DbSet<TimeSheet> TimeSheets { get; set; }
         public virtual DbSet<UserRole> UserRoles { get; set; }
-        public virtual DbSet<PayrollAdditionItem> PayrollAdditionItems { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -48,14 +53,12 @@ namespace Remuner8_Backend.Models
         {
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
-            modelBuilder.Entity<Bank>(entity =>
+            modelBuilder.Entity<AssigneeTable>(entity =>
             {
-                entity.HasKey(e => e.BankCode)
-                    .HasName("PK__Banks__7C3F297BF1E3C219");
+                entity.HasKey(e => e.Assigneeid)
+                    .HasName("PK__Assignee__52B4679E1CEB1FA5");
 
-                entity.Property(e => e.BankCode).IsUnicode(false);
-
-                entity.Property(e => e.BankName).IsUnicode(false);
+                entity.Property(e => e.AssigneeName).IsUnicode(false);
             });
 
             modelBuilder.Entity<Bonus>(entity =>
@@ -89,7 +92,7 @@ namespace Remuner8_Backend.Models
 
                 entity.Property(e => e.Address).IsUnicode(false);
 
-                entity.Property(e => e.BankCode).IsUnicode(false);
+                entity.Property(e => e.BankName).IsUnicode(false);
 
                 entity.Property(e => e.CountryName).IsUnicode(false);
 
@@ -112,12 +115,6 @@ namespace Remuner8_Backend.Models
                 entity.Property(e => e.PhoneNumber).IsUnicode(false);
 
                 entity.Property(e => e.StateName).IsUnicode(false);
-
-                entity.HasOne(d => d.BankCodeNavigation)
-                    .WithMany(p => p.EmployeeBiodatas)
-                    .HasForeignKey(d => d.BankCode)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__EmployeeB__bankC__3C69FB99");
 
                 entity.HasOne(d => d.Department)
                     .WithMany(p => p.EmployeeBiodatas)
@@ -148,6 +145,11 @@ namespace Remuner8_Backend.Models
                 entity.Property(e => e.JobDescriptionName).IsUnicode(false);
             });
 
+            modelBuilder.Entity<LeaveType>(entity =>
+            {
+                entity.Property(e => e.Name).IsUnicode(false);
+            });
+
             modelBuilder.Entity<Password>(entity =>
             {
                 entity.HasKey(e => e.Email)
@@ -156,6 +158,76 @@ namespace Remuner8_Backend.Models
                 entity.Property(e => e.Email).IsUnicode(false);
 
                 entity.Property(e => e.Password1).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<PayrollAdditionItem>(entity =>
+            {
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.HasOne(d => d.Assignee)
+                    .WithMany(p => p.PayrollAdditionItems)
+                    .HasForeignKey(d => d.AssigneeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PayrollAdditionItems_AssigneeTable");
+
+                entity.HasOne(d => d.Category)
+                    .WithMany(p => p.PayrollAdditionItems)
+                    .HasForeignKey(d => d.CategoryId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PayrollAdditionItems_PayrollCategories");
+            });
+
+            modelBuilder.Entity<PayrollAdditionItemsAssignment>(entity =>
+            {
+                entity.Property(e => e.EmployeeId).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<PayrollCategory>(entity =>
+            {
+                entity.HasKey(e => e.CategoryId)
+                    .HasName("PK__PayrollC__23CAF1D8676751FC");
+
+                entity.Property(e => e.CategoryName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<PayrollDeductionItem>(entity =>
+            {
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.HasOne(d => d.Assignee)
+                    .WithMany(p => p.PayrollDeductionItems)
+                    .HasForeignKey(d => d.AssigneeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PayrollDeductionItems_AssigneeTable");
+            });
+
+            modelBuilder.Entity<PayrollDeductionItemsAssignment>(entity =>
+            {
+                entity.Property(e => e.EmployeeId).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<PayrollOvertimeItem>(entity =>
+            {
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.HasOne(d => d.Rate)
+                    .WithMany(p => p.PayrollOvertimeItems)
+                    .HasForeignKey(d => d.Rateid)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PayrollOvertimeItems_PayrollRates");
+            });
+
+            modelBuilder.Entity<PayrollOvertimeItemsAssignment>(entity =>
+            {
+                entity.Property(e => e.EmployeeId).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<PayrollRate>(entity =>
+            {
+                entity.HasKey(e => e.RateId)
+                    .HasName("PK__PayrollR__5705EA1446EDB076");
+
+                entity.Property(e => e.RateType).IsUnicode(false);
             });
 
             modelBuilder.Entity<PayrollTransaction>(entity =>

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
-    public partial class PayrollAdditionItem
+    public partial class PayrollDeductionItem
     {
         [Key]
         [Column("id")]
@@ -17,18 +17,13 @@ namespace API.Models
         [Column("name")]
         [StringLength(100)]
         public string Name { get; set; }
-        [Column("categoryId")]
-        public int CategoryId { get; set; }
         [Column("amount", TypeName = "decimal(19, 4)")]
         public decimal Amount { get; set; }
         [Column("assigneeId")]
         public int AssigneeId { get; set; }
 
         [ForeignKey(nameof(AssigneeId))]
-        [InverseProperty(nameof(AssigneeTable.PayrollAdditionItems))]
+        [InverseProperty(nameof(AssigneeTable.PayrollDeductionItems))]
         public virtual AssigneeTable Assignee { get; set; }
-        [ForeignKey(nameof(CategoryId))]
-        [InverseProperty(nameof(PayrollCategory.PayrollAdditionItems))]
-        public virtual PayrollCategory Category { get; set; }
     }
 }

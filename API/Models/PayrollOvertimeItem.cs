@@ -8,15 +8,20 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
-    [Index(nameof(Role), Name = "UQ__UserRole__863D21484D4C2003", IsUnique = true)]
-    public partial class UserRole
+    public partial class PayrollOvertimeItem
     {
         [Key]
         [Column("id")]
         public int Id { get; set; }
         [Required]
-        [Column("role")]
+        [Column("name")]
         [StringLength(30)]
-        public string Role { get; set; }
+        public string Name { get; set; }
+        [Column("rateid")]
+        public int Rateid { get; set; }
+
+        [ForeignKey(nameof(Rateid))]
+        [InverseProperty(nameof(PayrollRate.PayrollOvertimeItems))]
+        public virtual PayrollRate Rate { get; set; }
     }
 }

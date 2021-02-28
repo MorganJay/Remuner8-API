@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Remuner8_Backend.Models
+namespace API.Models
 {
     public partial class Password
     {
@@ -11,12 +14,9 @@ namespace Remuner8_Backend.Models
         [Column("email")]
         [StringLength(50)]
         public string Email { get; set; }
-
         [Required]
         [Column("password")]
-        [StringLength(32, MinimumLength = 8, ErrorMessage = "Password must be 8-32 characters")]
-        [RegularExpression(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,33}$",
-            ErrorMessage = @"Password must contain at least one lowercase and uppercase letter, a number and a special character")]
+        [StringLength(32)]
         public string Password1 { get; set; }
 
         [InverseProperty("EmailAddressNavigation")]
