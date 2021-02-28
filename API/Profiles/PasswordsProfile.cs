@@ -1,4 +1,5 @@
-﻿using API.Dtos;
+﻿using API.Data_Models.Dtos;
+using API.Dtos;
 using API.Models;
 using AutoMapper;
 using Remuner8_Backend.EntityModels;
@@ -14,8 +15,10 @@ namespace API.Profiles
     {
         public PasswordsProfile()
         {
-            CreateMap<Password, PasswordReadDto>();
-            CreateMap<PasswordCreateDto, Password>();
+            CreateMap<Password, PasswordReadDto>().ReverseMap();
+            CreateMap<TimeSheet, TimeSheetModel>().ReverseMap();
+
+
         }
     }
 }
