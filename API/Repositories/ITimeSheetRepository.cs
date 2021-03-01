@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace API.Repositories
 {
-   public  interface ITimeSheetRepository
+    public interface ITimeSheetRepository
     {
-        Task<TimeSheetModel> AddTimeSheetAsync (TimeSheetModel model);
-        Task<bool> DeleteTimeSheetAsync (string id);
-        Task<TimeSheetModel> GetTimeSheetByIdAsync (string id);
-        Task<bool> UpdateTimeSheetAsync (TimeSheetModel model);
-        Task<IEnumerable<TimeSheetModel>> GetAllTimeSheetAsync ();
+        Task<TimeSheetDto> AddTimeSheetAsync(TimeSheetDto model);
 
+        Task<bool> DeleteTimeSheetAsync(string id);
 
+        Task<TimeSheetDto> GetTimeSheetByIdAsync(string id);
 
+        Task<bool> UpdateTimeSheetAsync(TimeSheetDto model);
 
+        Task<IEnumerable<TimeSheetDto>> GetAllTimeSheetAsync();
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace API.Data_Models.Dtos
 {
-    public class TimeSheetModel
+    public class TimeSheetDto
     {
         public string EmployeeId { get; set; }
         public DateTime Date { get; set; }
@@ -14,6 +14,5 @@ namespace API.Data_Models.Dtos
         public TimeSpan? TimeOut { get; set; }
         public TimeSpan? HoursWorked => (TimeOut - TimeIn);
         public virtual EmployeeBiodata Employee { get; set; }
-
     }
 }
