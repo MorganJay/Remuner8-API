@@ -54,7 +54,7 @@ namespace Remuner8_Backend.Controllers
             {
                 RegisterRepository.AddUser(passwordmodel);
                 var passwordreaddto = _mapper.Map<PasswordReadDto>(passwordmodel);
-                return (passwordreaddto);
+                return Ok((passwordreaddto));
             }
             return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User Already Exists" });
             
