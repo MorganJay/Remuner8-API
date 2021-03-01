@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Remuner8_Backend.EntityModels
+﻿namespace Remuner8_Backend.EntityModels
 {
     public class PasswordReadDto
     {
