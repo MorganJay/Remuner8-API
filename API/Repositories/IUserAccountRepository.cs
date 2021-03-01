@@ -6,6 +6,7 @@ namespace Remuner8_Backend.Repositories
 {
     public interface IUserAccountRepository
     {
+        // Registration Methods
         IEnumerable<Password> GetUsers();
 
         Password GetUser(string password);
@@ -16,6 +17,7 @@ namespace Remuner8_Backend.Repositories
 
         void EditUser(Password password);
 
+        // Login Method
         bool ValidateCredentials(PasswordReadDto model);
     }
 }

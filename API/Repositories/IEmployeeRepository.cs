@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace API.Repositories
 {
-   public  interface IEmployeeRepository
+    public interface IEmployeeRepository
     {
         int EmployeeCount();
     }
