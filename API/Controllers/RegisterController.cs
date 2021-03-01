@@ -8,6 +8,7 @@ using Remuner8_Backend.EntityModels;
 using Remuner8_Backend.Models;
 using Remuner8_Backend.Repositories;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -27,16 +28,16 @@ namespace Remuner8_Backend.Controllers
 
         [HttpGet]
         [Route("api/[controller]")]
-        public ActionResult <IEnumerable<PasswordReadDto>> GetUsers()
+        public async Task<ActionResult <IEnumerable<PasswordReadDto>>> GetUsers()
         {
-            return Ok(RegisterRepository.GetUsers());
+            return Ok(await RegisterRepository.GetUsersAsync());
         }
 
         [HttpGet]
         [Route("api/[controller]/{email}")]
-        public ActionResult <PasswordReadDto> GetUser(string email)
+        public async Task<ActionResult <PasswordReadDto>> GetUserAsync(string email)
         {
-            var userItem = RegisterRepository.GetUser(email);
+            var userItem = await RegisterRepository.GetUserAsync(email);
             if (userItem != null)
             {
                 return Ok(_mapper.Map<PasswordReadDto>(userItem));
@@ -46,13 +47,13 @@ namespace Remuner8_Backend.Controllers
 
         [HttpPost]
         [Route("api/[controller]")]
-        public ActionResult <PasswordReadDto> AddUser(PasswordCreateDto passwordcreatedto)
+        public async Task<ActionResult <PasswordReadDto>> AddUserAsync(PasswordCreateDto passwordcreatedto)
         {
             var passwordmodel = _mapper.Map<Password>(passwordcreatedto);
-            var userExists = RegisterRepository.GetUser(passwordcreatedto.Email);
+            var userExists = await RegisterRepository.GetUserAsync(passwordcreatedto.Email);
             if (userExists == null)
             {
-                RegisterRepository.AddUser(passwordmodel);
+                await RegisterRepository.AddUserAsync(passwordmodel);
                 var passwordreaddto = _mapper.Map<PasswordReadDto>(passwordmodel);
                 return Ok((passwordreaddto));
             }
@@ -62,29 +63,29 @@ namespace Remuner8_Backend.Controllers
 
         [HttpDelete]
         [Route("api/[controller]/{email}")]
-        public IActionResult DeleteUser(string email)
+        public async Task<IActionResult> DeleteUserAsync(string email)
         {
-            var user = RegisterRepository.GetUser(email);
+            var user = await RegisterRepository.GetUserAsync(email);
 
             if (user != null)
             {
-                RegisterRepository.DeleteUser(user);
+                await RegisterRepository.DeleteUserAsync(user);
                 return Ok(new Response { Status = "Success", Message = "User Deleted Successfully" });
             }
             return NotFound($"User with email: {email} was not found");
         }
 
-        [HttpPatch]
-        [Route("api/[controller]/{email}")]
-        public IActionResult EditUser(Password password)
-        {
-            var existingUser = RegisterRepository.GetUser(password.Email);
-            if (existingUser != null)
-            {
-                // password.Password1 = existingUser.Password1;
-                RegisterRepository.EditUser(password);
-            }
-            return Ok(password);
-        }
+        //[HttpPatch]
+        //[Route("api/[controller]/{email}")]
+        //public IActionResult EditUser(Password password)
+        //{
+        //    var existingUser = await RegisterRepository.GetUserAsync(password.Email);
+        //    if (existingUser != null)
+        //    {
+        //        // password.Password1 = existingUser.Password1;
+        //        RegisterRepository.EditUser(password);
+        //    }
+        //    return Ok(password);
+        //}
     }
 }

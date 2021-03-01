@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using API.Models;
 using Remuner8_Backend.EntityModels;
 using Remuner8_Backend.Models;
@@ -7,15 +8,15 @@ namespace Remuner8_Backend.Repositories
 {
     public interface IUserAccountRepository
     {
-        IEnumerable<Password> GetUsers();
+        Task<IEnumerable<Password>> GetUsersAsync();
 
-        Password GetUser(string password);
+        Task<Password> GetUserAsync(string password);
 
-        void AddUser(Password password);
+        Task AddUserAsync(Password password);
 
-        void DeleteUser(Password password);
+        Task DeleteUserAsync(Password password);
 
-        void EditUser(Password password);
-        bool ValidateCredentials(PasswordReadDto model);
+        //void EditUser(Password password);
+        Task<bool> ValidateCredentialsAsync(PasswordReadDto model);
     }
 }
