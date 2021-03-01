@@ -28,7 +28,7 @@ namespace Remuner8_Backend.Repositories
 
         public void DeleteUser(Password password)
         {
-            if (password == null)
+            if (password == null) 
             {
                 throw new ArgumentNullException(nameof(password));
             }
