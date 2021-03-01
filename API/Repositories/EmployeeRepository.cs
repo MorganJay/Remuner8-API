@@ -1,4 +1,5 @@
 ﻿using API.Models;
+using Microsoft.EntityFrameworkCore;
 using Remuner8_Backend.Models;
 using System;
 using System.Collections.Generic;
@@ -15,18 +16,13 @@ namespace API.Repositories
         {
             this.context = context;
         }
-        public int EmployeeCount()
+        public async  Task < int> EmployeeCountAsync()
         {
-            try
-            {
-                var employeecount = context.EmployeeBiodatas.Count();
-                return employeecount;
-            }
-            catch (Exception)
-            {
-
-                throw new Exception("Error occured");
-            }
+            
+            
+                var employeecount =   await context.EmployeeBiodatas.CountAsync();
+            return employeecount;            
+            
         }
     }
 }
