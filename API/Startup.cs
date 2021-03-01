@@ -10,6 +10,7 @@ using Remuner8_Backend.Repositories;
 using API.Repositories;
 using System;
 using API.Models;
+using System.Reflection;
 
 namespace API
 {
@@ -35,13 +36,15 @@ namespace API
                    Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<Remuner8Context>();
             services.AddControllersWithViews();
             services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
+
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()

@@ -1,4 +1,4 @@
-﻿using API.Authentication;
+﻿ using API.Authentication;
 using API.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,11 +24,11 @@ namespace API.Controllers
 
         // GET: api/<EmployeeController>
         [HttpGet]
-        public ActionResult<int> GetEmplyeeCount()
+        public async  Task<ActionResult<int>> GetEmplyeeCount()
         {
             try
             {
-                var employeecount = employeeRepository.EmployeeCount();
+                var employeecount =  await employeeRepository.EmployeeCountAsync();
                 return Ok(employeecount);
             }
             catch (Exception)
