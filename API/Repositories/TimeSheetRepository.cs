@@ -55,18 +55,18 @@ namespace API.Repositories
             return mapper.Map<TimeSheetModel>(datatimesheet);
         }
 
-        public async   Task<bool> UpdateTimeSheetAsync(TimeSheetModel model)
+        public bool UpdateTimeSheet(TimeSheetModel model)
         {
-            var datatimesheet = await context.TimeSheets.FirstOrDefaultAsync(s => s.EmployeeId == model.EmployeeId);
-            if (datatimesheet!= null)
+            var datatimesheet = context.TimeSheets.FirstOrDefault(s => s.EmployeeId == model.EmployeeId);
+            if (datatimesheet != null)
             {
-                mapper.Map(model, datatimesheet);
-                await context.SaveChangesAsync();
+                context.TimeSheets.Update(datatimesheet);
+                 context.SaveChanges();
                 return true;
             }
             return false;
-
-
         }
+
+       
     }
 }

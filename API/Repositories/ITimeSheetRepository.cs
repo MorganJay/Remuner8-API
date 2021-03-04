@@ -11,7 +11,7 @@ namespace API.Repositories
         Task<TimeSheetModel> AddTimeSheetAsync (TimeSheetModel model);
         Task<bool> DeleteTimeSheetAsync (string id);
         Task<TimeSheetModel> GetTimeSheetByIdAsync (string id);
-        Task<bool> UpdateTimeSheetAsync (TimeSheetModel model);
+        bool UpdateTimeSheet (TimeSheetModel model);
         Task<IEnumerable<TimeSheetModel>> GetAllTimeSheetAsync ();
 
 
