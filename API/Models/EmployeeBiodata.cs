@@ -16,6 +16,7 @@ namespace API.Models
         public EmployeeBiodata()
         {
             PayrollTransactions = new HashSet<PayrollTransaction>();
+            Payslips = new HashSet<Payslip>();
             StatutoryDeductions = new HashSet<StatutoryDeduction>();
         }
 
@@ -85,6 +86,10 @@ namespace API.Models
         [Column("accountNumber")]
         [StringLength(10)]
         public string AccountNumber { get; set; }
+        [Required]
+        [Column("payslipID")]
+        [StringLength(10)]
+        public string PayslipId { get; set; }
 
         [ForeignKey(nameof(DepartmentId))]
         [InverseProperty("EmployeeBiodatas")]
@@ -95,8 +100,12 @@ namespace API.Models
         [ForeignKey(nameof(JobDescriptionId))]
         [InverseProperty("EmployeeBiodatas")]
         public virtual JobDescription JobDescription { get; set; }
+        [InverseProperty("Employee")]
+        public virtual Tax Tax { get; set; }
         [InverseProperty(nameof(PayrollTransaction.Employee))]
         public virtual ICollection<PayrollTransaction> PayrollTransactions { get; set; }
+        [InverseProperty(nameof(Payslip.Employee))]
+        public virtual ICollection<Payslip> Payslips { get; set; }
         [InverseProperty(nameof(StatutoryDeduction.Employee))]
         public virtual ICollection<StatutoryDeduction> StatutoryDeductions { get; set; }
     }

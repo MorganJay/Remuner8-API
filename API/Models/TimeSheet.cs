@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -15,18 +16,14 @@ namespace API.Models
         [Column("employeeId")]
         [StringLength(10)]
         public string EmployeeId { get; set; }
-
         [Column("date", TypeName = "date")]
         public DateTime Date { get; set; }
-
         [Column("timeIn", TypeName = "time(0)")]
-        public TimeSpan? TimeIn { get; set; }
-
+        public TimeSpan TimeIn { get; set; }
         [Column("timeOut", TypeName = "time(0)")]
-        public TimeSpan? TimeOut { get; set; }
-
+        public TimeSpan TimeOut { get; set; }
         [Column("hoursWorked", TypeName = "time(0)")]
-        public TimeSpan? HoursWorked { get; set; }
+        public TimeSpan HoursWorked { get; set; }
 
         [ForeignKey(nameof(EmployeeId))]
         public virtual EmployeeBiodata Employee { get; set; }

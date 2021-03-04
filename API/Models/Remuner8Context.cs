@@ -34,6 +34,7 @@ namespace API.Models
         public virtual DbSet<PayrollOvertimeItemsAssignment> PayrollOvertimeItemsAssignments { get; set; }
         public virtual DbSet<PayrollRate> PayrollRates { get; set; }
         public virtual DbSet<PayrollTransaction> PayrollTransactions { get; set; }
+        public virtual DbSet<Payslip> Payslips { get; set; }
         public virtual DbSet<PensionFundAdministration> PensionFundAdministrations { get; set; }
         public virtual DbSet<StatutoryDeduction> StatutoryDeductions { get; set; }
         public virtual DbSet<SystemDefault> SystemDefaults { get; set; }
@@ -111,6 +112,8 @@ namespace API.Models
                     .IsFixedLength(true);
 
                 entity.Property(e => e.OtherName).IsUnicode(false);
+
+                entity.Property(e => e.PayslipId).IsUnicode(false);
 
                 entity.Property(e => e.PhoneNumber).IsUnicode(false);
 
@@ -246,6 +249,25 @@ namespace API.Models
                     .HasConstraintName("FK__PayrollTr__emplo__440B1D61");
             });
 
+            modelBuilder.Entity<Payslip>(entity =>
+            {
+                entity.Property(e => e.PayslipId).IsUnicode(false);
+
+                entity.Property(e => e.EmployeeId).IsUnicode(false);
+
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.Payslips)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Payslip_EmployeeBiodata");
+
+                entity.HasOne(d => d.Tax)
+                    .WithMany(p => p.Payslips)
+                    .HasForeignKey(d => d.TaxId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Payslip_Taxes");
+            });
+
             modelBuilder.Entity<PensionFundAdministration>(entity =>
             {
                 entity.HasKey(e => e.PfaCode)
@@ -310,7 +332,7 @@ namespace API.Models
                 entity.Property(e => e.EmployeeId).IsUnicode(false);
 
                 entity.HasOne(d => d.Employee)
-                    .WithOne()
+                    .WithOne(p => p.Tax)
                     .HasForeignKey<Tax>(d => d.EmployeeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Taxes__employeeI__48CFD27E");
