@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace API.Repositories
 {
-    interface IPayrollItemsRepository
+    public interface IPayrollItemsRepository
     {
         // Additions methods
         Task<IEnumerable<PayrollAdditionItem>> GetEntriesAsync();
@@ -15,8 +15,10 @@ namespace API.Repositories
 
         Task AddEntryAsync(PayrollAdditionItem payrollAdditionItem);
 
-        Task EditEntry(PayrollAdditionItem payrollAdditionItem);
+        Task EditEntryAsync(PayrollAdditionItem payrollAdditionItem);
 
-        Task RemoveEntryAsync(PayrollAdditionItem payrollAdditionItem);
+        Task RemoveEntryAsync(int id);
+
+
     }
 }

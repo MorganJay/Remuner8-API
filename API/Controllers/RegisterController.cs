@@ -28,7 +28,7 @@ namespace Remuner8_Backend.Controllers
 
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<ActionResult <IEnumerable<PasswordReadDto>>> GetUsers()
+        public async Task<ActionResult <IEnumerable<PasswordReadDto>>> GetUsersAsync()
         {
             return Ok(await RegisterRepository.GetUsersAsync());
         }
