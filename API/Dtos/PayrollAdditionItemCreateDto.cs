@@ -1,18 +1,16 @@
-﻿using System;
+﻿using API.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
 
-#nullable disable
-
-namespace API.Models
+namespace API.Data_Models.Dtos
 {
-    public partial class PayrollAdditionItem
+    public class PayrollAdditionItemCreateDto
     {
-        [Key]
-        [Column("id")]
-        public int Id { get; set; }
+
         [Required]
         [Column("name")]
         [StringLength(100)]
@@ -23,12 +21,13 @@ namespace API.Models
         public decimal Amount { get; set; }
         [Column("assigneeId")]
         public int AssigneeId { get; set; }
-
+        
         [ForeignKey(nameof(AssigneeId))]
         [InverseProperty(nameof(AssigneeTable.PayrollAdditionItems))]
         public virtual AssigneeTable Assignee { get; set; }
         [ForeignKey(nameof(CategoryId))]
         [InverseProperty(nameof(PayrollCategory.PayrollAdditionItems))]
         public virtual PayrollCategory Category { get; set; }
+
     }
 }

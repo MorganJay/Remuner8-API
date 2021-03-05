@@ -9,10 +9,6 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Models
 {
     [Table("EmployeeBiodata")]
-    [Index(nameof(PayrollAdditionItemId), Name = "IX_EmployeeBiodata_PayrollAdditionItemId")]
-    [Index(nameof(BankCode), Name = "IX_EmployeeBiodata_bankCode")]
-    [Index(nameof(DepartmentId), Name = "IX_EmployeeBiodata_departmentId")]
-    [Index(nameof(JobDescriptionId), Name = "IX_EmployeeBiodata_jobDescriptionId")]
     [Index(nameof(EmailAddress), Name = "UQ__Employee__347C3027AEE39C36", IsUnique = true)]
     [Index(nameof(PhoneNumber), Name = "UQ__Employee__4849DA01CAB71A88", IsUnique = true)]
     public partial class EmployeeBiodata
@@ -82,18 +78,14 @@ namespace API.Models
         [Column("grossSalary", TypeName = "decimal(19, 4)")]
         public decimal GrossSalary { get; set; }
         [Required]
-        [Column("bankCode")]
-        [StringLength(10)]
-        public string BankCode { get; set; }
+        [Column("bankName")]
+        [StringLength(150)]
+        public string BankName { get; set; }
         [Required]
         [Column("accountNumber")]
         [StringLength(10)]
         public string AccountNumber { get; set; }
-        public int? PayrollAdditionItemId { get; set; }
 
-        [ForeignKey(nameof(BankCode))]
-        [InverseProperty(nameof(Bank.EmployeeBiodatas))]
-        public virtual Bank BankCodeNavigation { get; set; }
         [ForeignKey(nameof(DepartmentId))]
         [InverseProperty("EmployeeBiodatas")]
         public virtual Department Department { get; set; }
@@ -103,9 +95,6 @@ namespace API.Models
         [ForeignKey(nameof(JobDescriptionId))]
         [InverseProperty("EmployeeBiodatas")]
         public virtual JobDescription JobDescription { get; set; }
-        [ForeignKey(nameof(PayrollAdditionItemId))]
-        [InverseProperty("EmployeeBiodatas")]
-        public virtual PayrollAdditionItem PayrollAdditionItem { get; set; }
         [InverseProperty(nameof(PayrollTransaction.Employee))]
         public virtual ICollection<PayrollTransaction> PayrollTransactions { get; set; }
         [InverseProperty(nameof(StatutoryDeduction.Employee))]

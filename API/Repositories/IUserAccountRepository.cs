@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using API.Models;
 using Remuner8_Backend.EntityModels;
-using Remuner8_Backend.Models;
 
 namespace Remuner8_Backend.Repositories
 {

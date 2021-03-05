@@ -1,7 +1,6 @@
 ﻿using API.Models;
 using Microsoft.EntityFrameworkCore;
 using Remuner8_Backend.EntityModels;
-using Remuner8_Backend.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +21,7 @@ namespace Remuner8_Backend.Repositories
         {
             if (password == null)
             {
-                throw new ArgumentNullException(nameof(password)); 
+                throw new ArgumentNullException(nameof(password));
             }
             await remuner8Context.Passwords.AddAsync(password);
             await remuner8Context.SaveChangesAsync();
@@ -30,7 +29,7 @@ namespace Remuner8_Backend.Repositories
 
         public async Task DeleteUserAsync(Password password)
         {
-            if (password == null) 
+            if (password == null)
             {
                 throw new ArgumentNullException(nameof(password));
             }

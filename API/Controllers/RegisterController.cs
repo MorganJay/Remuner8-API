@@ -1,11 +1,11 @@
-﻿using API.Authentication;
-using API.Dtos;
+﻿using API;
+using API.Authentication;
 using API.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Remuner8_Backend.Dtos;
 using Remuner8_Backend.EntityModels;
-using Remuner8_Backend.Models;
 using Remuner8_Backend.Repositories;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -28,7 +28,7 @@ namespace Remuner8_Backend.Controllers
 
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<ActionResult <IEnumerable<PasswordReadDto>>> GetUsers()
+        public async Task<ActionResult <IEnumerable<PasswordReadDto>>> GetUsersAsync()
         {
             return Ok(await RegisterRepository.GetUsersAsync());
         }
@@ -58,7 +58,6 @@ namespace Remuner8_Backend.Controllers
                 return Ok((passwordreaddto));
             }
             return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User Already Exists" });
-            
         }
 
         [HttpDelete]

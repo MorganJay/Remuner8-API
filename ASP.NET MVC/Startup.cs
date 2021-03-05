@@ -32,6 +32,7 @@ namespace Remuner8_Backend
             services.AddControllersWithViews();
             services.AddScoped<ILoginRepository, LoginRepository>();
             services.AddScoped<IRegisterRepository, RegisterRepository>();
+
             
         }
 

@@ -8,7 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
-    public partial class PayrollDeductionItem
+    [Index(nameof(Name), Name = "UQ__LeaveTyp__72E12F1BF20C58BD", IsUnique = true)]
+    public partial class LeaveType
     {
         [Key]
         [Column("id")]
@@ -17,13 +18,9 @@ namespace API.Models
         [Column("name")]
         [StringLength(100)]
         public string Name { get; set; }
-        [Column("amount", TypeName = "decimal(19, 4)")]
-        public decimal Amount { get; set; }
-        [Column("assigneeId")]
-        public int AssigneeId { get; set; }
-
-        [ForeignKey(nameof(AssigneeId))]
-        [InverseProperty(nameof(AssigneeTable.PayrollDeductionItems))]
-        public virtual AssigneeTable Assignee { get; set; }
+        [Column("days")]
+        public int Days { get; set; }
+        [Column("status")]
+        public bool Status { get; set; }
     }
 }

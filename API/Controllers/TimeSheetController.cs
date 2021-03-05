@@ -27,7 +27,7 @@ namespace API.Controllers
         }
         // GET: api/<TimeSheetController>
         [HttpGet]
-        public  async Task< ActionResult<IEnumerable<TimeSheetModel>>> GetListOfTimeSheet()
+        public  async Task< ActionResult<IEnumerable<TimeSheetDto>>> GetListOfTimeSheet()
         {
             try
             {
@@ -43,7 +43,7 @@ namespace API.Controllers
 
         // GET api/<TimeSheetController>/5
         [HttpGet("{id}")]
-        public  async Task<ActionResult<TimeSheetModel>> GetTimeSheetById(string  id)
+        public  async Task<ActionResult<TimeSheetDto>> GetTimeSheetById(string  id)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace API.Controllers
 
         // POST api/<TimeSheetController>
         [HttpPost]
-        public async  Task<ActionResult<TimeSheetModel>> Post([FromBody] TimeSheetModel model)
+        public async  Task<ActionResult<TimeSheetDto>> Post([FromBody] TimeSheetDto model)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace API.Controllers
 
         // PUT api/<TimeSheetController>/5
         [HttpPut("{id}")]
-        public async  Task<ActionResult> Put( [FromBody] TimeSheetModel model)
+        public async  Task<ActionResult> Put( [FromBody] TimeSheetDto model)
         {
             try
             {

@@ -4,11 +4,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Remuner8_Backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Remuner8_Backend.Repositories;
 using API.Repositories;
 using System;
+using Remuner8_Backend.Repositories;
 using API.Models;
 using System.Reflection;
 
@@ -41,10 +42,11 @@ namespace API
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<Remuner8Context>();
             services.AddControllersWithViews();
+
             services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
-
+            services.AddScoped<IPayrollItemsRepository, PayrollItemsRepository>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
