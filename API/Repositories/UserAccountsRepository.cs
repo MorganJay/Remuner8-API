@@ -1,8 +1,10 @@
 ﻿using API.Models;
+using Microsoft.EntityFrameworkCore;
 using Remuner8_Backend.EntityModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Remuner8_Backend.Repositories
 {
@@ -15,24 +17,24 @@ namespace Remuner8_Backend.Repositories
             remuner8Context = Context;
         }
 
-        public void AddUser(Password password)
+        public async Task AddUserAsync(Password password)
         {
             if (password == null)
             {
                 throw new ArgumentNullException(nameof(password));
             }
-            remuner8Context.Passwords.Add(password);
-            remuner8Context.SaveChanges();
+            await remuner8Context.Passwords.AddAsync(password);
+            await remuner8Context.SaveChangesAsync();
         }
 
-        public void DeleteUser(Password password)
+        public async Task DeleteUserAsync(Password password)
         {
             if (password == null)
             {
                 throw new ArgumentNullException(nameof(password));
             }
             remuner8Context.Passwords.Remove(password);
-            remuner8Context.SaveChanges();
+            await remuner8Context.SaveChangesAsync();
         }
 
         public void EditUser(Password password)
@@ -41,22 +43,22 @@ namespace Remuner8_Backend.Repositories
             remuner8Context.SaveChanges();
         }
 
-        public Password GetUser(string email)
+        public async Task<Password> GetUserAsync(string email)
         {
-            var user = remuner8Context.Passwords.Find(email);
+            var user = await remuner8Context.Passwords.FindAsync(email);
             return user;
         }
 
-        public IEnumerable<Password> GetUsers()
+        public async Task<IEnumerable<Password>> GetUsersAsync()
         {
-            return remuner8Context.Passwords.ToList();
+            return await remuner8Context.Passwords.ToListAsync();
         }
 
-        public bool ValidateCredentials(PasswordReadDto model)
+        public async Task<bool> ValidateCredentialsAsync(PasswordReadDto model)
         {
             try
             {
-                var confirmCredentials = remuner8Context.Passwords.Where(s => s.Password1 == model.Password1 && s.Email == model.Email).FirstOrDefault();
+                var confirmCredentials = await remuner8Context.Passwords.Where(s => s.Password1 == model.Password1 && s.Email == model.Email).FirstOrDefaultAsync();
                 if (confirmCredentials != null)
                 {
                     return true;
