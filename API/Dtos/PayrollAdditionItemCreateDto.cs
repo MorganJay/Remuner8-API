@@ -12,11 +12,15 @@ namespace API.Data_Models.Dtos
         [Required]
         [Column("name")]
         public string Name { get; set; }
+
         [Required]
         [Column("categoryId")]
         public int? CategoryId { get; set; }
+
         [Column("amount", TypeName = "decimal(19, 4)")]
         public decimal Amount { get; set; }
 
+        [Column("assigneeId")]
+        public int AssigneeId { get; set; }
     }
 }
