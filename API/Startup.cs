@@ -39,17 +39,18 @@ namespace API
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-            services.AddDefaultIdentity<IdentityUser>(options => 
+            services.AddDefaultIdentity<IdentityUser>(options =>
                 options.SignIn.RequireConfirmedAccount = true
-                
+
                 )
                 .AddEntityFrameworkStores<Remuner8Context>();
-            
+
             services.AddControllersWithViews();
 
             services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
+            services.AddScoped<IPayslipRepository, PayslipRepo>();
             services.AddScoped<IPayrollItemsRepository, PayrollItemsRepository>();
 
             // Enable CORS
