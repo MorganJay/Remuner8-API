@@ -46,6 +46,7 @@ namespace API
             services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
+            services.AddScoped<IPayslipRepository, PayslipRepo>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
