@@ -30,7 +30,5 @@ namespace API.Data_Models.Dtos
         [ForeignKey(nameof(CategoryId))]
         [InverseProperty(nameof(PayrollCategory.PayrollAdditionItems))]
         public virtual PayrollCategory Category { get; set; }
-
-
     }
 }
