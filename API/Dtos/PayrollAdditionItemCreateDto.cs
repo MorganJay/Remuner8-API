@@ -24,11 +24,5 @@ namespace API.Data_Models.Dtos
         [Column("assigneeId")]
         public int AssigneeId { get; set; }
 
-        [ForeignKey(nameof(AssigneeId))]
-        [InverseProperty(nameof(AssigneeTable.PayrollAdditionItems))]
-        public virtual AssigneeTable Assignee { get; set; }
-        [ForeignKey(nameof(CategoryId))]
-        [InverseProperty(nameof(PayrollCategory.PayrollAdditionItems))]
-        public virtual PayrollCategory Category { get; set; }
     }
 }
