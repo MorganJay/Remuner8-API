@@ -8,17 +8,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
+    [Keyless]
     [Index(nameof(EmployeeId), Name = "UQ__Taxes__C134C9C0AE6154C9", IsUnique = true)]
     public partial class Tax
     {
-        public Tax()
-        {
-            Payslips = new HashSet<Payslip>();
-        }
-
-        [Key]
-        [Column("taxId")]
-        public int TaxId { get; set; }
         [Required]
         [Column("employeeId")]
         [StringLength(10)]
@@ -29,9 +22,6 @@ namespace API.Models
         public decimal? Pension { get; set; }
 
         [ForeignKey(nameof(EmployeeId))]
-        [InverseProperty(nameof(EmployeeBiodata.Tax))]
         public virtual EmployeeBiodata Employee { get; set; }
-        [InverseProperty(nameof(Payslip.Tax))]
-        public virtual ICollection<Payslip> Payslips { get; set; }
     }
 }

@@ -8,11 +8,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
+    [Table("PayrollRate")]
     public partial class PayrollRate
     {
         public PayrollRate()
         {
-            PayrollOvertimeItems = new HashSet<PayrollOvertimeItem>();
+            PayrollOvertimes = new HashSet<PayrollOvertime>();
         }
 
         [Key]
@@ -20,10 +21,10 @@ namespace API.Models
         public int RateId { get; set; }
         [Required]
         [Column("rateType")]
-        [StringLength(50)]
+        [StringLength(30)]
         public string RateType { get; set; }
 
-        [InverseProperty(nameof(PayrollOvertimeItem.Rate))]
-        public virtual ICollection<PayrollOvertimeItem> PayrollOvertimeItems { get; set; }
+        [InverseProperty(nameof(PayrollOvertime.RateNavigation))]
+        public virtual ICollection<PayrollOvertime> PayrollOvertimes { get; set; }
     }
 }

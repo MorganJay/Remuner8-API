@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
+    [Index(nameof(Rateid), Name = "IX_PayrollOvertimeItems_rateid")]
     public partial class PayrollOvertimeItem
     {
         [Key]
@@ -21,7 +22,7 @@ namespace API.Models
         public int Rateid { get; set; }
 
         [ForeignKey(nameof(Rateid))]
-        [InverseProperty(nameof(PayrollRate.PayrollOvertimeItems))]
+        //[InverseProperty(nameof(PayrollRate.PayrollOvertimeItems))]
         public virtual PayrollRate Rate { get; set; }
     }
 }

@@ -9,6 +9,8 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Models
 {
     [Keyless]
+    [Index(nameof(DepartmentId), Name = "IX_Bonuses_departmentId")]
+    [Index(nameof(JobDescriptionId), Name = "IX_Bonuses_jobDescriptionId")]
     public partial class Bonus
     {
         [Column("jobDescriptionId")]

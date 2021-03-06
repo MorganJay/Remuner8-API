@@ -10,6 +10,7 @@ namespace API.Models
 {
     [Keyless]
     [Table("TimeSheet")]
+    [Index(nameof(EmployeeId), Name = "IX_TimeSheet_employeeId")]
     public partial class TimeSheet
     {
         [Required]
@@ -19,11 +20,11 @@ namespace API.Models
         [Column("date", TypeName = "date")]
         public DateTime Date { get; set; }
         [Column("timeIn", TypeName = "time(0)")]
-        public TimeSpan TimeIn { get; set; }
+        public TimeSpan? TimeIn { get; set; }
         [Column("timeOut", TypeName = "time(0)")]
-        public TimeSpan TimeOut { get; set; }
+        public TimeSpan? TimeOut { get; set; }
         [Column("hoursWorked", TypeName = "time(0)")]
-        public TimeSpan HoursWorked { get; set; }
+        public TimeSpan? HoursWorked { get; set; }
 
         [ForeignKey(nameof(EmployeeId))]
         public virtual EmployeeBiodata Employee { get; set; }

@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
+    [Index(nameof(EmployeeId), Name = "IX_StatutoryDeductions_employeeId")]
+    [Index(nameof(PfaCode), Name = "IX_StatutoryDeductions_pfaCode")]
     public partial class StatutoryDeduction
     {
         [Key]

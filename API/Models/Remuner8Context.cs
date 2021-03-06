@@ -93,7 +93,9 @@ namespace API.Models
 
                 entity.Property(e => e.Address).IsUnicode(false);
 
-                entity.Property(e => e.BankName).IsUnicode(false);
+                entity.Property(e => e.BankName)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('')");
 
                 entity.Property(e => e.CountryName).IsUnicode(false);
 
@@ -113,7 +115,9 @@ namespace API.Models
 
                 entity.Property(e => e.OtherName).IsUnicode(false);
 
-                entity.Property(e => e.PayslipId).IsUnicode(false);
+                entity.Property(e => e.PayslipId)
+                    .IsUnicode(false)
+                    .HasDefaultValueSql("('')");
 
                 entity.Property(e => e.PhoneNumber).IsUnicode(false);
 
@@ -166,18 +170,6 @@ namespace API.Models
             modelBuilder.Entity<PayrollAdditionItem>(entity =>
             {
                 entity.Property(e => e.Name).IsUnicode(false);
-
-                entity.HasOne(d => d.Assignee)
-                    .WithMany(p => p.PayrollAdditionItems)
-                    .HasForeignKey(d => d.AssigneeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PayrollAdditionItems_AssigneeTable");
-
-                entity.HasOne(d => d.Category)
-                    .WithMany(p => p.PayrollAdditionItems)
-                    .HasForeignKey(d => d.CategoryId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_PayrollAdditionItems_PayrollCategories");
             });
 
             modelBuilder.Entity<PayrollAdditionItemsAssignment>(entity =>

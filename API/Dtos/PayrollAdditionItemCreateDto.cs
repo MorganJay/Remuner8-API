@@ -10,9 +10,6 @@ namespace API.Data_Models.Dtos
 {
     public class PayrollAdditionItemCreateDto
     {
-        [Key]
-        [Column("id")]
-        public int Id { get; set; }
         [Required]
         [Column("name")]
         [StringLength(100)]

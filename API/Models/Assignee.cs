@@ -8,23 +8,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
-    [Table("PayrollCategory")]
-    public partial class PayrollCategory
+    [Table("Assignee")]
+    public partial class Assignee
     {
-        public PayrollCategory()
+        public Assignee()
         {
             PayrollAdditionItems = new HashSet<PayrollAdditionItem>();
         }
 
         [Key]
-        [Column("categoryId")]
-        public int CategoryId { get; set; }
+        [Column("assigneeId")]
+        public int AssigneeId { get; set; }
         [Required]
-        [Column("categoryName")]
+        [Column("assigneeName")]
         [StringLength(30)]
-        public string CategoryName { get; set; }
+        public string AssigneeName { get; set; }
 
-        //[InverseProperty(nameof(PayrollAdditionItem.Category))]
+        [InverseProperty(nameof(PayrollAdditionItem.Assignee))]
         public virtual ICollection<PayrollAdditionItem> PayrollAdditionItems { get; set; }
     }
 }
