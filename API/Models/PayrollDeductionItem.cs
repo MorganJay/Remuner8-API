@@ -10,6 +10,11 @@ namespace API.Models
 {
     public partial class PayrollDeductionItem
     {
+        public PayrollDeductionItem()
+        {
+            PayrollDeductionItemsAssignments = new HashSet<PayrollDeductionItemsAssignment>();
+        }
+
         [Key]
         [Column("id")]
         public int Id { get; set; }
@@ -25,5 +30,7 @@ namespace API.Models
         [ForeignKey(nameof(AssigneeId))]
         [InverseProperty(nameof(AssigneeTable.PayrollDeductionItems))]
         public virtual AssigneeTable Assignee { get; set; }
+        [InverseProperty(nameof(PayrollDeductionItemsAssignment.PayrollItem))]
+        public virtual ICollection<PayrollDeductionItemsAssignment> PayrollDeductionItemsAssignments { get; set; }
     }
 }

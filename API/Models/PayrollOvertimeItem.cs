@@ -10,6 +10,11 @@ namespace API.Models
 {
     public partial class PayrollOvertimeItem
     {
+        public PayrollOvertimeItem()
+        {
+            PayrollOvertimeItemsAssignments = new HashSet<PayrollOvertimeItemsAssignment>();
+        }
+
         [Key]
         [Column("id")]
         public int Id { get; set; }
@@ -23,5 +28,7 @@ namespace API.Models
         [ForeignKey(nameof(Rateid))]
         [InverseProperty(nameof(PayrollRate.PayrollOvertimeItems))]
         public virtual PayrollRate Rate { get; set; }
+        [InverseProperty(nameof(PayrollOvertimeItemsAssignment.PayrollItem))]
+        public virtual ICollection<PayrollOvertimeItemsAssignment> PayrollOvertimeItemsAssignments { get; set; }
     }
 }

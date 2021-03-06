@@ -10,6 +10,11 @@ namespace API.Models
 {
     public partial class PayrollAdditionItem
     {
+        public PayrollAdditionItem()
+        {
+            PayrollAdditionItemsAssignments = new HashSet<PayrollAdditionItemsAssignment>();
+        }
+
         [Key]
         [Column("id")]
         public int Id { get; set; }
@@ -30,5 +35,7 @@ namespace API.Models
         [ForeignKey(nameof(CategoryId))]
         [InverseProperty(nameof(PayrollCategory.PayrollAdditionItems))]
         public virtual PayrollCategory Category { get; set; }
+        [InverseProperty(nameof(PayrollAdditionItemsAssignment.PayrollItem))]
+        public virtual ICollection<PayrollAdditionItemsAssignment> PayrollAdditionItemsAssignments { get; set; }
     }
 }
