@@ -8,6 +8,6 @@ namespace API.Repositories
 {
     public interface IPayslipRepository
     {
-        IEnumerable<Payslip>GetPayslipsById(string id);
+       EmployeeBiodata GetPayslipById(string id);
     }
 }

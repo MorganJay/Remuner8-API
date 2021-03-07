@@ -21,7 +21,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public ActionResult<Payslip>GetPayslipById(string id)
         {
-            var payslipItem = _payslipRepository.GetPayslipsById(id);
+            var payslipItem = _payslipRepository.GetPayslipById(id);
                 return Ok(payslipItem);
         }
     }
