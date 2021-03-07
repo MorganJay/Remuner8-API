@@ -9,9 +9,6 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Models
 {
     [Table("EmployeeBiodata")]
-    [Index(nameof(BankCode), Name = "IX_EmployeeBiodata_bankCode")]
-    [Index(nameof(DepartmentId), Name = "IX_EmployeeBiodata_departmentId")]
-    [Index(nameof(JobDescriptionId), Name = "IX_EmployeeBiodata_jobDescriptionId")]
     [Index(nameof(EmailAddress), Name = "UQ__Employee__347C3027AEE39C36", IsUnique = true)]
     [Index(nameof(PhoneNumber), Name = "UQ__Employee__4849DA01CAB71A88", IsUnique = true)]
     public partial class EmployeeBiodata
@@ -19,7 +16,10 @@ namespace API.Models
         public EmployeeBiodata()
         {
             PayrollAdditionItemsAssignments = new HashSet<PayrollAdditionItemsAssignment>();
+            PayrollDeductionItemsAssignments = new HashSet<PayrollDeductionItemsAssignment>();
+            PayrollOvertimeItemsAssignments = new HashSet<PayrollOvertimeItemsAssignment>();
             PayrollTransactions = new HashSet<PayrollTransaction>();
+            Payslips = new HashSet<Payslip>();
             StatutoryDeductions = new HashSet<StatutoryDeduction>();
         }
 
@@ -82,17 +82,18 @@ namespace API.Models
         [Column("grossSalary", TypeName = "decimal(19, 4)")]
         public decimal GrossSalary { get; set; }
         [Required]
-        [Column("bankCode")]
-        [StringLength(10)]
-        public string BankCode { get; set; }
+        [Column("bankName")]
+        [StringLength(150)]
+        public string BankName { get; set; }
         [Required]
         [Column("accountNumber")]
         [StringLength(10)]
         public string AccountNumber { get; set; }
+        [Required]
+        [Column("payslipID")]
+        [StringLength(10)]
+        public string PayslipId { get; set; }
 
-        [ForeignKey(nameof(BankCode))]
-        [InverseProperty(nameof(Bank.EmployeeBiodatas))]
-        public virtual Bank BankCodeNavigation { get; set; }
         [ForeignKey(nameof(DepartmentId))]
         [InverseProperty("EmployeeBiodatas")]
         public virtual Department Department { get; set; }
@@ -102,10 +103,18 @@ namespace API.Models
         [ForeignKey(nameof(JobDescriptionId))]
         [InverseProperty("EmployeeBiodatas")]
         public virtual JobDescription JobDescription { get; set; }
+        [InverseProperty("Employee")]
+        public virtual Tax Tax { get; set; }
         [InverseProperty(nameof(PayrollAdditionItemsAssignment.Employee))]
         public virtual ICollection<PayrollAdditionItemsAssignment> PayrollAdditionItemsAssignments { get; set; }
+        [InverseProperty(nameof(PayrollDeductionItemsAssignment.Employee))]
+        public virtual ICollection<PayrollDeductionItemsAssignment> PayrollDeductionItemsAssignments { get; set; }
+        [InverseProperty(nameof(PayrollOvertimeItemsAssignment.Employee))]
+        public virtual ICollection<PayrollOvertimeItemsAssignment> PayrollOvertimeItemsAssignments { get; set; }
         [InverseProperty(nameof(PayrollTransaction.Employee))]
         public virtual ICollection<PayrollTransaction> PayrollTransactions { get; set; }
+        [InverseProperty(nameof(Payslip.Employee))]
+        public virtual ICollection<Payslip> Payslips { get; set; }
         [InverseProperty(nameof(StatutoryDeduction.Employee))]
         public virtual ICollection<StatutoryDeduction> StatutoryDeductions { get; set; }
     }

@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
-    [Table("PayrollCategory")]
     public partial class PayrollCategory
     {
         public PayrollCategory()
@@ -24,7 +23,7 @@ namespace API.Models
         [StringLength(30)]
         public string CategoryName { get; set; }
 
-        //[InverseProperty(nameof(PayrollAdditionItem.Category))]
+        [InverseProperty(nameof(PayrollAdditionItem.Category))]
         public virtual ICollection<PayrollAdditionItem> PayrollAdditionItems { get; set; }
     }
 }

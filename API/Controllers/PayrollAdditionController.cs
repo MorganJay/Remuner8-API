@@ -39,11 +39,11 @@ namespace API.Controllers
         public async Task<ActionResult <PayrollAdditionItemReadDto>> ReadEntryAsync(int id)
         {
             var entry = await _payrollItemsRepository.GetEntryAsync(id);
-            if (entry.Id == id )
+            if (entry == null )
             {
                 return StatusCode(StatusCodes.Status204NoContent, new Response { Status = "Error", Message = "User Entry Does Not Exist" });
             }
-            return Ok();
+            return Ok(entry);
         }
 
         // POST api/<PayrollAdditionController>
@@ -53,22 +53,23 @@ namespace API.Controllers
         {
             var mappedmodel = _imapper.Map<PayrollAdditionItem>(payrollAdditionItemCreateDto);
             await _payrollItemsRepository.AddEntryAsync(mappedmodel);
-            return StatusCode(StatusCodes.Status201Created);
+            await _payrollItemsRepository.SavechangesAsync();
+            return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "Entry Created" });
         }
 
         // PUT api/<PayrollAdditionController>/5
         [HttpPatch]
         [Route("api/[controller]/{id}")]
-        public async Task<ActionResult> UpdateAsync(PayrollAdditionItemReadDto payrollAdditionItemReadDto)
+        public ActionResult UpdateEntry(int id, PayrollAdditionItemCreateDto payrollAdditionItemCreateDto)
         {
-            var payrollItemModel = _imapper.Map<PayrollAdditionItem>(payrollAdditionItemReadDto);
-            var entryExists = await _payrollItemsRepository.GetEntryAsync(payrollAdditionItemReadDto.Id);
-            if (entryExists != null)
+            var payrollitemModel = _imapper.Map<PayrollAdditionItem>(payrollAdditionItemCreateDto);
+            var entry = _payrollItemsRepository.GetEntryAsync(id);
+            if (entry != null)
             {
-                await _payrollItemsRepository.EditEntryAsync(payrollItemModel);
-                return Ok(new Response { Status = "Success", Message = "Entry Updated Successfully!" });
+                var updatedEntry = _payrollItemsRepository.AddEntryAsync(payrollitemModel);
+                _payrollItemsRepository.SavechangesAsync();
             }
-            throw new ArgumentNullException();
+            return Ok();
         }
 
         // DELETE api/<PayrollAdditionController>/5
@@ -77,7 +78,9 @@ namespace API.Controllers
         public async Task<ActionResult> DeleteAsync(int id)
         {
             await _payrollItemsRepository.RemoveEntryAsync(id);
+            await _payrollItemsRepository.SavechangesAsync();
             return Ok(new Response { Status = "Success", Message = "Entry Deleted Successfully" });
+            
         }
     }
 }

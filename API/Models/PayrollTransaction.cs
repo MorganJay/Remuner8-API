@@ -8,16 +8,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
-    [Index(nameof(EmployeeId), Name = "IX_PayrollTransactions_employeeId")]
     public partial class PayrollTransaction
     {
-        [Key]
-        [Column("transactionId")]
-        public int TransactionId { get; set; }
         [Required]
         [Column("employeeId")]
         [StringLength(10)]
         public string EmployeeId { get; set; }
+        [Key]
+        [Column("transactionId")]
+        public int TransactionId { get; set; }
         [Column("transactionDateTime")]
         public DateTime TransactionDateTime { get; set; }
         [Column("deduction")]

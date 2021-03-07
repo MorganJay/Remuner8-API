@@ -13,7 +13,9 @@ namespace Remuner8_Backend.Repositories
 
         Task AddUserAsync(Password password);
 
-        Task DeleteUserAsync(Password password);
+        void DeleteUser(Password password);
+
+        Task<bool> SaveChangesAsync();
 
         //void EditUser(Password password);
         Task<bool> ValidateCredentialsAsync(PasswordReadDto model);

@@ -11,20 +11,21 @@ namespace API.Models
     [Table("PayrollAdditionItemsAssignment")]
     public partial class PayrollAdditionItemsAssignment
     {
-        [Key]
-        [Column("id")]
-        public int Id { get; set; }
         public int PayrollItemId { get; set; }
+        [Required]
         [StringLength(10)]
         public string EmployeeId { get; set; }
         [Column(TypeName = "decimal(19, 4)")]
         public decimal Amount { get; set; }
+        [Key]
+        [Column("id")]
+        public int Id { get; set; }
 
         [ForeignKey(nameof(EmployeeId))]
         [InverseProperty(nameof(EmployeeBiodata.PayrollAdditionItemsAssignments))]
         public virtual EmployeeBiodata Employee { get; set; }
         [ForeignKey(nameof(PayrollItemId))]
-        //[InverseProperty(nameof(PayrollAdditionItem.PayrollAdditionItemsAssignments))]
+        [InverseProperty(nameof(PayrollAdditionItem.PayrollAdditionItemsAssignments))]
         public virtual PayrollAdditionItem PayrollItem { get; set; }
     }
 }

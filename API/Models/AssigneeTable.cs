@@ -25,9 +25,9 @@ namespace API.Models
         [StringLength(50)]
         public string AssigneeName { get; set; }
 
-        [InverseProperty(nameof(PayrollAdditionItem.AssigneeTableAssignee))]
+        [InverseProperty(nameof(PayrollAdditionItem.Assignee))]
         public virtual ICollection<PayrollAdditionItem> PayrollAdditionItems { get; set; }
-        //InverseProperty(nameof(PayrollDeductionItem.Assignee))]
+        [InverseProperty(nameof(PayrollDeductionItem.Assignee))]
         public virtual ICollection<PayrollDeductionItem> PayrollDeductionItems { get; set; }
     }
 }

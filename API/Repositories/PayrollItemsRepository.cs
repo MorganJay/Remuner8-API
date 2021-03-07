@@ -19,22 +19,11 @@ namespace API.Repositories
         public async Task AddEntryAsync(PayrollAdditionItem payrollAdditionItem)
         {
             await remuner8Context.PayrollAdditionItems.AddAsync(payrollAdditionItem);
-            await remuner8Context.SaveChangesAsync();
         }
 
-        public async Task EditEntryAsync(PayrollAdditionItem payrollAdditionItem)
+        public void EditEntry(PayrollAdditionItem payrollAdditionItem)
         {
-            var userId = await remuner8Context.PayrollAdditionItems.FindAsync(payrollAdditionItem.Id);
-            if (userId != null)
-            {
-                remuner8Context.PayrollAdditionItems.Update(payrollAdditionItem);
-                await remuner8Context.SaveChangesAsync();
-            }
-            else
-            {
-                throw new ArgumentNullException();
-            }
-            
+ 
         }
 
         public async Task<IEnumerable<PayrollAdditionItem>> GetEntriesAsync()
@@ -45,7 +34,6 @@ namespace API.Repositories
         public async Task<PayrollAdditionItem> GetEntryAsync(int id)
         {
             var entry = await remuner8Context.PayrollAdditionItems.FindAsync(id);
-            await remuner8Context.SaveChangesAsync();
             return entry;
 
         }
@@ -54,7 +42,11 @@ namespace API.Repositories
         {
             var entry = await remuner8Context.PayrollAdditionItems.FindAsync(id);
             remuner8Context.PayrollAdditionItems.Remove(entry);
-            await remuner8Context.SaveChangesAsync();
+        }
+
+        public async Task<bool> SavechangesAsync()
+        {
+            return await remuner8Context.SaveChangesAsync() >= 0;
         }
     }
 }

@@ -9,8 +9,6 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Models
 {
     [Table("Payslip")]
-    [Index(nameof(EmployeeId), Name = "IX_Payslip_employeeId")]
-    [Index(nameof(TaxId), Name = "IX_Payslip_taxId")]
     public partial class Payslip
     {
         [Key]
@@ -33,7 +31,7 @@ namespace API.Models
         public int TaxId { get; set; }
 
         [ForeignKey(nameof(EmployeeId))]
-        //[InverseProperty(nameof(EmployeeBiodata.Payslips))]
+        [InverseProperty(nameof(EmployeeBiodata.Payslips))]
         public virtual EmployeeBiodata Employee { get; set; }
         [ForeignKey(nameof(TaxId))]
         [InverseProperty("Payslips")]

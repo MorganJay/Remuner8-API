@@ -8,10 +8,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
-    [Index(nameof(AssigneeTableAssigneeid), Name = "IX_PayrollAdditionItems_AssigneeTableAssigneeid")]
-    [Index(nameof(PayrollCategoryCategoryId), Name = "IX_PayrollAdditionItems_PayrollCategoryCategoryId")]
     public partial class PayrollAdditionItem
     {
+        public PayrollAdditionItem()
+        {
+            PayrollAdditionItemsAssignments = new HashSet<PayrollAdditionItemsAssignment>();
+        }
+
         [Key]
         [Column("id")]
         public int Id { get; set; }
@@ -19,16 +22,20 @@ namespace API.Models
         [Column("name")]
         [StringLength(100)]
         public string Name { get; set; }
+        [Column("categoryId")]
+        public int CategoryId { get; set; }
         [Column("amount", TypeName = "decimal(19, 4)")]
         public decimal Amount { get; set; }
-        public int? AssigneeTableAssigneeid { get; set; }
-        public int? PayrollCategoryCategoryId { get; set; }
+        [Column("assigneeId")]
+        public int AssigneeId { get; set; }
 
-        [ForeignKey(nameof(AssigneeTableAssigneeid))]
+        [ForeignKey(nameof(AssigneeId))]
         [InverseProperty(nameof(AssigneeTable.PayrollAdditionItems))]
-        public virtual AssigneeTable AssigneeTableAssignee { get; set; }
-        [ForeignKey(nameof(PayrollCategoryCategoryId))]
+        public virtual AssigneeTable Assignee { get; set; }
+        [ForeignKey(nameof(CategoryId))]
         [InverseProperty(nameof(PayrollCategory.PayrollAdditionItems))]
-        public virtual PayrollCategory PayrollCategoryCategory { get; set; }
+        public virtual PayrollCategory Category { get; set; }
+        [InverseProperty(nameof(PayrollAdditionItemsAssignment.PayrollItem))]
+        public virtual ICollection<PayrollAdditionItemsAssignment> PayrollAdditionItemsAssignments { get; set; }
     }
 }
