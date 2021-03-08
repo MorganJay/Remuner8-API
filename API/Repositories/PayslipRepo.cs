@@ -1,4 +1,5 @@
-﻿using API.Models;
+﻿using System.Linq;
+using API.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories
@@ -11,15 +12,14 @@ namespace API.Repositories
         {
             _remuner8Context = remuner8Context;
         }
-
-        //public IEnumerable<Payslip> GetPayslipById(string id)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         EmployeeBiodata IPayslipRepository.GetPayslipById(string id)
         {
-            _remuner8Context.EmployeeBiodatas.Include(s => s.EmployeeId).Include(s => s.StatutoryDeductions).Include(s => s.JobDescription).Include(s => s.Tax).ThenInclude(s => s.Pension).Include(s => s.Payslips).ThenInclude(s => s.TotalDeductions).Include(s => s.Tax).ThenInclude(s => s.Paye).Include(s => s.GrossSalary).Include(s => s.OtherAllowances).Include(s => s.Payslips);
+            var payslip = _remuner8Context.EmployeeBiodatas.Include(staff => staff.FirstName).Include(staff => staff.LastName)
+                                                            .Include(staff => staff.GrossSalary).Include(staff => staff.OtherAllowances)
+                                                            .Include(staff => staff.JobDescription).Include(staff => staff.Tax)
+                                                            .Include(staff => staff.Payslips).Where(staff => staff.EmployeeId == id).FirstOrDefault();
+
+            return payslip;
         }
     }
 }
