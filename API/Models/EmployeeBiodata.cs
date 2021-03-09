@@ -75,7 +75,7 @@ namespace API.Models
         [Column("dateEmployed", TypeName = "date")]
         public DateTime DateEmployed { get; set; }
         [Column("otherAllowances", TypeName = "decimal(10, 4)")]
-        public decimal? OtherAllowances { get; set; }
+        public decimal OtherAllowances { get; set; }
         [Column("grossSalary", TypeName = "decimal(19, 4)")]
         public decimal GrossSalary { get; set; }
         [Required]
@@ -105,7 +105,7 @@ namespace API.Models
         [InverseProperty(nameof(PayrollTransaction.Employee))]
         public virtual ICollection<PayrollTransaction> PayrollTransactions { get; set; }
         [InverseProperty(nameof(Payslip.Employee))]
-        public virtual ICollection<Payslip> Payslips { get; set; }
+        public virtual ICollection<Payslip> Payslips { get;}
         [InverseProperty(nameof(StatutoryDeduction.Employee))]
         public virtual ICollection<StatutoryDeduction> StatutoryDeductions { get; set; }
     }

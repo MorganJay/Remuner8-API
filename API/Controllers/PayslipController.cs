@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Authentication;
+using API.Dtos;
 using API.Models;
 using API.Repositories;
 using Microsoft.AspNetCore.Mvc;
@@ -19,10 +21,14 @@ namespace API.Controllers
             _payslipRepository = payslipRepository;
         }
         [HttpGet("{id}")]
-        public ActionResult<Payslip>GetPayslipById(string id)
+        public ActionResult<PayslipDto>GetPayslipById(string id)
         {
-            var payslipItem = _payslipRepository.GetPayslipById(id);
-                return Ok(payslipItem);
+            var getPaySlipById = _payslipRepository.GetPayslipById(id);
+            if (getPaySlipById == null)
+            {
+                return BadRequest(new Response { Status = "Error", Message = $"The information with id={id} is not found" });
+            }
+            return Ok (getPaySlipById);
         }
     }
 }
