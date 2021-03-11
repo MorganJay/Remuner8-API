@@ -39,8 +39,12 @@ namespace API
 
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<IdentityUser>(options => 
+                options.SignIn.RequireConfirmedAccount = true
+                
+                )
                 .AddEntityFrameworkStores<Remuner8Context>();
+            
             services.AddControllersWithViews();
 
             services.AddScoped<IUserAccountRepository, UserAccountsRepository>();

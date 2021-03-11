@@ -55,8 +55,8 @@ namespace API.Repositories
             var datatimesheet = await context.TimeSheets.FirstOrDefaultAsync(s => s.EmployeeId == model.EmployeeId);
             if (datatimesheet != null)
             {
-                mapper.Map(model, datatimesheet);
-                await context.SaveChangesAsync();
+                context.TimeSheets.Update(datatimesheet);
+                 context.SaveChanges();
                 return true;
             }
             return false;

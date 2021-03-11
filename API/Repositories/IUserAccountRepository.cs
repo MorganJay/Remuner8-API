@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using API.Models;
 using Remuner8_Backend.EntityModels;
 
@@ -9,11 +10,11 @@ namespace Remuner8_Backend.Repositories
         // Registration Methods
         IEnumerable<Password> GetUsers();
 
-        Password GetUser(string password);
+        Task<Password> GetUserAsync(string password);
 
-        void AddUser(Password password);
+        Task AddUserAsync(Password password);
 
-        void DeleteUser(Password password);
+        Task DeleteUserAsync(Password password);
 
         void EditUser(Password password);
 
