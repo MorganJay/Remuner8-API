@@ -54,8 +54,9 @@ namespace Remuner8_Backend.Controllers
             if (userExists == null)
             {
                 await RegisterRepository.AddUserAsync(passwordmodel);
+                await RegisterRepository.SaveChangesAsync();
                 var passwordreaddto = _mapper.Map<PasswordReadDto>(passwordmodel);
-                return Ok((passwordreaddto));
+                return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "User Created Successfully" });
             }
             return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User Already Exists" });
         }
@@ -68,7 +69,7 @@ namespace Remuner8_Backend.Controllers
 
             if (user != null)
             {
-                await RegisterRepository.DeleteUserAsync(user);
+                RegisterRepository.DeleteUser(user);
                 return Ok(new Response { Status = "Success", Message = "User Deleted Successfully" });
             }
             return NotFound($"User with email: {email} was not found");

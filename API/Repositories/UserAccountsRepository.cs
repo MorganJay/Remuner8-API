@@ -24,23 +24,21 @@ namespace Remuner8_Backend.Repositories
                 throw new ArgumentNullException(nameof(password));
             }
             await remuner8Context.Passwords.AddAsync(password);
-            await remuner8Context.SaveChangesAsync();
+            
         }
 
-        public async Task DeleteUserAsync(Password password)
+        public void DeleteUser(Password password)
         {
             if (password == null)
             {
                 throw new ArgumentNullException(nameof(password));
             }
             remuner8Context.Passwords.Remove(password);
-            await remuner8Context.SaveChangesAsync();
         }
 
         public void EditUser(Password password)
         {
             remuner8Context.Passwords.Update(password);
-            remuner8Context.SaveChanges();
         }
 
         public async Task<Password> GetUserAsync(string email)
@@ -52,6 +50,11 @@ namespace Remuner8_Backend.Repositories
         public async Task<IEnumerable<Password>> GetUsersAsync()
         {
             return await remuner8Context.Passwords.ToListAsync();
+        }
+
+        public async Task<bool> SaveChangesAsync()
+        {
+            return await remuner8Context.SaveChangesAsync() >= 0;
         }
 
         public async Task<bool> ValidateCredentialsAsync(PasswordReadDto model)

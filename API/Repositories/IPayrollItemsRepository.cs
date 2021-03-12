@@ -15,9 +15,11 @@ namespace API.Repositories
 
         Task AddEntryAsync(PayrollAdditionItem payrollAdditionItem);
 
-        Task EditEntryAsync(PayrollAdditionItem payrollAdditionItem);
+        void EditEntry(PayrollAdditionItem payrollAdditionItem);
 
         Task RemoveEntryAsync(int id);
+
+        Task<bool> SavechangesAsync();
 
 
     }
