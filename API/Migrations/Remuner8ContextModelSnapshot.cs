@@ -1423,7 +1423,8 @@ namespace API.Migrations
                             b.Navigation("Payslips");
                         });
 #pragma warning restore 612, 618
-                });
+                })); 
+        
         }
     } 
 }

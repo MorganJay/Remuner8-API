@@ -52,6 +52,7 @@ namespace API
             services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
             services.AddScoped<IPayslipRepository, PayslipRepo>();
             services.AddScoped<IPayrollItemsRepository, PayrollItemsRepository>();
+            services.AddScoped<ILeaveRepository, LeaveRepository>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
