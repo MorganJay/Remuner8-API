@@ -537,7 +537,7 @@ namespace API.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("PayrollAdditionItems");
-                });
+                }));
 
             modelBuilder.Entity("API.Models.PayrollAdditionItemsAssignment", b =>
                 {
@@ -1096,7 +1096,7 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.EmployeeBiodata", b =>
                 {
                     b.HasOne("API.Models.Department", "Department")
-                        .WithMany("EmployeeBiodatas")
+                        .WithMany("EmployeeBiodatas");
                     b.HasOne("API.Models.Department", "Department")
                         .WithMany("EmployeeBiodatas")
                         .HasForeignKey("DepartmentId")
@@ -1181,7 +1181,7 @@ namespace API.Migrations
                     b.Navigation("Assignee");
 
                     b.Navigation("Category");
-                });
+                }));
 
             modelBuilder.Entity("API.Models.PayrollAdditionItemsAssignment", b =>
                 {
@@ -1341,7 +1341,7 @@ namespace API.Migrations
                     b.Navigation("PayrollDeductionItems");
                 });
 
-                    b.Navigation("PayrollDeductionItems");
+            b.Navigation("PayrollDeductionItems");
             modelBuilder.Entity("API.Models.Department", b =>
                 {
                     b.Navigation("EmployeeBiodatas");
@@ -1356,73 +1356,74 @@ namespace API.Migrations
 
                     b.Navigation("PayrollOvertimeItemsAssignments");
 
-            modelBuilder.Entity("API.Models.EmployeeBiodata", b =>
-                {
-                    b.Navigation("PayrollTransactions");
+                    modelBuilder.Entity("API.Models.EmployeeBiodata", b =>
+                        {
+                            b.Navigation("PayrollTransactions");
 
-                    b.Navigation("Payslips");
+                            b.Navigation("Payslips");
 
-                    b.Navigation("StatutoryDeductions");
+                            b.Navigation("StatutoryDeductions");
 
-                    b.Navigation("Tax");
-                });
+                            b.Navigation("Tax");
+                        });
 
-            modelBuilder.Entity("API.Models.JobDescription", b =>
-                {
-                    b.Navigation("EmployeeBiodatas");
-                });
+                    modelBuilder.Entity("API.Models.JobDescription", b =>
+                        {
+                            b.Navigation("EmployeeBiodatas");
+                        });
 
-            modelBuilder.Entity("API.Models.Password", b =>
-                {
-                    b.Navigation("EmployeeBiodata");
-                });
+                    modelBuilder.Entity("API.Models.Password", b =>
+                        {
+                            b.Navigation("EmployeeBiodata");
+                        });
 
-            modelBuilder.Entity("API.Models.PayrollCategory", b =>
-                {
-                    b.Navigation("PayrollAdditionItems");
-                });
+                    modelBuilder.Entity("API.Models.PayrollCategory", b =>
+                        {
+                            b.Navigation("PayrollAdditionItems");
+                        });
 
-            modelBuilder.Entity("API.Models.PayrollRate", b =>
-                {
-                    b.Navigation("PayrollOvertimeItems");
-                });
+                    modelBuilder.Entity("API.Models.PayrollRate", b =>
+                        {
+                            b.Navigation("PayrollOvertimeItems");
+                        });
 
-            modelBuilder.Entity("API.Models.PensionFundAdministration", b =>
-            modelBuilder.Entity("API.Models.PayrollAdditionItem", b =>
-                {
-                    b.Navigation("PayrollAdditionItemsAssignments");
-                });
+                    modelBuilder.Entity("API.Models.PensionFundAdministration", b =>
+                    modelBuilder.Entity("API.Models.PayrollAdditionItem", b =>
+                        {
+                            b.Navigation("PayrollAdditionItemsAssignments");
+                        }));
 
-            modelBuilder.Entity("API.Models.PayrollCategory", b =>
-                {
-                    b.Navigation("PayrollAdditionItems");
-                });
+                    modelBuilder.Entity("API.Models.PayrollCategory", b =>
+                        {
+                            b.Navigation("PayrollAdditionItems");
+                        });
 
-            modelBuilder.Entity("API.Models.PayrollDeductionItem", b =>
-                {
-                    b.Navigation("PayrollDeductionItemsAssignments");
-                });
+                    modelBuilder.Entity("API.Models.PayrollDeductionItem", b =>
+                        {
+                            b.Navigation("PayrollDeductionItemsAssignments");
+                        });
 
-            modelBuilder.Entity("API.Models.PayrollOvertimeItem", b =>
-                {
-                    b.Navigation("PayrollOvertimeItemsAssignments");
-                });
+                    modelBuilder.Entity("API.Models.PayrollOvertimeItem", b =>
+                        {
+                            b.Navigation("PayrollOvertimeItemsAssignments");
+                        });
 
-            modelBuilder.Entity("API.Models.PayrollRate", b =>
-                {
-                    b.Navigation("PayrollOvertimeItems");
-                });
+                    modelBuilder.Entity("API.Models.PayrollRate", b =>
+                        {
+                            b.Navigation("PayrollOvertimeItems");
+                        });
 
-            modelBuilder.Entity("API.Models.PensionFundAdministration", b =>
-                {
-                    b.Navigation("StatutoryDeductions");
-                });
+                    modelBuilder.Entity("API.Models.PensionFundAdministration", b =>
+                        {
+                            b.Navigation("StatutoryDeductions");
+                        });
 
-            modelBuilder.Entity("API.Models.Tax", b =>
-                {
-                    b.Navigation("Payslips");
-                });
+                    modelBuilder.Entity("API.Models.Tax", b =>
+                        {
+                            b.Navigation("Payslips");
+                        });
 #pragma warning restore 612, 618
+                });
         }
-    }
+    } 
 }
