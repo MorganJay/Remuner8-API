@@ -58,21 +58,21 @@ namespace API.Controllers
             return CreatedAtRoute(nameof(ReadEntryAsync), new {id = mappedmodel.Id}, mappedmodel);
         }
 
-        // PUT api/<PayrollAdditionController>/5
-        [HttpPut]
-        [Route("api/[controller]/{id}")]
-        public ActionResult UpdateEntry(int id, PayrollAdditionItemCreateDto payrollAdditionItemCreateDto)
-        {
-            var entryModel = _payrollItemsRepository.GetEntryAsync(id);
-            if (entryModel == null)
-            {
-                return BadRequest();
-            }
-            _payrollItemsRepository.EditEntry(payrollAdditionItemCreateDto).
-            _payrollItemsRepository.EditEntry(entryModel);
-            _payrollItemsRepository.SavechangesAsync();
-            return NoContent();
-        }
+        //// PUT api/<PayrollAdditionController>/5
+        //[HttpPut]
+        //[Route("api/[controller]/{id}")]
+        //public ActionResult UpdateEntry(int id, PayrollAdditionItemCreateDto payrollAdditionItemCreateDto)
+        //{
+        //    var entryModel = _payrollItemsRepository.GetEntryAsync(id);
+        //    if (entryModel == null)
+        //    {
+        //        return BadRequest();
+        //    }
+        //    _payrollItemsRepository.EditEntry(payrollAdditionItemCreateDto);
+        //    _payrollItemsRepository.EditEntry(entryModel);
+        //    _payrollItemsRepository.SavechangesAsync();
+        //    return NoContent();
+        //}
 
         // DELETE api/<PayrollAdditionController>/5
         [HttpDelete]
