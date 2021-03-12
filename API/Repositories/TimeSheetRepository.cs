@@ -46,14 +46,14 @@ namespace API.Repositories
 
         public async Task<TimeSheetDto> GetTimeSheetByIdAsync(string id)
         {
-            var dataTimeSheet = await context.TimeSheets.FirstOrDefaultAsync(s => s.EmployeeId == id);
-            return mapper.Map<TimeSheetDto>(dataTimeSheet);
+            var datatimesheet = await context.TimeSheets.Where(s => s.EmployeeId == id).FirstOrDefaultAsync();
+            return mapper.Map<TimeSheetDto>(datatimesheet);
         }
 
         public async Task<bool> UpdateTimeSheetAsync(TimeSheetDto model)
         {
-            var dataTimeSheet = await context.TimeSheets.FirstOrDefaultAsync(s => s.EmployeeId == model.EmployeeId);
-            if (dataTimeSheet != null)
+            var datatimesheet = await context.TimeSheets.FirstOrDefaultAsync(s => s.EmployeeId == model.EmployeeId);
+            if (datatimesheet != null)
             {
                 mapper.Map(model, dataTimeSheet);
                 await context.SaveChangesAsync();
