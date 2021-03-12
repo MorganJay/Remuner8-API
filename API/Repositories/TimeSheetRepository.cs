@@ -46,7 +46,7 @@ namespace API.Repositories
 
         public async Task<TimeSheetDto> GetTimeSheetByIdAsync(string id)
         {
-            var datatimesheet = await context.TimeSheets.FirstOrDefaultAsync(s => s.EmployeeId == id);
+            var datatimesheet = await context.TimeSheets.Where(s => s.EmployeeId == id).FirstOrDefaultAsync();
             return mapper.Map<TimeSheetDto>(datatimesheet);
         }
 
