@@ -1,4 +1,5 @@
 ﻿using API.Data_Models.Dtos;
+using API.Dtos;
 using API.Models;
 using AutoMapper;
 using Remuner8_Backend.Dtos;
@@ -14,8 +15,10 @@ namespace API.Profiles
             CreateMap<Password, PasswordReadDto>().ReverseMap();
             CreateMap<TimeSheet, TimeSheetDto>().ReverseMap();
             CreateMap<PasswordCreateDto, Password>().ReverseMap();
-            CreateMap<PayrollAdditionItem, PayrollAdditionItemCreateDto>().ReverseMap();
+            CreateMap<PayrollAdditionItemCreateDto, PayrollAdditionItem>().ReverseMap();
             CreateMap<PayrollAdditionItem, PayrollAdditionItemReadDto>().ReverseMap();
+            CreateMap<PayrollDeductionItem, PayrollDeductionItemReadDto>();
+            CreateMap<PayrollDeductionItem, PayrollDeductionItemCreateDto>().ReverseMap();
         }
     }
 }
