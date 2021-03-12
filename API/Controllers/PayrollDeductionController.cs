@@ -1,4 +1,5 @@
-﻿using API.Dtos;
+﻿using API.Authentication;
+using API.Dtos;
 using API.Models;
 using API.Repositories;
 using AutoMapper;
@@ -53,18 +54,15 @@ namespace API.Controllers
         public async Task<ActionResult> AddAsync(PayrollDeductionItemCreateDto payrollDeductionItemCreateDto)
         {
             var model = _imapper.Map<PayrollDeductionItem>(payrollDeductionItemCreateDto);
-            var entry = _payrollDeductionRepository.GetItemAsync(model.Id);
-            if (entry == null)
-            {
-                return Conflict();
-            }
+            await _payrollDeductionRepository.GetItemAsync(model.Id);
             await _payrollDeductionRepository.AddItemsAsync(model);
             await _payrollDeductionRepository.SaveChangesAsync();
-            return StatusCode(StatusCodes.Status201Created);
+            return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "Entry Successfully Created" });
+            
         }
 
         // PUT api/<PayrollDeductionController>/5
-        [HttpPut("{id}")]
+        [HttpPatch("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
@@ -72,8 +70,12 @@ namespace API.Controllers
         // DELETE api/<PayrollDeductionController>/5
         [HttpDelete("{id}")]
         
-        public void Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
+            
+            await _payrollDeductionRepository.RemoveItemAsync(id);
+            await _payrollDeductionRepository.SaveChangesAsync();
+            return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = "Entry Successfully Deleted" });
         }
     }
 }

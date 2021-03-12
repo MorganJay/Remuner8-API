@@ -59,23 +59,16 @@ namespace API.Controllers
         }
 
         // PUT api/<PayrollAdditionController>/5
-        [HttpPatch]
+        [HttpPut]
         [Route("api/[controller]/{id}")]
-        public ActionResult UpdateEntry(int id, JsonPatchDocument<PayrollAdditionItemCreateDto> patchdoc)
+        public ActionResult UpdateEntry(int id, PayrollAdditionItemCreateDto payrollAdditionItemCreateDto)
         {
             var entryModel = _payrollItemsRepository.GetEntryAsync(id);
             if (entryModel == null)
             {
-                return NotFound();
+                return BadRequest();
             }
-            var entryPatch = _imapper.Map<PayrollAdditionItemCreateDto>(entryModel);
-            patchdoc.ApplyTo(entryPatch, ModelState);
-            if (!TryValidateModel(entryPatch))
-            {
-                return ValidationProblem(ModelState);
-            }
-
-            _imapper.Map(entryPatch, entryModel);
+            _payrollItemsRepository.EditEntry(payrollAdditionItemCreateDto).
             _payrollItemsRepository.EditEntry(entryModel);
             _payrollItemsRepository.SavechangesAsync();
             return NoContent();

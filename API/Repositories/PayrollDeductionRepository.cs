@@ -39,7 +39,7 @@ namespace API.Repositories
 
         public async Task RemoveItemAsync(int id)
         {
-            var item = _remuner8Context.PayrollDeductionItems.Find(id);
+            var item = await _remuner8Context.PayrollDeductionItems.FindAsync(id);
             if (item != null)
             {
                _remuner8Context.PayrollDeductionItems.Remove(item);
