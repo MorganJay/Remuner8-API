@@ -26,6 +26,11 @@ namespace API.Repositories
  
         }
 
+        public void EditEntry(Task<PayrollAdditionItem> entryModel)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<PayrollAdditionItem>> GetEntriesAsync()
         {
             return await remuner8Context.PayrollAdditionItems.ToListAsync();

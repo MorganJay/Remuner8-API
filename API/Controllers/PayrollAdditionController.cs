@@ -4,6 +4,7 @@ using API.Models;
 using API.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -54,22 +55,30 @@ namespace API.Controllers
             var mappedmodel = _imapper.Map<PayrollAdditionItem>(payrollAdditionItemCreateDto);
             await _payrollItemsRepository.AddEntryAsync(mappedmodel);
             await _payrollItemsRepository.SavechangesAsync();
-            return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "Entry Created" });
+            return CreatedAtRoute(nameof(ReadEntryAsync), new {id = mappedmodel.Id}, mappedmodel);
         }
 
         // PUT api/<PayrollAdditionController>/5
         [HttpPatch]
         [Route("api/[controller]/{id}")]
-        public ActionResult UpdateEntry(int id, PayrollAdditionItemCreateDto payrollAdditionItemCreateDto)
+        public ActionResult UpdateEntry(int id, JsonPatchDocument<PayrollAdditionItemCreateDto> patchdoc)
         {
-            var payrollitemModel = _imapper.Map<PayrollAdditionItem>(payrollAdditionItemCreateDto);
-            var entry = _payrollItemsRepository.GetEntryAsync(id);
-            if (entry != null)
+            var entryModel = _payrollItemsRepository.GetEntryAsync(id);
+            if (entryModel == null)
             {
-                var updatedEntry = _payrollItemsRepository.AddEntryAsync(payrollitemModel);
-                _payrollItemsRepository.SavechangesAsync();
+                return NotFound();
             }
-            return Ok();
+            var entryPatch = _imapper.Map<PayrollAdditionItemCreateDto>(entryModel);
+            patchdoc.ApplyTo(entryPatch, ModelState);
+            if (!TryValidateModel(entryPatch))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            _imapper.Map(entryPatch, entryModel);
+            _payrollItemsRepository.EditEntry(entryModel);
+            _payrollItemsRepository.SavechangesAsync();
+            return NoContent();
         }
 
         // DELETE api/<PayrollAdditionController>/5

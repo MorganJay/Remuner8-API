@@ -20,7 +20,6 @@ namespace API.Repositories
         Task RemoveEntryAsync(int id);
 
         Task<bool> SavechangesAsync();
-
-
+        void EditEntry(Task<PayrollAdditionItem> entryModel);
     }
 }

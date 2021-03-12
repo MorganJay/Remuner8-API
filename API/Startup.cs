@@ -12,6 +12,9 @@ using System;
 using Remuner8_Backend.Repositories;
 using API.Models;
 using System.Reflection;
+using Newtonsoft.Json.Serialization;
+using API.Profiles;
+using AutoMapper;
 
 namespace API
 {
@@ -27,7 +30,8 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(s => { s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver(); 
+            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
@@ -37,7 +41,7 @@ namespace API
                    Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddAutoMapper(Assembly.GetExecutingAssembly());
+            services.AddAutoMapper(typeof(AutomapperProfile));
 
             services.AddDefaultIdentity<IdentityUser>(options =>
                 options.SignIn.RequireConfirmedAccount = true
@@ -52,6 +56,7 @@ namespace API
             services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
             services.AddScoped<IPayslipRepository, PayslipRepo>();
             services.AddScoped<IPayrollItemsRepository, PayrollItemsRepository>();
+            services.AddScoped<IPayrollDeductionRepository, PayrollDeductionRepository>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
