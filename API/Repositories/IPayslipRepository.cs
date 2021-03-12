@@ -9,6 +9,6 @@ namespace API.Repositories
 {
     public interface IPayslipRepository
     {
-       PayslipDto GetPayslipById(string id);
+      Task< PayslipDto> GetPayslipByIdAsync(string id);
     }
 }
