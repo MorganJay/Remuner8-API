@@ -15,6 +15,9 @@ namespace API.Models
     {
         public EmployeeBiodata()
         {
+            PayrollAdditionItemsAssignments = new HashSet<PayrollAdditionItemsAssignment>();
+            PayrollDeductionItemsAssignments = new HashSet<PayrollDeductionItemsAssignment>();
+            PayrollOvertimeItemsAssignments = new HashSet<PayrollOvertimeItemsAssignment>();
             PayrollTransactions = new HashSet<PayrollTransaction>();
             Payslips = new HashSet<Payslip>();
             StatutoryDeductions = new HashSet<StatutoryDeduction>();
@@ -102,6 +105,12 @@ namespace API.Models
         public virtual JobDescription JobDescription { get; set; }
         [InverseProperty("Employee")]
         public virtual Tax Tax { get; set; }
+        [InverseProperty(nameof(PayrollAdditionItemsAssignment.Employee))]
+        public virtual ICollection<PayrollAdditionItemsAssignment> PayrollAdditionItemsAssignments { get; set; }
+        [InverseProperty(nameof(PayrollDeductionItemsAssignment.Employee))]
+        public virtual ICollection<PayrollDeductionItemsAssignment> PayrollDeductionItemsAssignments { get; set; }
+        [InverseProperty(nameof(PayrollOvertimeItemsAssignment.Employee))]
+        public virtual ICollection<PayrollOvertimeItemsAssignment> PayrollOvertimeItemsAssignments { get; set; }
         [InverseProperty(nameof(PayrollTransaction.Employee))]
         public virtual ICollection<PayrollTransaction> PayrollTransactions { get; set; }
         [InverseProperty(nameof(Payslip.Employee))]

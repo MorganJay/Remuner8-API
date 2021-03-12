@@ -7,6 +7,6 @@ namespace API.Repositories
 {
     public interface IEmployeeRepository
     {
-      Task  <int> EmployeeCountAsync();
+        Task<int> EmployeeCountAsync();
     }
 }

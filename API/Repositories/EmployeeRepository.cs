@@ -16,13 +16,11 @@ namespace API.Repositories
         {
             this.context = context;
         }
-        public async  Task < int> EmployeeCountAsync()
+
+        public async Task<int> EmployeeCountAsync()
         {
-            
-            
-                var employeecount =   await context.EmployeeBiodatas.CountAsync();
-            return employeecount;            
-            
+            var employeecount = await context.EmployeeBiodatas.CountAsync();
+            return employeecount;
         }
     }
 }

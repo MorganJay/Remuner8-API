@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Remuner8_Backend.EntityModels;
 using Remuner8_Backend.Repositories;
 using System;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,11 +23,11 @@ namespace Remuner8_Backend.Controllers
 
         // POST api/<LoginController>
         [HttpPost]
-        public ActionResult Validate([FromBody] PasswordReadDto model)
+        public async Task<ActionResult> Validate([FromBody] PasswordReadDto model)
         {
             try
             {
-                if (login.ValidateCredentials(model))
+                if (await login.ValidateCredentialsAsync(model))
                 {
                     return Ok(new Response { Status = "Success", Message = "Login Successful" });
                 }

@@ -23,39 +23,39 @@ namespace API.Repositories
 
         public async Task<TimeSheetDto> AddTimeSheetAsync(TimeSheetDto model)
         {
-            var datatimesheet = new TimeSheet();
-            var timesheetmodel = mapper.Map(model, datatimesheet);
-            await context.TimeSheets.AddAsync(timesheetmodel);
+            var dataTimeSheet = new TimeSheet();
+            var timeSheetModel = mapper.Map(model, dataTimeSheet);
+            await context.TimeSheets.AddAsync(timeSheetModel);
             await context.SaveChangesAsync();
-            return mapper.Map<TimeSheetDto>(timesheetmodel);
+            return mapper.Map<TimeSheetDto>(timeSheetModel);
         }
 
         public async Task<bool> DeleteTimeSheetAsync(string id)
         {
-            var timesheet = await context.TimeSheets.FindAsync(id);
-            context.TimeSheets.Remove(timesheet);
+            var timeSheet = await context.TimeSheets.FindAsync(id);
+            context.TimeSheets.Remove(timeSheet);
             await context.SaveChangesAsync();
             return true;
         }
 
         public async Task<IEnumerable<TimeSheetDto>> GetAllTimeSheetAsync()
         {
-            var listOfdata = await context.TimeSheets.ToListAsync();
-            return mapper.Map<IEnumerable<TimeSheetDto>>(listOfdata);
+            var timeSheetLog = await context.TimeSheets.ToListAsync();
+            return mapper.Map<IEnumerable<TimeSheetDto>>(timeSheetLog);
         }
 
         public async Task<TimeSheetDto> GetTimeSheetByIdAsync(string id)
         {
-            var datatimesheet = await context.TimeSheets.FirstOrDefaultAsync(s => s.EmployeeId == id);
-            return mapper.Map<TimeSheetDto>(datatimesheet);
+            var dataTimeSheet = await context.TimeSheets.FirstOrDefaultAsync(s => s.EmployeeId == id);
+            return mapper.Map<TimeSheetDto>(dataTimeSheet);
         }
 
         public async Task<bool> UpdateTimeSheetAsync(TimeSheetDto model)
         {
-            var datatimesheet = await context.TimeSheets.FirstOrDefaultAsync(s => s.EmployeeId == model.EmployeeId);
-            if (datatimesheet != null)
+            var dataTimeSheet = await context.TimeSheets.FirstOrDefaultAsync(s => s.EmployeeId == model.EmployeeId);
+            if (dataTimeSheet != null)
             {
-                mapper.Map(model, datatimesheet);
+                mapper.Map(model, dataTimeSheet);
                 await context.SaveChangesAsync();
                 return true;
             }

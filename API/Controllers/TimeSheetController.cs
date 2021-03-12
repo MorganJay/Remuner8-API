@@ -25,68 +25,65 @@ namespace API.Controllers
             this.timeSheetRepository = timeSheetRepository;
             this.linkGenerator = linkGenerator;
         }
+
         // GET: api/<TimeSheetController>
         [HttpGet]
-        public  async Task< ActionResult<IEnumerable<TimeSheetDto>>> GetListOfTimeSheet()
+        public async Task<ActionResult<IEnumerable<TimeSheetDto>>> GetListOfTimeSheet()
         {
             try
             {
-              var listOfTimeSheet= await   timeSheetRepository.GetAllTimeSheetAsync();
+                var listOfTimeSheet = await timeSheetRepository.GetAllTimeSheetAsync();
                 return Ok(listOfTimeSheet);
             }
             catch (Exception)
             {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response {Status="500", Message="Error due to server" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "500", Message = "Error due to server" });
             }
         }
 
         // GET api/<TimeSheetController>/5
         [HttpGet("{id}")]
-        public  async Task<ActionResult<TimeSheetDto>> GetTimeSheetById(string  id)
+        public async Task<ActionResult<TimeSheetDto>> GetTimeSheetById(string id)
         {
             try
             {
-               var getTimeSheetById= await timeSheetRepository.GetTimeSheetByIdAsync(id);
+                var getTimeSheetById = await timeSheetRepository.GetTimeSheetByIdAsync(id);
                 if (getTimeSheetById == null)
                 {
-                    return BadRequest(new Response {Status="badRequest",Message=$"The timesheet with id={id } cannot be found" });
+                    return BadRequest(new Response { Status = "badRequest", Message = $"The timesheet with id={id } cannot be found" });
                 }
                 return Ok(getTimeSheetById);
             }
             catch (Exception)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "INternal Server Error", Message = "Server error occured" });
             }
-            
         }
 
         // POST api/<TimeSheetController>
         [HttpPost]
-        public async  Task<ActionResult<TimeSheetDto>> Post([FromBody] TimeSheetDto model)
+        public async Task<ActionResult<TimeSheetDto>> Post([FromBody] TimeSheetDto model)
         {
             try
             {
                 var Location = linkGenerator.GetPathByAction(" GetTimeSheetById", "TimeSheet", new { id = model.EmployeeId });
                 if (string.IsNullOrWhiteSpace(Location))
                 {
-                    return BadRequest($"Could not find id path "); 
+                    return BadRequest($"Could not find id path ");
                 }
 
-              var newTimeSheet=   await timeSheetRepository.AddTimeSheetAsync(model);
+                var newTimeSheet = await timeSheetRepository.AddTimeSheetAsync(model);
                 return Created(Location, newTimeSheet);
             }
             catch (Exception)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Internal Server Error", Message = "Server error occured" });
-
             }
         }
 
         // PUT api/<TimeSheetController>/5
         [HttpPut("{id}")]
-        public async  Task<ActionResult> Put( [FromBody] TimeSheetDto model)
+        public async Task<ActionResult> Put([FromBody] TimeSheetDto model)
         {
             try
             {
@@ -99,15 +96,13 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Internal Server Error", Message = "Server error occured" });
             }
-
         }
 
         // DELETE api/<TimeSheetController>/5
         [HttpDelete("{id}")]
-        public async  Task <ActionResult> Delete(string  id)
+        public async Task<ActionResult> Delete(string id)
         {
             try
             {
@@ -117,14 +112,11 @@ namespace API.Controllers
                     return Ok(new Response { Status = "Successful", Message = "The Time sheet was deleted is Successful" });
                 }
                 return BadRequest(new Response { Status = "Unsuccessful", Message = "The process is not Successful" });
-
             }
             catch (Exception)
             {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Internal Server Error", Message = "Server error occured" }); 
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Internal Server Error", Message = "Server error occured" });
             }
-
         }
     }
 }

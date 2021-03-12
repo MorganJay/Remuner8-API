@@ -1,4 +1,5 @@
-﻿using System;
+﻿using API.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,12 +12,14 @@ namespace API.Data_Models.Dtos
     {
         [Required]
         [Column("name")]
+        [StringLength(100)]
         public string Name { get; set; }
-        [Required]
         [Column("categoryId")]
-        public int? CategoryId { get; set; }
+        public int CategoryId { get; set; }
         [Column("amount", TypeName = "decimal(19, 4)")]
         public decimal Amount { get; set; }
+        [Column("assigneeId")]
+        public int AssigneeId { get; set; }
 
     }
 }

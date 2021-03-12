@@ -182,7 +182,21 @@ namespace API.Models
 
             modelBuilder.Entity<PayrollAdditionItemsAssignment>(entity =>
             {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
                 entity.Property(e => e.EmployeeId).IsUnicode(false);
+
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.PayrollAdditionItemsAssignments)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PayrollAdditionItemsAssignment_EmployeeBiodata");
+
+                entity.HasOne(d => d.PayrollItem)
+                    .WithMany(p => p.PayrollAdditionItemsAssignments)
+                    .HasForeignKey(d => d.PayrollItemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PayrollAdditionItemsAssignment_PayrollAdditionItems");
             });
 
             modelBuilder.Entity<PayrollCategory>(entity =>
@@ -206,7 +220,21 @@ namespace API.Models
 
             modelBuilder.Entity<PayrollDeductionItemsAssignment>(entity =>
             {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
                 entity.Property(e => e.EmployeeId).IsUnicode(false);
+
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.PayrollDeductionItemsAssignments)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PayrollDeductionItemsAssignment_EmployeeBiodata");
+
+                entity.HasOne(d => d.PayrollItem)
+                    .WithMany(p => p.PayrollDeductionItemsAssignments)
+                    .HasForeignKey(d => d.PayrollItemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PayrollDeductionItemsAssignment_PayrollDeductionItems");
             });
 
             modelBuilder.Entity<PayrollOvertimeItem>(entity =>
@@ -222,7 +250,21 @@ namespace API.Models
 
             modelBuilder.Entity<PayrollOvertimeItemsAssignment>(entity =>
             {
+                entity.Property(e => e.Id).ValueGeneratedNever();
+
                 entity.Property(e => e.EmployeeId).IsUnicode(false);
+
+                entity.HasOne(d => d.Employee)
+                    .WithMany(p => p.PayrollOvertimeItemsAssignments)
+                    .HasForeignKey(d => d.EmployeeId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PayrollOvertimeItemsAssignment_EmployeeBiodata");
+
+                entity.HasOne(d => d.PayrollItem)
+                    .WithMany(p => p.PayrollOvertimeItemsAssignments)
+                    .HasForeignKey(d => d.PayrollItemId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_PayrollOvertimeItemsAssignment_PayrollOvertimeItems");
             });
 
             modelBuilder.Entity<PayrollRate>(entity =>

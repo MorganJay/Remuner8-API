@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
-    [Keyless]
     [Table("PayrollOvertimeItemsAssignment")]
     public partial class PayrollOvertimeItemsAssignment
     {
@@ -18,5 +17,15 @@ namespace API.Models
         public string EmployeeId { get; set; }
         [Column(TypeName = "decimal(19, 4)")]
         public decimal Amount { get; set; }
+        [Key]
+        [Column("id")]
+        public int Id { get; set; }
+
+        [ForeignKey(nameof(EmployeeId))]
+        [InverseProperty(nameof(EmployeeBiodata.PayrollOvertimeItemsAssignments))]
+        public virtual EmployeeBiodata Employee { get; set; }
+        [ForeignKey(nameof(PayrollItemId))]
+        [InverseProperty(nameof(PayrollOvertimeItem.PayrollOvertimeItemsAssignments))]
+        public virtual PayrollOvertimeItem PayrollItem { get; set; }
     }
 }
