@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using API.Dtos;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +15,13 @@ namespace API.Repositories
             _remuner8Context = remuner8Context;
         }
 
-        public PayslipDto GetPayslipById(string id)
+        public async  Task <PayslipDto> GetPayslipByIdAsync(string id)
         {
-            var payslip = _remuner8Context.EmployeeBiodatas.Include(staff => staff.JobDescription).Include(staff => staff.Tax).Include(staff => staff.Payslips).Where(staff => staff.EmployeeId == id).FirstOrDefault();
+            var payslip = await _remuner8Context.EmployeeBiodatas
+                .Include(staff => staff.JobDescription)
+                .Include(staff => staff.Tax)
+                .Include(staff => staff.Payslips)
+                .Where(staff => staff.EmployeeId == id).FirstOrDefaultAsync();
 
             var PayslipDto = new PayslipDto
             {
@@ -32,12 +37,7 @@ namespace API.Repositories
                 
 
             };
-            foreach (var item in payslip.Payslips)
-            {
-                item.
-
-            }
-
+           
 
             return PayslipDto;
         }
