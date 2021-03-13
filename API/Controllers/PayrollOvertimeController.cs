@@ -32,9 +32,19 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PayrollOvertimeItemReadDto>>> GetAll()
         {
-            var item = await _payrollOvertimeItemRepository.GetAllAsync();
-            var model = _mapper.Map<IEnumerable<PayrollOvertimeItemReadDto>>(item);
-            return Ok(item);
+            try
+            {
+                var item = await _payrollOvertimeItemRepository.GetAllAsync();
+                var model = _mapper.Map<IEnumerable<PayrollOvertimeItemReadDto>>(item);
+                return Ok(item);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         // GET api/<PayrollOvertimeController>/5

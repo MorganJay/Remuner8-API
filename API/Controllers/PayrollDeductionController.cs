@@ -33,9 +33,19 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PayrollDeductionItemReadDto>>> GetAsync()
         {
-            var entry = await _payrollDeductionRepository.GetAllItemsAsync();
-            var model = _imapper.Map<IEnumerable<PayrollDeductionItemReadDto>>(entry);
-            return Ok(model);
+            try
+            {
+                var entry = await _payrollDeductionRepository.GetAllItemsAsync();
+                var model = _imapper.Map<IEnumerable<PayrollDeductionItemReadDto>>(entry);
+                return Ok(model);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         // GET api/<PayrollDeductionController>/5

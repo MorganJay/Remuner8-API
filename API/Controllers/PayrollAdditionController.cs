@@ -31,7 +31,19 @@ namespace API.Controllers
         [Route("api/[controller]")]
         public async Task<ActionResult <IEnumerable<PayrollAdditionItemReadDto>>> GetEntriesAsync()
         {
-            return Ok(await _payrollItemsRepository.GetEntriesAsync());
+            try
+            {
+                var item = await _payrollItemsRepository.GetEntriesAsync();
+                var model = _imapper.Map<IEnumerable<PayrollAdditionItemReadDto>>(item);
+                return Ok(model);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         // GET api/<PayrollAdditionController>/5
@@ -62,10 +74,20 @@ namespace API.Controllers
         [Route("api/[controller]")]
         public async Task<ActionResult> CreateEntryAsync(PayrollAdditionItemCreateDto payrollAdditionItemCreateDto)
         {
-            var mappedmodel = _imapper.Map<PayrollAdditionItem>(payrollAdditionItemCreateDto);
-            await _payrollItemsRepository.AddEntryAsync(mappedmodel);
-            await _payrollItemsRepository.SavechangesAsync();
-            return CreatedAtRoute(nameof(ReadEntryAsync), new {id = mappedmodel.Id}, mappedmodel);
+            try
+            {
+                var mappedmodel = _imapper.Map<PayrollAdditionItem>(payrollAdditionItemCreateDto);
+                await _payrollItemsRepository.AddEntryAsync(mappedmodel);
+                await _payrollItemsRepository.SavechangesAsync();
+                return CreatedAtRoute(nameof(ReadEntryAsync), new {id = mappedmodel.Id}, mappedmodel);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         //put api/<payrolladditioncontroller>/5
@@ -103,9 +125,19 @@ namespace API.Controllers
         [Route("api/[controller]/{id}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {
-            await _payrollItemsRepository.RemoveEntryAsync(id);
-            await _payrollItemsRepository.SavechangesAsync();
-            return Ok(new Response { Status = "Success", Message = "Entry Deleted Successfully" });
+            try
+            {
+                await _payrollItemsRepository.RemoveEntryAsync(id);
+                await _payrollItemsRepository.SavechangesAsync();
+                return Ok(new Response { Status = "Success", Message = "Entry Deleted Successfully" });
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
             
         }
     }
