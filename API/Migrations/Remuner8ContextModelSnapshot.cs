@@ -1341,7 +1341,7 @@ namespace API.Migrations
                     b.Navigation("PayrollDeductionItems");
                 });
 
-            b.Navigation("PayrollDeductionItems");
+            //b.Navigation("PayrollDeductionItems");
             modelBuilder.Entity("API.Models.Department", b =>
                 {
                     b.Navigation("EmployeeBiodatas");

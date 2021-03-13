@@ -8,6 +8,8 @@ namespace API.Repositories
 {
     public interface ILeaveRepository
     {
+        bool SaveChanges();  
         IEnumerable<LeaveType> GetAllLeaveType();
+        void CreateLeaveType(LeaveType leaveType);
     }
 }
