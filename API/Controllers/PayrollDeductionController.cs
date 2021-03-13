@@ -31,7 +31,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PayrollDeductionItemReadDto>>> GetAsync()
         {
-            var entry = await _payrollDeductionRepository.GetItemsAsync();
+            var entry = await _payrollDeductionRepository.GetAllItemsAsync();
             var model = _imapper.Map<IEnumerable<PayrollDeductionItemReadDto>>(entry);
             return Ok(model);
         }
@@ -53,11 +53,25 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult> AddAsync(PayrollDeductionItemCreateDto payrollDeductionItemCreateDto)
         {
-            var model = _imapper.Map<PayrollDeductionItem>(payrollDeductionItemCreateDto);
-            await _payrollDeductionRepository.GetItemAsync(model.Id);
-            await _payrollDeductionRepository.AddItemsAsync(model);
-            await _payrollDeductionRepository.SaveChangesAsync();
-            return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "Entry Successfully Created" });
+            try
+            {
+                var model = _imapper.Map<PayrollDeductionItem>(payrollDeductionItemCreateDto);
+                var item = await _payrollDeductionRepository.GetItemAsync(model.Id);
+                if (item == null)
+                {
+                    await _payrollDeductionRepository.AddItemsAsync(model);
+                    await _payrollDeductionRepository.SaveChangesAsync();
+                    return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "Entry Successfully Created" });
+                }
+                return StatusCode(StatusCodes.Status400BadRequest);
+
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "INternal Server Error", Message = "Server error occured" });
+            }
+            
             
         }
 
@@ -72,10 +86,23 @@ namespace API.Controllers
         
         public async Task<ActionResult> Delete(int id)
         {
+            try
+            {
+                var item = _payrollDeductionRepository.GetItemAsync(id);
+                if (item != null)
+                {
+                    await _payrollDeductionRepository.RemoveItemAsync(id);
+                    await _payrollDeductionRepository.SaveChangesAsync();
+                    return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = "Entry Successfully Deleted" });
+                }
+                return NotFound(new Response { Status = "Error", Message = "Entry Not Found!" });
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "INternal Server Error", Message = "Server error occured" });
+            }
             
-            await _payrollDeductionRepository.RemoveItemAsync(id);
-            await _payrollDeductionRepository.SaveChangesAsync();
-            return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = "Entry Successfully Deleted" });
         }
     }
 }

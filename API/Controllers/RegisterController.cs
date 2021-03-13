@@ -30,49 +30,85 @@ namespace Remuner8_Backend.Controllers
         [Route("api/[controller]")]
         public async Task<ActionResult <IEnumerable<PasswordReadDto>>> GetUsersAsync()
         {
-            return Ok(await RegisterRepository.GetUsersAsync());
+            try
+            {
+                return Ok(await RegisterRepository.GetUsersAsync());
+            }
+            catch (System.Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "500", Message = "Error due to server" });
+            }
+            
         }
 
         [HttpGet]
         [Route("api/[controller]/{email}")]
         public async Task<ActionResult <PasswordReadDto>> GetUserAsync(string email)
         {
-            var userItem = await RegisterRepository.GetUserAsync(email);
-            if (userItem != null)
+            try
             {
-                return Ok(_mapper.Map<PasswordReadDto>(userItem));
+                var userItem = await RegisterRepository.GetUserAsync(email);
+                if (userItem != null)
+                {
+                    return Ok(_mapper.Map<PasswordReadDto>(userItem));
+                }
+                return NotFound($"User with email: {email} was not found");
             }
-            return NotFound($"User with email: {email} was not found");
+            catch (System.Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "500", Message = "Error due to server" });
+            }
+            
         }
 
         [HttpPost]
         [Route("api/[controller]")]
         public async Task<ActionResult <PasswordReadDto>> AddUserAsync(PasswordCreateDto passwordcreatedto)
         {
-            var passwordmodel = _mapper.Map<Password>(passwordcreatedto);
-            var userExists = await RegisterRepository.GetUserAsync(passwordcreatedto.Email);
-            if (userExists == null)
+            try
             {
-                await RegisterRepository.AddUserAsync(passwordmodel);
-                await RegisterRepository.SaveChangesAsync();
-                var passwordreaddto = _mapper.Map<PasswordReadDto>(passwordmodel);
-                return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "User Created Successfully" });
+                var passwordmodel = _mapper.Map<Password>(passwordcreatedto);
+                var userExists = await RegisterRepository.GetUserAsync(passwordcreatedto.Email);
+                if (userExists == null)
+                {
+                    await RegisterRepository.AddUserAsync(passwordmodel);
+                    await RegisterRepository.SaveChangesAsync();
+                    var passwordreaddto = _mapper.Map<PasswordReadDto>(passwordmodel);
+                    return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "User Created Successfully" });
+                }
+                return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User Already Exists" });
             }
-            return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User Already Exists" });
+            catch (System.Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "500", Message = "Error due to server" });
+            }
+          
         }
 
         [HttpDelete]
         [Route("api/[controller]/{email}")]
         public async Task<IActionResult> DeleteUserAsync(string email)
         {
-            var user = await RegisterRepository.GetUserAsync(email);
-
-            if (user != null)
+            try
             {
-                RegisterRepository.DeleteUser(user);
-                return Ok(new Response { Status = "Success", Message = "User Deleted Successfully" });
+                var user = await RegisterRepository.GetUserAsync(email);
+
+                if (user != null)
+                {
+                    RegisterRepository.DeleteUser(user);
+                    return Ok(new Response { Status = "Success", Message = "User Deleted Successfully" });
+                }
+                return NotFound($"User with email: {email} was not found");
             }
-            return NotFound($"User with email: {email} was not found");
+            catch (System.Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "500", Message = "Error due to server" });
+            }
+            
         }
 
         //[HttpPatch]

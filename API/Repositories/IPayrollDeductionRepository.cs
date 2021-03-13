@@ -8,7 +8,7 @@ namespace API.Repositories
 {
     public interface IPayrollDeductionRepository
     {
-        Task<IEnumerable<PayrollDeductionItem>> GetItemsAsync();
+        Task<IEnumerable<PayrollDeductionItem>> GetAllItemsAsync();
         Task<PayrollDeductionItem> GetItemAsync(int id);
         Task AddItemsAsync(PayrollDeductionItem payrollDeductionItem);
         void EditItems(PayrollDeductionItem payrollDeductionItem);

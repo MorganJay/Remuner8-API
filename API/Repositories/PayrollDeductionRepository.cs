@@ -28,11 +28,11 @@ namespace API.Repositories
 
         public async Task<PayrollDeductionItem> GetItemAsync(int id)
         {
-            var entry = await _remuner8Context.PayrollDeductionItems.FindAsync();
+            var entry = await _remuner8Context.PayrollDeductionItems.FindAsync(id);
             return entry;
         }
 
-        public async Task<IEnumerable<PayrollDeductionItem>> GetItemsAsync()
+        public async Task<IEnumerable<PayrollDeductionItem>> GetAllItemsAsync()
         {
             return await _remuner8Context.PayrollDeductionItems.ToListAsync();
         }
