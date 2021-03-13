@@ -37,7 +37,7 @@ namespace Remuner8_Backend.Controllers
             catch (System.Exception)
             {
 
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "500", Message = "Error due to server" });
+                throw;
             }
             
         }
@@ -58,7 +58,7 @@ namespace Remuner8_Backend.Controllers
             catch (System.Exception)
             {
 
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "500", Message = "Error due to server" });
+                throw;
             }
             
         }
@@ -83,7 +83,7 @@ namespace Remuner8_Backend.Controllers
             catch (System.Exception)
             {
 
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "500", Message = "Error due to server" });
+                throw;
             }
           
         }
@@ -106,7 +106,7 @@ namespace Remuner8_Backend.Controllers
             catch (System.Exception)
             {
 
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "500", Message = "Error due to server" });
+                throw;
             }
             
         }

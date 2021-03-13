@@ -37,7 +37,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "500", Message = "Error due to server" });
+                throw;
             }
         }
 
@@ -56,7 +56,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "INternal Server Error", Message = "Server error occured" });
+                throw;
             }
         }
 
@@ -77,7 +77,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Internal Server Error", Message = "Server error occured" });
+                throw;
             }
         }
 
@@ -96,7 +96,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Internal Server Error", Message = "Server error occured" });
+                throw;
             }
         }
 
@@ -115,7 +115,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Internal Server Error", Message = "Server error occured" });
+                throw;
             }
         }
     }

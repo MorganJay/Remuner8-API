@@ -53,7 +53,7 @@ namespace API.Controllers
             catch (Exception)
             {
 
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "INternal Server Error", Message = "Server error occured" });
+                throw;
             } 
         }
 
@@ -74,10 +74,10 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status400BadRequest);
 
             }
-                catch (Exception)
+            catch (Exception)
             {
 
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "INternal Server Error", Message = "Server error occured" });
+                throw;
             }
             
         }
@@ -108,7 +108,7 @@ namespace API.Controllers
             catch (Exception)
             {
 
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "INternal Server Error", Message = "Server error occured" });
+                throw;
             }
            
 

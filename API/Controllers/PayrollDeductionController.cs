@@ -40,13 +40,22 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult <PayrollDeductionItemReadDto>> GetItemAsync(int id)
         {
-            var item = await _payrollDeductionRepository.GetItemAsync(id);
-            if (item != null)
+            try
             {
-                var model = _imapper.Map<PayrollDeductionItemReadDto>(item);
-                return model;
+                var item = await _payrollDeductionRepository.GetItemAsync(id);
+                if (item != null)
+                {
+                    var model = _imapper.Map<PayrollDeductionItemReadDto>(item);
+                    return model;
+                }
+                return NotFound();
             }
-            return NotFound();
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         // POST api/<PayrollDeductionController>
@@ -83,7 +92,6 @@ namespace API.Controllers
 
         // DELETE api/<PayrollDeductionController>/5
         [HttpDelete("{id}")]
-        
         public async Task<ActionResult> Delete(int id)
         {
             try
@@ -100,7 +108,7 @@ namespace API.Controllers
             catch (Exception)
             {
 
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "INternal Server Error", Message = "Server error occured" });
+                throw;
             }
             
         }

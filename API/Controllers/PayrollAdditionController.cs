@@ -39,12 +39,22 @@ namespace API.Controllers
         [Route("api/[controller]/{id}")]
         public async Task<ActionResult <PayrollAdditionItemReadDto>> ReadEntryAsync(int id)
         {
-            var entry = await _payrollItemsRepository.GetEntryAsync(id);
-            if (entry == null )
+            try
             {
-                return StatusCode(StatusCodes.Status204NoContent, new Response { Status = "Error", Message = "User Entry Does Not Exist" });
+                var entry = await _payrollItemsRepository.GetEntryAsync(id);
+                if (entry == null )
+                {
+                    return StatusCode(StatusCodes.Status204NoContent, new Response { Status = "Error", Message = "User Entry Does Not Exist" });
+                }
+                return Ok(entry);
+
             }
-            return Ok(entry);
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         // POST api/<PayrollAdditionController>
