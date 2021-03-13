@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using API.Models;
 
@@ -14,7 +15,11 @@ namespace API.Repositories
 
         public void CreateLeaveType(LeaveType leaveType)
         {
-            throw new System.NotImplementedException();
+            if (leaveType == null)
+            {
+                throw new ArgumentNullException(nameof(leaveType));
+            }
+            _remuner8Context.LeaveTypes.Add(leaveType);
         }
 
         public IEnumerable<LeaveType> GetAllLeaveType()
@@ -22,9 +27,19 @@ namespace API.Repositories
             return _remuner8Context.LeaveTypes.ToList();
         }
 
+        public LeaveType GetLeaveById(int id)
+        {
+            return _remuner8Context.LeaveTypes.FirstOrDefault();
+        }
+
         public bool SaveChanges()
         {
-            throw new System.NotImplementedException();
+            return (_remuner8Context.SaveChanges() >= 0);
+        }
+
+        public void UpdateLeaveType(LeaveType leaveType)
+        {
+           
         }
         //public IEnumerable<LeaveType> GetAllLeaveType()
         //{

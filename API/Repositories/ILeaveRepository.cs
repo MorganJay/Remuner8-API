@@ -10,6 +10,8 @@ namespace API.Repositories
     {
         bool SaveChanges();  
         IEnumerable<LeaveType> GetAllLeaveType();
+        LeaveType GetLeaveById(int id);
         void CreateLeaveType(LeaveType leaveType);
+        void UpdateLeaveType(LeaveType leaveType);
     }
 }

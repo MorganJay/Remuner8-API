@@ -17,8 +17,9 @@ namespace API.Profiles
             CreateMap<PasswordCreateDto, Password>().ReverseMap();
             CreateMap<PayrollAdditionItem, PayrollAdditionItemCreateDto>().ReverseMap();
             CreateMap<PayrollAdditionItem, PayrollAdditionItemReadDto>().ReverseMap();
-            CreateMap<LeaveType, LeaveTypeCreateDto>().ReverseMap();
+            CreateMap<LeaveTypeCreateDto, LeaveType>().ReverseMap();
             CreateMap<LeaveType, LeaveTypeReadDto>().ReverseMap();
+           
 
         }
     }
