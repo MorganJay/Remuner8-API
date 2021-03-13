@@ -1,9 +1,11 @@
 ﻿using API.Authentication;
+using API.Data_Models.Dtos;
 using API.Dtos;
 using API.Models;
 using API.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -84,10 +86,33 @@ namespace API.Controllers
             
         }
 
-        // PUT api/<PayrollDeductionController>/5
         [HttpPatch("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult> UpdateEntry(int id, JsonPatchDocument<PayrollDeductionItemCreateDto> patchDoc)
         {
+            try
+            {
+                var entrymodel = await _payrollDeductionRepository.GetItemAsync(id);
+                if (entrymodel == null)
+                {
+                    return NotFound();
+                }
+                var entryToPatch = _imapper.Map<PayrollDeductionItemCreateDto>(entrymodel);
+                patchDoc.ApplyTo(entryToPatch, ModelState);
+            
+                _imapper.Map(entryToPatch, entrymodel);
+                if (await _payrollDeductionRepository.SaveChangesAsync())
+                {
+                    return Ok(_imapper.Map<PayrollDeductionItemCreateDto>(entrymodel));
+                }
+                return BadRequest();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         // DELETE api/<PayrollDeductionController>/5

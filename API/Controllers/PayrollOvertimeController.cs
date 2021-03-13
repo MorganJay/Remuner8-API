@@ -4,6 +4,7 @@ using API.Models;
 using API.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -83,10 +84,33 @@ namespace API.Controllers
         }
 
 
-        // PUT api/<PayrollOvertimeController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> UpdateEntry(int id, JsonPatchDocument<PayrollOvertimeItemCreateDto> patchDoc)
         {
+            try
+            {
+                var entrymodel = await _payrollOvertimeItemRepository.GetItemAsync(id);
+                if (entrymodel == null)
+                {
+                    return NotFound();
+                }
+                var entryToPatch = _mapper.Map<PayrollOvertimeItemCreateDto>(entrymodel);
+                patchDoc.ApplyTo(entryToPatch, ModelState);
+
+                _mapper.Map(entryToPatch, entrymodel);
+                if (await _payrollOvertimeItemRepository.SaveAsync())
+                {
+                    return Ok(_mapper.Map<PayrollOvertimeItemCreateDto>(entrymodel));
+                }
+                return BadRequest();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         // DELETE api/<PayrollOvertimeController>/5

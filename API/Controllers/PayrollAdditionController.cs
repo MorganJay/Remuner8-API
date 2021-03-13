@@ -68,21 +68,35 @@ namespace API.Controllers
             return CreatedAtRoute(nameof(ReadEntryAsync), new {id = mappedmodel.Id}, mappedmodel);
         }
 
-        //// PUT api/<PayrollAdditionController>/5
-        //[HttpPut]
-        //[Route("api/[controller]/{id}")]
-        //public ActionResult UpdateEntry(int id, PayrollAdditionItemCreateDto payrollAdditionItemCreateDto)
-        //{
-        //    var entryModel = _payrollItemsRepository.GetEntryAsync(id);
-        //    if (entryModel == null)
-        //    {
-        //        return BadRequest();
-        //    }
-        //    _payrollItemsRepository.EditEntry(payrollAdditionItemCreateDto);
-        //    _payrollItemsRepository.EditEntry(entryModel);
-        //    _payrollItemsRepository.SavechangesAsync();
-        //    return NoContent();
-        //}
+        //put api/<payrolladditioncontroller>/5
+        [HttpPatch]
+        [Route("api/[controller]/{id}")]
+        public async Task<ActionResult> UpdateEntry(int id, JsonPatchDocument<PayrollAdditionItemCreateDto> patchDoc)
+        {
+            try
+            {
+                var entrymodel = await _payrollItemsRepository.GetEntryAsync(id);
+                if (entrymodel == null)
+                {
+                    return NotFound();
+                }
+                var entryToPatch = _imapper.Map<PayrollAdditionItemCreateDto>(entrymodel);
+                patchDoc.ApplyTo(entryToPatch, ModelState);
+                _imapper.Map(entryToPatch, entrymodel);
+                if (await _payrollItemsRepository.SavechangesAsync())
+                {
+                    return Ok(_imapper.Map<PayrollAdditionItemCreateDto>(entrymodel));
+                }
+                return BadRequest();
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
+        }
 
         // DELETE api/<PayrollAdditionController>/5
         [HttpDelete]
