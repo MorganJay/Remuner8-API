@@ -48,7 +48,7 @@ namespace API.Repositories
 
         public async Task UpdateItem(int id, PayrollOvertimeItem payrollOvertimeItem)
         {
-            throw new NotImplementedException();
+            var item = await _remuner8Context.SaveChangesAsync();
         }
     }
 }
