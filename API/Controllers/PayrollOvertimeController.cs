@@ -36,7 +36,7 @@ namespace API.Controllers
             {
                 var item = await _payrollOvertimeItemRepository.GetAllAsync();
                 var model = _mapper.Map<IEnumerable<PayrollOvertimeItemReadDto>>(item);
-                return Ok(item);
+                return Ok(model);
 
             }
             catch (Exception)
