@@ -37,7 +37,7 @@ namespace API.Controllers
 
         // GET api/<PayrollDeductionController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult <PayrollDeductionItemReadDto>> GetItemAsync(int id)
+        public async Task<ActionResult<PayrollDeductionItemReadDto>> GetItemAsync(int id)
         {
             var item = await _payrollDeductionRepository.GetItemAsync(id);
             if (item != null)
@@ -71,7 +71,6 @@ namespace API.Controllers
 
         // DELETE api/<PayrollDeductionController>/5
         [HttpDelete("{id}")]
-        
         public void Delete(int id)
         {
         }

@@ -18,7 +18,7 @@ namespace API.Repositories
 
         public async Task AddItemsAsync(PayrollDeductionItem payrollDeductionItem)
         {
-           await _remuner8Context.PayrollDeductionItems.AddAsync(payrollDeductionItem);
+            await _remuner8Context.PayrollDeductionItems.AddAsync(payrollDeductionItem);
         }
 
         public void EditItems(PayrollDeductionItem payrollDeductionItem)
@@ -42,13 +42,13 @@ namespace API.Repositories
             var item = _remuner8Context.PayrollDeductionItems.Find(id);
             if (item != null)
             {
-               _remuner8Context.PayrollDeductionItems.Remove(item);
+                _remuner8Context.PayrollDeductionItems.Remove(item);
             }
         }
 
         public async Task<bool> SaveChangesAsync()
         {
-           return await _remuner8Context.SaveChangesAsync() >= 0;
+            return await _remuner8Context.SaveChangesAsync() >= 0;
         }
     }
 }
