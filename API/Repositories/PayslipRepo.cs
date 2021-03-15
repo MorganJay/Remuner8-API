@@ -28,12 +28,12 @@ namespace API.Repositories
                 FirstName = payslip.FirstName,
                 LastName = payslip.LastName,
                 OtherAllowances = payslip.OtherAllowances,
-                Pension= payslip.Tax.Pension,
+                Pension = payslip.Tax.Pension,
                 Paye = payslip.Tax.Paye,
                 JobDescriptionName = payslip.JobDescription.JobDescriptionName,
                 BasicSalary = payslip.JobDescription.BasicSalary,
                 HousingAllowances = payslip.JobDescription.HousingAllowance,
-                
+                payslip = payslip.Payslips ?? Enumerable.Empty<Payslip>(),
                 
 
             };

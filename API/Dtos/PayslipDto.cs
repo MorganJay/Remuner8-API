@@ -22,6 +22,6 @@ namespace API.Dtos
         public decimal Pension { get; set; }
         public string Payslip { get; set; }
         public string JobDescriptionName { get; set; }
-        public List<string> payslipId { get; set; }
+        public IEnumerable<Payslip> payslip { get; set; }
     }
 }

@@ -114,7 +114,7 @@ namespace API.Models
         [InverseProperty(nameof(PayrollTransaction.Employee))]
         public virtual ICollection<PayrollTransaction> PayrollTransactions { get; set; }
         [InverseProperty(nameof(Payslip.Employee))]
-        public virtual ICollection<Payslip> Payslips { get;}
+        public virtual ICollection<Payslip> Payslips { get; set; }
         [InverseProperty(nameof(StatutoryDeduction.Employee))]
         public virtual ICollection<StatutoryDeduction> StatutoryDeductions { get; set; }
     }
