@@ -30,7 +30,7 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddNewtonsoftJson(s => { s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver(); 
+            services.AddControllers().AddNewtonsoftJson(s => { s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
             services.AddSwaggerGen(c =>
             {
@@ -59,6 +59,7 @@ namespace API
             services.AddScoped<IPayrollDeductionRepository, PayrollDeductionRepository>();
             services.AddScoped<IPayrollOvertimeItemRepository, PayrollOvertimeItemRepository>();
 
+            services.AddScoped<ILeaveRepository, LeaveRepository>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
