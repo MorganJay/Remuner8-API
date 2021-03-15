@@ -15,7 +15,7 @@ namespace API.Repositories
             _remuner8Context = remuner8Context;
         }
 
-        public async  Task <PayslipDto> GetPayslipByIdAsync(string id)
+        public async Task<PayslipDto> GetPayslipByIdAsync(string id)
         {
             var payslip = await _remuner8Context.EmployeeBiodatas
                 .Include(staff => staff.JobDescription)
@@ -28,16 +28,12 @@ namespace API.Repositories
                 FirstName = payslip.FirstName,
                 LastName = payslip.LastName,
                 OtherAllowances = payslip.OtherAllowances,
-                Pension= payslip.Tax.Pension,
+                Pension = payslip.Tax.Pension,
                 Paye = payslip.Tax.Paye,
                 JobDescriptionName = payslip.JobDescription.JobDescriptionName,
                 BasicSalary = payslip.JobDescription.BasicSalary,
                 HousingAllowances = payslip.JobDescription.HousingAllowance,
-                
-                
-
             };
-           
 
             return PayslipDto;
         }

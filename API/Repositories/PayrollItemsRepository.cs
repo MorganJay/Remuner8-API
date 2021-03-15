@@ -23,7 +23,6 @@ namespace API.Repositories
 
         public void EditEntry(PayrollAdditionItem payrollAdditionItem)
         {
- 
         }
 
         public void EditEntry(Task<PayrollAdditionItem> entryModel)
@@ -40,7 +39,6 @@ namespace API.Repositories
         {
             var entry = await remuner8Context.PayrollAdditionItems.FindAsync(id);
             return entry;
-
         }
 
         public async Task RemoveEntryAsync(int id)
