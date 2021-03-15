@@ -9,10 +9,6 @@ namespace API.Dtos
 {
     public class LeaveTypeCreateDto
     {
-        [Key]
-        [Column("id")]
-        public int Id { get; set; }
-
         [Required]
         [Column("name")]
         [StringLength(100)]

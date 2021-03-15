@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories
 {
@@ -13,41 +15,45 @@ namespace API.Repositories
             _remuner8Context = remuner8Context;
         }
 
-        public void CreateLeaveType(LeaveType leaveType)
+        
+
+        public async Task CreateLeaveTypeAsync(LeaveType leaveType)
         {
-            if (leaveType == null)
+            if (leaveType is null)
             {
                 throw new ArgumentNullException(nameof(leaveType));
             }
-            _remuner8Context.LeaveTypes.Add(leaveType);
+           await _remuner8Context.LeaveTypes.AddAsync(leaveType);
         }
 
-        public IEnumerable<LeaveType> GetAllLeaveType()
+        public async Task <IEnumerable<LeaveType> >GetAllLeaveTypeAsync()
         {
-            return _remuner8Context.LeaveTypes.ToList();
+            return await _remuner8Context.LeaveTypes.ToListAsync();
         }
 
-        public LeaveType GetLeaveById(int id)
+        public async Task <LeaveType> GetLeaveById(int id)
         {
-            return _remuner8Context.LeaveTypes.FirstOrDefault();
+            return await _remuner8Context.LeaveTypes.FirstOrDefaultAsync();
         }
 
-        public bool SaveChanges()
+        public async Task <bool> SaveChanges()
         {
-            return (_remuner8Context.SaveChanges() >= 0);
+            try
+            {
+                 await _remuner8Context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+
+                return false;
+            }
+            
         }
 
         public void UpdateLeaveType(LeaveType leaveType)
         {
            
         }
-        //public IEnumerable<LeaveType> GetAllLeaveType()
-        //{
-        //    var leave = new List<LeaveType>
-        //    {
-        //        new LeaveType{Days = 30, Id = 1, Name = "Olawale Olalekan", Status = true }
-        //    };
-        //        return leave;
-        //}
     }
 }

@@ -8,10 +8,10 @@ namespace API.Repositories
 {
     public interface ILeaveRepository
     {
-        bool SaveChanges();  
-        IEnumerable<LeaveType> GetAllLeaveType();
-        LeaveType GetLeaveById(int id);
-        void CreateLeaveType(LeaveType leaveType);
+        Task <bool> SaveChanges();  
+        Task<IEnumerable<LeaveType>> GetAllLeaveTypeAsync();
+        Task <LeaveType> GetLeaveById(int id);
+        Task CreateLeaveTypeAsync(LeaveType leaveType);
         void UpdateLeaveType(LeaveType leaveType);
     }
 }
