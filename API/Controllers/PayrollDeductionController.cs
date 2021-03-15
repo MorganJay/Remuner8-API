@@ -1,8 +1,11 @@
-﻿using API.Dtos;
+﻿using API.Authentication;
+using API.Data_Models.Dtos;
+using API.Dtos;
 using API.Models;
 using API.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -30,49 +33,105 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<PayrollDeductionItemReadDto>>> GetAsync()
         {
-            var entry = await _payrollDeductionRepository.GetItemsAsync();
-            var model = _imapper.Map<IEnumerable<PayrollDeductionItemReadDto>>(entry);
-            return Ok(model);
+            try
+            {
+                var entry = await _payrollDeductionRepository.GetAllItemsAsync();
+                var model = _imapper.Map<IEnumerable<PayrollDeductionItemReadDto>>(entry);
+                return Ok(model);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // GET api/<PayrollDeductionController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PayrollDeductionItemReadDto>> GetItemAsync(int id)
         {
-            var item = await _payrollDeductionRepository.GetItemAsync(id);
-            if (item != null)
+            try
             {
-                var model = _imapper.Map<PayrollDeductionItemReadDto>(item);
-                return model;
+                var item = await _payrollDeductionRepository.GetItemAsync(id);
+                if (item != null)
+                {
+                    var model = _imapper.Map<PayrollDeductionItemReadDto>(item);
+                    return model;
+                }
+                return NotFound();
             }
-            return NotFound();
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // POST api/<PayrollDeductionController>
         [HttpPost]
         public async Task<ActionResult> AddAsync(PayrollDeductionItemCreateDto payrollDeductionItemCreateDto)
         {
-            var model = _imapper.Map<PayrollDeductionItem>(payrollDeductionItemCreateDto);
-            var entry = _payrollDeductionRepository.GetItemAsync(model.Id);
-            if (entry == null)
+            try
             {
-                return Conflict();
+                var model = _imapper.Map<PayrollDeductionItem>(payrollDeductionItemCreateDto);
+                var item = await _payrollDeductionRepository.GetItemAsync(model.Id);
+                if (item == null)
+                {
+                    await _payrollDeductionRepository.AddItemsAsync(model);
+                    await _payrollDeductionRepository.SaveChangesAsync();
+                    return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "Entry Successfully Created" });
+                }
+                return StatusCode(StatusCodes.Status400BadRequest);
             }
-            await _payrollDeductionRepository.AddItemsAsync(model);
-            await _payrollDeductionRepository.SaveChangesAsync();
-            return StatusCode(StatusCodes.Status201Created);
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Internal Server Error", Message = "Server Error Occured" });
+            }
         }
 
-        // PUT api/<PayrollDeductionController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> UpdateEntry(int id, JsonPatchDocument<PayrollDeductionItemCreateDto> patchDoc)
         {
+            try
+            {
+                var entrymodel = await _payrollDeductionRepository.GetItemAsync(id);
+                if (entrymodel == null)
+                {
+                    return NotFound();
+                }
+                var entryToPatch = _imapper.Map<PayrollDeductionItemCreateDto>(entrymodel);
+                patchDoc.ApplyTo(entryToPatch, ModelState);
+
+                _imapper.Map(entryToPatch, entrymodel);
+                if (await _payrollDeductionRepository.SaveChangesAsync())
+                {
+                    return Ok(_imapper.Map<PayrollDeductionItemCreateDto>(entrymodel));
+                }
+                return BadRequest();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         // DELETE api/<PayrollDeductionController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
+            try
+            {
+                var item = _payrollDeductionRepository.GetItemAsync(id);
+                if (item != null)
+                {
+                    await _payrollDeductionRepository.RemoveItemAsync(id);
+                    await _payrollDeductionRepository.SaveChangesAsync();
+                    return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = "Entry Successfully Deleted" });
+                }
+                return NotFound(new Response { Status = "Error", Message = "Entry Not Found!" });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

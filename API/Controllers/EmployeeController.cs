@@ -33,7 +33,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Server not Found" });
+                throw;
             }
         }
     }

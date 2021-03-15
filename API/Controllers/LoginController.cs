@@ -35,7 +35,7 @@ namespace Remuner8_Backend.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Login Not Successful | Server Unreachable" });
+                throw;
             }
         }
     }
