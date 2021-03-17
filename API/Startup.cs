@@ -4,17 +4,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Remuner8_Backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using API.Repositories;
-using System;
 using Remuner8_Backend.Repositories;
 using API.Models;
-using System.Reflection;
 using Newtonsoft.Json.Serialization;
 using API.Profiles;
-using AutoMapper;
 
 namespace API
 {
@@ -30,7 +26,9 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers().AddNewtonsoftJson(s => { s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            services.AddControllers().AddNewtonsoftJson(s =>
+            {
+                s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
             services.AddSwaggerGen(c =>
             {
@@ -58,7 +56,6 @@ namespace API
             services.AddScoped<IPayrollItemsRepository, PayrollItemsRepository>();
             services.AddScoped<IPayrollDeductionRepository, PayrollDeductionRepository>();
             services.AddScoped<IPayrollOvertimeItemRepository, PayrollOvertimeItemRepository>();
-
             services.AddScoped<ILeaveRepository, LeaveRepository>();
 
             // Enable CORS

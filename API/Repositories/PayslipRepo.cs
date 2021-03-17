@@ -20,7 +20,7 @@ namespace API.Repositories
             var payslip = await _remuner8Context.EmployeeBiodatas
                 .Include(staff => staff.JobDescription)
                 .Include(staff => staff.Tax)
-                .Include(staff => staff.Payslips)
+
                 .Where(staff => staff.EmployeeId == id).FirstOrDefaultAsync();
 
             var PayslipDto = new PayslipDto

@@ -22,5 +22,15 @@ namespace API.Repositories
             var employeecount = await context.EmployeeBiodatas.CountAsync();
             return employeecount;
         }
+
+        public async Task<IEnumerable<EmployeeBiodata>> GetAllEmployeesAsync()
+        {
+            return await context.EmployeeBiodatas.ToListAsync();
+        }
+
+        public async Task<bool> SaveChanges()
+        {
+            return await context.SaveChangesAsync() >= 0;
+        }
     }
 }
