@@ -26,50 +26,45 @@ namespace API.Controllers
             _payrollItemsRepository = payrollItems;
             _imapper = imapper;
         }
-        // GET: api/<PayrollAdditionController>
+
+        // GET: api/<PayrollAddition>
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<ActionResult <IEnumerable<PayrollAdditionItemReadDto>>> GetEntriesAsync()
+        public async Task<ActionResult<IEnumerable<PayrollAdditionItemReadDto>>> GetEntriesAsync()
         {
             try
             {
-                var item = await _payrollItemsRepository.GetEntriesAsync();
-                var model = _imapper.Map<IEnumerable<PayrollAdditionItemReadDto>>(item);
+                var items = await _payrollItemsRepository.GetEntriesAsync();
+                var model = _imapper.Map<IEnumerable<PayrollAdditionItemReadDto>>(items);
                 return Ok(model);
-
             }
             catch (Exception)
             {
-
                 throw;
             }
-            
         }
 
-        // GET api/<PayrollAdditionController>/5
+        // GET api/<PayrollAddition>/5
         [HttpGet]
         [Route("api/[controller]/{id}")]
-        public async Task<ActionResult <PayrollAdditionItemReadDto>> ReadEntryAsync(int id)
+        public async Task<ActionResult<PayrollAdditionItemReadDto>> ReadEntryAsync(int id)
         {
             try
             {
                 var entry = await _payrollItemsRepository.GetEntryAsync(id);
-                if (entry == null )
+                if (entry == null)
                 {
                     return StatusCode(StatusCodes.Status204NoContent, new Response { Status = "Error", Message = "User Entry Does Not Exist" });
                 }
                 return Ok(entry);
-
             }
             catch (Exception)
             {
-
                 throw;
             }
-            
         }
 
-        // POST api/<PayrollAdditionController>
+        // POST api/<PayrollAddition>
         [HttpPost]
         [Route("api/[controller]")]
         public async Task<ActionResult> CreateEntryAsync(PayrollAdditionItemCreateDto payrollAdditionItemCreateDto)
@@ -79,18 +74,15 @@ namespace API.Controllers
                 var mappedmodel = _imapper.Map<PayrollAdditionItem>(payrollAdditionItemCreateDto);
                 await _payrollItemsRepository.AddEntryAsync(mappedmodel);
                 await _payrollItemsRepository.SavechangesAsync();
-                return CreatedAtRoute(nameof(ReadEntryAsync), new {id = mappedmodel.Id}, mappedmodel);
-
+                return CreatedAtRoute(nameof(ReadEntryAsync), new { id = mappedmodel.Id }, mappedmodel);
             }
             catch (Exception)
             {
-
                 throw;
             }
-            
         }
 
-        //put api/<payrolladditioncontroller>/5
+        //put api/<PayrollAddition>/5
         [HttpPatch]
         [Route("api/[controller]/{id}")]
         public async Task<ActionResult> UpdateEntry(int id, JsonPatchDocument<PayrollAdditionItemCreateDto> patchDoc)
@@ -110,17 +102,14 @@ namespace API.Controllers
                     return Ok(_imapper.Map<PayrollAdditionItemCreateDto>(entrymodel));
                 }
                 return BadRequest();
-
             }
             catch (Exception)
             {
-
                 throw;
             }
-            
         }
 
-        // DELETE api/<PayrollAdditionController>/5
+        // DELETE api/<PayrollAddition>/5
         [HttpDelete]
         [Route("api/[controller]/{id}")]
         public async Task<ActionResult> DeleteAsync(int id)
@@ -130,16 +119,11 @@ namespace API.Controllers
                 await _payrollItemsRepository.RemoveEntryAsync(id);
                 await _payrollItemsRepository.SavechangesAsync();
                 return Ok(new Response { Status = "Success", Message = "Entry Deleted Successfully" });
-
             }
             catch (Exception)
             {
-
                 throw;
             }
-            
-            
         }
     }
 }
-

@@ -49,6 +49,7 @@ namespace API.Repositories
 
         public void UpdateLeaveType(LeaveType leaveType)
         {
+            //
         }
     }
 }

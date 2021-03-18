@@ -32,11 +32,11 @@ namespace API.Controllers
         }
 
         //GET api/leavetype/{id}
-        [HttpGet("{id}", Name ="GetLeaveTypeById")]
+        [HttpGet("{id}", Name = "GetLeaveTypeById")]
         public async Task<ActionResult<LeaveTypeReadDto>> GetLeaveTypeByIdAsync(int id)
         {
             var leaveItem = await _leaveType.GetLeaveById(id);
-            if (leaveItem != null)
+            if (leaveItem is not null)
             {
                 return Ok(_mapper.Map<LeaveTypeReadDto>(leaveItem));
             }
@@ -47,17 +47,18 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<LeaveTypeReadDto>> CreateLeaveTypeAsync(LeaveTypeCreateDto leaveTypeCreateDto)
         {
-            var leaveItems =  _mapper.Map<LeaveType>(leaveTypeCreateDto);
-           await  _leaveType.CreateLeaveTypeAsync(leaveItems);
-           await  _leaveType.SaveChanges();
+            var leaveItems = _mapper.Map<LeaveType>(leaveTypeCreateDto);
+            await _leaveType.CreateLeaveTypeAsync(leaveItems);
+            await _leaveType.SaveChanges();
 
             var leaveReadDto = _mapper.Map<LeaveTypeReadDto>(leaveItems);
 
-            return CreatedAtRoute(nameof(GetLeaveTypeByIdAsync), new { id = leaveReadDto.id }, leaveReadDto);
+            return CreatedAtRoute(nameof(GetLeaveTypeByIdAsync), new { id = leaveReadDto.Id }, leaveReadDto);
         }
+
         //PUT api/leavetype{id}
         [HttpPut]
-        public async Task <ActionResult> UpdateLeaveTypeDto(int id, LeaveTypeCreateDto leaveTypeUpdate)
+        public async Task<ActionResult> UpdateLeaveTypeDto(int id, LeaveTypeCreateDto leaveTypeUpdate)
         {
             var leaveFromrepo = await _leaveType.GetLeaveById(id);
             if (leaveFromrepo is null)
@@ -67,7 +68,7 @@ namespace API.Controllers
             _mapper.Map(leaveTypeUpdate, leaveFromrepo);
 
             _leaveType.UpdateLeaveType(leaveFromrepo);
-           await  _leaveType.SaveChanges();
+            await _leaveType.SaveChanges();
 
             return NoContent();
         }

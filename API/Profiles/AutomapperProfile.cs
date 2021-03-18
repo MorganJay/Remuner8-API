@@ -13,6 +13,7 @@ namespace API.Profiles
         public AutomapperProfile()
         {
             CreateMap<Password, PasswordReadDto>().ReverseMap();
+            CreateMap<EmployeeBiodata, EmployeeBiodataReadDto>();
             CreateMap<TimeSheet, TimeSheetDto>().ReverseMap();
             CreateMap<PasswordCreateDto, Password>().ReverseMap();
             CreateMap<PayrollAdditionItemCreateDto, PayrollAdditionItem>().ReverseMap();
