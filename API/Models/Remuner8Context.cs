@@ -113,8 +113,6 @@ namespace API.Models
 
                 entity.Property(e => e.OtherName).IsUnicode(false);
 
-                entity.Property(e => e.PayslipId).IsUnicode(false);
-
                 entity.Property(e => e.PhoneNumber).IsUnicode(false);
 
                 entity.Property(e => e.StateName).IsUnicode(false);
@@ -295,6 +293,8 @@ namespace API.Models
             {
                 entity.Property(e => e.PayslipId).IsUnicode(false);
 
+                entity.Property(e => e.Date).IsUnicode(false);
+
                 entity.Property(e => e.EmployeeId).IsUnicode(false);
 
                 entity.HasOne(d => d.Employee)
@@ -302,12 +302,6 @@ namespace API.Models
                     .HasForeignKey(d => d.EmployeeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Payslip_EmployeeBiodata");
-
-                entity.HasOne(d => d.Tax)
-                    .WithMany(p => p.Payslips)
-                    .HasForeignKey(d => d.TaxId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_Payslip_Taxes");
             });
 
             modelBuilder.Entity<PensionFundAdministration>(entity =>

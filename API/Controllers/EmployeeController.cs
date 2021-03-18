@@ -25,7 +25,8 @@ namespace API.Controllers
             employeeMapper = mapper;
         }
 
-        // GET: api/<EmployeeController>
+        // GET: api/Employee/count
+        [Route("count")]
         [HttpGet]
         public async Task<ActionResult<int>> GetEmplyeeCount()
         {
@@ -36,7 +37,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
         }
 

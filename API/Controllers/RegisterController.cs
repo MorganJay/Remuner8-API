@@ -37,7 +37,7 @@ namespace Remuner8_Backend.Controllers
             catch (System.Exception)
             {
 
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
             
         }
@@ -58,7 +58,7 @@ namespace Remuner8_Backend.Controllers
             catch (System.Exception)
             {
 
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
             
         }
@@ -83,7 +83,7 @@ namespace Remuner8_Backend.Controllers
             catch (System.Exception)
             {
 
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
           
         }
@@ -106,7 +106,7 @@ namespace Remuner8_Backend.Controllers
             catch (System.Exception)
             {
 
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
             
         }

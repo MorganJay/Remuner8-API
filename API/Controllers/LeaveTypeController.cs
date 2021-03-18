@@ -57,7 +57,7 @@ namespace API.Controllers
         }
 
         //PUT api/leavetype{id}
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateLeaveTypeDto(int id, LeaveTypeCreateDto leaveTypeUpdate)
         {
             var leaveFromrepo = await _leaveType.GetLeaveById(id);

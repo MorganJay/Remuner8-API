@@ -8,10 +8,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace API.Controllers
 {
@@ -40,7 +37,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
         }
 
@@ -60,7 +57,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
         }
 
@@ -78,11 +75,11 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
         }
 
-        //put api/<PayrollAddition>/5
+        //patch api/<PayrollAddition>/5
         [HttpPatch]
         [Route("api/[controller]/{id}")]
         public async Task<ActionResult> UpdateEntry(int id, JsonPatchDocument<PayrollAdditionItemCreateDto> patchDoc)
@@ -90,13 +87,12 @@ namespace API.Controllers
             try
             {
                 var entrymodel = await _payrollItemsRepository.GetEntryAsync(id);
-                if (entrymodel == null)
-                {
-                    return NotFound();
-                }
+                if (entrymodel is null) return NotFound();
+
                 var entryToPatch = _imapper.Map<PayrollAdditionItemCreateDto>(entrymodel);
                 patchDoc.ApplyTo(entryToPatch, ModelState);
                 _imapper.Map(entryToPatch, entrymodel);
+
                 if (await _payrollItemsRepository.SavechangesAsync())
                 {
                     return Ok(_imapper.Map<PayrollAdditionItemCreateDto>(entrymodel));
@@ -105,7 +101,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
         }
 
@@ -122,7 +118,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
         }
     }
