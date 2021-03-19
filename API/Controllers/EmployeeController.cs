@@ -66,7 +66,7 @@ namespace API.Controllers
                 var employee = await employeeRepository.GetEmployeeByIdAsync(id);
                 if (employee is not null) return Ok(employeeMapper.Map<EmployeeBiodataReadDto>(employee));
 
-                return NotFound(new Response { Status = "Error", Message = $"The timesheet with id={id} cannot be found" });
+                return NotFound(new Response { Status = "Error", Message = $"The employee with ID: {id} was not found" });
             }
             catch (Exception)
             {
