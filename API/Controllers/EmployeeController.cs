@@ -53,7 +53,25 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+            }
+        }
+
+        // GET: api/Employee/{id}
+        [HttpGet("{id}", Name = "GetEmployeeById")]
+        public async Task<ActionResult<EmployeeBiodataReadDto>> GetEmployeeById(string id)
+        {
+            try
+            {
+                var employee = await employeeRepository.GetEmployeeByIdAsync(id);
+                if (employee is not null) return Ok(employeeMapper.Map<EmployeeBiodataReadDto>(employee));
+
+                return NotFound(new Response { Status = "Error", Message = $"The timesheet with id={id} cannot be found" });
+            }
+            catch (Exception)
+            {
+                // throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
         }
     }

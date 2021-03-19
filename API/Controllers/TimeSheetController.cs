@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -50,7 +49,7 @@ namespace API.Controllers
                 var getTimeSheetById = await timeSheetRepository.GetTimeSheetByIdAsync(id);
                 if (getTimeSheetById == null)
                 {
-                    return BadRequest(new Response { Status = "badRequest", Message = $"The timesheet with id={id } cannot be found" });
+                    return BadRequest(new Response { Status = "Error", Message = $"The timesheet with id={id} cannot be found" });
                 }
                 return Ok(getTimeSheetById);
             }
@@ -66,10 +65,10 @@ namespace API.Controllers
         {
             try
             {
-                var Location = linkGenerator.GetPathByAction(" GetTimeSheetById", "TimeSheet", new { id = model.EmployeeId });
+                var Location = linkGenerator.GetPathByAction("GetTimeSheetById", "TimeSheet", new { id = model.EmployeeId });
                 if (string.IsNullOrWhiteSpace(Location))
                 {
-                    return BadRequest($"Could not find id path ");
+                    return BadRequest($"Could not find id path");
                 }
 
                 var newTimeSheet = await timeSheetRepository.AddTimeSheetAsync(model);
@@ -90,9 +89,9 @@ namespace API.Controllers
                 var updatedTimeSheet = await timeSheetRepository.UpdateTimeSheetAsync(model);
                 if (updatedTimeSheet)
                 {
-                    return Ok(new Response { Status = "Successful", Message = "The Update is Successful" });
+                    return Ok(new Response { Status = "Success", Message = "The Update was Successful" });
                 }
-                return BadRequest(new Response { Status = "Unsuccessful", Message = "The Update is not Successful" });
+                return BadRequest(new Response { Status = "Unsuccessful", Message = "The Update was not Successful" });
             }
             catch (Exception)
             {
@@ -109,9 +108,9 @@ namespace API.Controllers
                 var deletedTimeSheet = await timeSheetRepository.DeleteTimeSheetAsync(id);
                 if (deletedTimeSheet)
                 {
-                    return Ok(new Response { Status = "Successful", Message = "The Time sheet was deleted is Successful" });
+                    return Ok(new Response { Status = "Successful", Message = "The Time sheet was deleted Successfully" });
                 }
-                return BadRequest(new Response { Status = "Unsuccessful", Message = "The process is not Successful" });
+                return BadRequest(new Response { Status = "Unsuccessful", Message = "The process was not Successful" });
             }
             catch (Exception)
             {

@@ -26,9 +26,29 @@ namespace API.Repositories
             return await context.EmployeeBiodatas.ToListAsync();
         }
 
-        public async Task<bool> SaveChanges()
+        public async Task<EmployeeBiodata> GetEmployeeByIdAsync(string id)
+        {
+            return await context.EmployeeBiodatas.FindAsync(id);
+        }
+
+        public async Task<bool> SaveChangesAsync()
         {
             return await context.SaveChangesAsync() >= 0;
+        }
+
+        public Task CreateEmployeeAsync(EmployeeBiodata employee)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<bool> UpdateEmployee(EmployeeBiodata employee)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Task<bool> DeleteEmployeeAsync(EmployeeBiodata employee)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }
