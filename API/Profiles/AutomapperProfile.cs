@@ -13,17 +13,23 @@ namespace API.Profiles
         public AutomapperProfile()
         {
             CreateMap<Password, PasswordReadDto>().ReverseMap();
-            CreateMap<EmployeeBiodata, EmployeeBiodataReadDto>();
-            CreateMap<TimeSheet, TimeSheetDto>().ReverseMap();
             CreateMap<PasswordCreateDto, Password>().ReverseMap();
+
+            CreateMap<EmployeeBiodata, EmployeeBiodataReadDto>();
+            CreateMap<EmployeeBiodataCreateDto, EmployeeBiodata>().ReverseMap();
+            CreateMap<EmployeeBiodata, EmployeeBiodataCreateDto>();
+
+            CreateMap<TimeSheet, TimeSheetDto>().ReverseMap();
+
             CreateMap<PayrollAdditionItemCreateDto, PayrollAdditionItem>().ReverseMap();
             CreateMap<PayrollAdditionItem, PayrollAdditionItemReadDto>().ReverseMap();
-            CreateMap<LeaveTypeCreateDto, LeaveType>().ReverseMap();
-            CreateMap<LeaveType, LeaveTypeReadDto>().ReverseMap();
             CreateMap<PayrollDeductionItem, PayrollDeductionItemReadDto>();
             CreateMap<PayrollDeductionItem, PayrollDeductionItemCreateDto>().ReverseMap();
             CreateMap<PayrollOvertimeItem, PayrollOvertimeItemCreateDto>().ReverseMap();
             CreateMap<PayrollOvertimeItem, PayrollOvertimeItemReadDto>().ReverseMap();
+
+            CreateMap<LeaveTypeCreateDto, LeaveType>().ReverseMap();
+            CreateMap<LeaveType, LeaveTypeReadDto>().ReverseMap();
         }
     }
 }

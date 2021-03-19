@@ -5,7 +5,7 @@ namespace API.Dtos
     public class EmployeeBiodataReadDto
     {
         public string EmployeeId { get; set; }
-        public byte[] Avatar { get; set; }
+        public string Avatar { get; set; }
 
         public string FirstName { get; set; }
 

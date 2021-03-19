@@ -93,6 +93,8 @@ namespace API.Models
 
                 entity.Property(e => e.Address).IsUnicode(false);
 
+                entity.Property(e => e.Avatar).IsUnicode(false);
+
                 entity.Property(e => e.BankName).IsUnicode(false);
 
                 entity.Property(e => e.CountryName).IsUnicode(false);

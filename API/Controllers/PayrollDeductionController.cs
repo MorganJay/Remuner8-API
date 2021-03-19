@@ -95,7 +95,7 @@ namespace API.Controllers
                 var entrymodel = await _payrollDeductionRepository.GetItemAsync(id);
                 if (entrymodel == null)
                 {
-                    return NotFound();
+                    return NotFound(new Response { Status = "Error", Message = $"The payroll item with ID {id} could not be found." });
                 }
                 var entryToPatch = _imapper.Map<PayrollDeductionItemCreateDto>(entrymodel);
                 patchDoc.ApplyTo(entryToPatch, ModelState);

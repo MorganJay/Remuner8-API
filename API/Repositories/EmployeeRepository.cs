@@ -1,7 +1,7 @@
 ﻿using API.Models;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Repositories
@@ -17,8 +17,7 @@ namespace API.Repositories
 
         public async Task<int> EmployeeCountAsync()
         {
-            var employeecount = await context.EmployeeBiodatas.CountAsync();
-            return employeecount;
+            return await context.EmployeeBiodatas.CountAsync();
         }
 
         public async Task<IEnumerable<EmployeeBiodata>> GetAllEmployeesAsync()
@@ -36,19 +35,24 @@ namespace API.Repositories
             return await context.SaveChangesAsync() >= 0;
         }
 
-        public Task CreateEmployeeAsync(EmployeeBiodata employee)
+        public async Task CreateEmployeeAsync(EmployeeBiodata employee)
         {
-            throw new System.NotImplementedException();
+            if (employee is null) throw new ArgumentNullException(nameof(employee));
+
+            await context.EmployeeBiodatas.AddAsync(employee);
         }
 
-        public Task<bool> UpdateEmployee(EmployeeBiodata employee)
+        public async Task DeleteEmployeeAsync(EmployeeBiodata employee)
         {
-            throw new System.NotImplementedException();
+            var employeeToDelete = await context.EmployeeBiodatas.FindAsync(employee);
+            if (employeeToDelete is null) throw new ArgumentNullException(nameof(employee));
+
+            context.EmployeeBiodatas.Remove(employee);
         }
 
-        public Task<bool> DeleteEmployeeAsync(EmployeeBiodata employee)
+        public Task UpdateEmployee(EmployeeBiodata employee)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
