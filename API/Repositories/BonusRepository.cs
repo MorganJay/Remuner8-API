@@ -4,16 +4,20 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace API.Repositories
 {
     public class BonusRepository : IBonusRepository
     {
         private readonly Remuner8Context context;
+        private readonly IMapper mapper;
 
-        public BonusRepository(Remuner8Context context )
+        public BonusRepository(Remuner8Context context, IMapper mapper )
         {
             this.context = context;
+            this.mapper = mapper;
         }
         public async Task<BonusDto> AddBonusAsync(BonusDto model)
         {
@@ -27,6 +31,7 @@ namespace API.Repositories
                 };
 
                 var bonusentity = await context.AddAsync(bonus);
+                await  context.SaveChangesAsync();
                 var a = bonusentity.Entity;
                 model.BonusName = a.BonusName;
                 model.Amount = a.Amount;
@@ -41,9 +46,28 @@ namespace API.Repositories
             
         }
 
-        public   IEnumerable<BonusDto> GetAllBonusAsync()
+        public bool DeleteBonus(int id)
         {
-            var listOfBonuses =   context.Bonuses;
+            try
+            {
+                var deletebonus = context.Bonuses.Where(s => s.JobDescriptionId == id).FirstOrDefault();
+                if (deletebonus is not null)
+                {
+                    context.Bonuses.Remove(deletebonus);
+                    return true;
+                }
+                throw new ArgumentNullException();
+            }
+            catch (Exception)
+            {
+
+                throw new Exception();
+            }
+        }
+
+        public async  Task< IEnumerable<BonusDto>> GetAllBonusAsync()
+        {
+            var listOfBonuses =   await  context.Bonuses.ToListAsync();
             var listofBonusDto = new List<BonusDto>();
             
             foreach (var item in listOfBonuses)
@@ -59,9 +83,50 @@ namespace API.Repositories
             return listofBonusDto;
         }
 
+        public async  Task<BonusDto> GetBonusById(int id)
+        {
+            try
+            {
+                var getBonusById = await context.Bonuses.Where(s => s.JobDescriptionId == id).FirstOrDefaultAsync();
+                if ( getBonusById is not null) 
+                {
+                    var bonusDto = new BonusDto
+                    {
+                        BonusName = getBonusById.BonusName,
+                        Amount = getBonusById.Amount
+                    };
+                    return bonusDto;
+                }
+                throw new ArgumentNullException();
+            }
+            catch (Exception)
+            {
+
+                throw new Exception();
+            }
+        }
+
         public BonusDto UpdateBonusAsync(BonusDto model)
         {
-           var bonus= context.Bonuses.Find() 
+            try
+            {
+                var bonus = context.Bonuses.Find(model.JobDescriptionId);
+
+                bonus.BonusName = model.BonusName;
+                bonus.Amount = model.Amount;
+                context.Bonuses.Update(bonus);
+                context.SaveChanges();
+
+                return mapper.Map<BonusDto>(bonus);
+            }
+            catch (Exception)
+            {
+
+                throw new Exception("The update was not successful");
+            }
+
+
+
         }
     }
 }

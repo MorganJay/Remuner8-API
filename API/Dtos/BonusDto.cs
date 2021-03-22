@@ -7,6 +7,7 @@ namespace API.Dtos
 {
     public class BonusDto
     {
+        public int JobDescriptionId { get; set; }
         public string BonusName { get; set; }
         public decimal Amount { get; set; }
     }

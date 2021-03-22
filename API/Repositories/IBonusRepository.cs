@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace API.Repositories
 {
-    interface IBonusRepository
+   public  interface IBonusRepository
     {
-        IEnumerable<BonusDto> GetAllBonusAsync();
+       Task< IEnumerable<BonusDto>> GetAllBonusAsync();
         Task<BonusDto> AddBonusAsync(BonusDto model);
         BonusDto UpdateBonusAsync(BonusDto model);
-        
+        Task<BonusDto> GetBonusById(int id);
+        bool DeleteBonus(int id);
 
 
     }

@@ -29,11 +29,15 @@ namespace API.Controllers
             try
             {
                 var employeecount =  await employeeRepository.EmployeeCountAsync();
-                return Ok(employeecount);
+                if (employeecount > 0)
+                {
+                    return Ok(employeecount);
+                }
+                return BadRequest(new Response { Status = "Error ", Message = "There is no employee record found " });
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
     }
