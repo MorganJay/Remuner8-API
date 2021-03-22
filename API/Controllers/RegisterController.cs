@@ -3,6 +3,7 @@ using API.Authentication;
 using API.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Remuner8_Backend.Dtos;
 using Remuner8_Backend.EntityModels;
@@ -18,11 +19,15 @@ namespace Remuner8_Backend.Controllers
     public class RegisterController : ControllerBase
     {
         private readonly IUserAccountRepository RegisterRepository;
+        private readonly UserManager<IdentityUser> userManager;
+        private readonly SignInManager<IdentityUser> signInManager;
         private readonly IMapper _mapper;
 
-        public RegisterController(IUserAccountRepository registerRepository, IMapper mapper)
+        public RegisterController(IUserAccountRepository registerRepository, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IMapper mapper)
         {
             RegisterRepository = registerRepository;
+            this.userManager = userManager;
+            this.signInManager = signInManager;
             _mapper = mapper;
         }
 
@@ -65,26 +70,22 @@ namespace Remuner8_Backend.Controllers
 
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<ActionResult <PasswordReadDto>> AddUserAsync(PasswordCreateDto passwordcreatedto)
+        public async Task<ActionResult> AddUserAsync(PasswordCreateDto passwordcreatedto)
         {
-            try
+            var identityUser = new IdentityUser
             {
-                var passwordmodel = _mapper.Map<Password>(passwordcreatedto);
-                var userExists = await RegisterRepository.GetUserAsync(passwordcreatedto.Email);
-                if (userExists == null)
-                {
-                    await RegisterRepository.AddUserAsync(passwordmodel);
-                    await RegisterRepository.SaveChangesAsync();
-                    var passwordreaddto = _mapper.Map<PasswordReadDto>(passwordmodel);
-                    return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "User Created Successfully" });
-                }
-                return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User Already Exists" });
-            }
-            catch (System.Exception)
-            {
+                UserName = passwordcreatedto.Email,
+                Email = passwordcreatedto.Email
 
-                throw;
+            };
+            var signInUser=await userManager.CreateAsync(identityUser);
+            if (signInUser.Succeeded)
+            {
+                await  signInManager.SignInAsync(identityUser,true);
+                return Ok();
             }
+            return BadRequest();
+           
           
         }
 

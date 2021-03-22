@@ -1,5 +1,6 @@
 ﻿ using API.Authentication;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Remuner8_Backend.EntityModels;
 using Remuner8_Backend.Repositories;
@@ -15,10 +16,12 @@ namespace Remuner8_Backend.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IUserAccountRepository login;
+        private readonly SignInManager<IdentityUser> signInManager;
 
-        public LoginController(IUserAccountRepository login)
+        public LoginController(IUserAccountRepository login, SignInManager<IdentityUser>signInManager)
         {
             this.login = login;
+            this.signInManager = signInManager;
         }
 
         // POST api/<LoginController>
@@ -27,15 +30,23 @@ namespace Remuner8_Backend.Controllers
         {
             try
             {
-                if (await login.ValidateCredentialsAsync(model))
+                var userIdentity = new IdentityUser
                 {
-                    return Ok(new Response { Status = "Success", Message = "Login Successful" });
+                    Email = model.Email,
+                    UserName = model.Email
+                };
+               var signinUser= await  signInManager.PasswordSignInAsync(userIdentity, model.Password1, true, false);
+                if (signinUser.Succeeded)
+                {
+                    return Ok();
                 }
-                return NotFound(new Response { Status = "Failure", Message = "Login Unsuccessful\nInvalid Username or Password." });
+                return StatusCode(StatusCodes.Status401Unauthorized);
+
+
             }
             catch (Exception)
             {
-                throw;
+                return BadRequest();
             }
         }
     }
