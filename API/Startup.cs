@@ -48,7 +48,7 @@ namespace API
                 .AddEntityFrameworkStores<Remuner8Context>();
 
             services.AddControllersWithViews();
-
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
