@@ -53,7 +53,7 @@ namespace API.Repositories
         public async Task<bool> UpdateTimeSheetAsync(TimeSheetDto model)
         {
             var datatimesheet = await context.TimeSheets.FirstOrDefaultAsync(s => s.EmployeeId == model.EmployeeId);
-            if (datatimesheet != null)
+            if (datatimesheet is not null)
             {
                 mapper.Map(model, datatimesheet);
                 await context.SaveChangesAsync();

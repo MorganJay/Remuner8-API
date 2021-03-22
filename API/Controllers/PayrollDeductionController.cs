@@ -41,7 +41,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
         }
 
@@ -61,7 +61,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
         }
 
@@ -95,7 +95,7 @@ namespace API.Controllers
                 var entrymodel = await _payrollDeductionRepository.GetItemAsync(id);
                 if (entrymodel == null)
                 {
-                    return NotFound();
+                    return NotFound(new Response { Status = "Error", Message = $"The payroll item with ID {id} could not be found." });
                 }
                 var entryToPatch = _imapper.Map<PayrollDeductionItemCreateDto>(entrymodel);
                 patchDoc.ApplyTo(entryToPatch, ModelState);
@@ -109,7 +109,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
         }
 
@@ -130,7 +130,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
         }
     }

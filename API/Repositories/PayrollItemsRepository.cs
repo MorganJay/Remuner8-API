@@ -9,20 +9,16 @@ namespace API.Repositories
 {
     public class PayrollItemsRepository : IPayrollItemsRepository
     {
-        private readonly Remuner8Context remuner8Context;
+        private readonly Remuner8Context _remuner8Context;
 
-        public PayrollItemsRepository(Remuner8Context _remuner8Context)
+        public PayrollItemsRepository(Remuner8Context remuner8Context)
         {
-            remuner8Context = _remuner8Context;
+            _remuner8Context = remuner8Context;
         }
 
         public async Task AddEntryAsync(PayrollAdditionItem payrollAdditionItem)
         {
-            await remuner8Context.PayrollAdditionItems.AddAsync(payrollAdditionItem);
-        }
-
-        public void EditEntry(PayrollAdditionItem payrollAdditionItem)
-        {
+            await _remuner8Context.PayrollAdditionItems.AddAsync(payrollAdditionItem);
         }
 
         public void EditEntry(Task<PayrollAdditionItem> entryModel)
@@ -32,24 +28,24 @@ namespace API.Repositories
 
         public async Task<IEnumerable<PayrollAdditionItem>> GetEntriesAsync()
         {
-            return await remuner8Context.PayrollAdditionItems.ToListAsync();
+            return await _remuner8Context.PayrollAdditionItems.ToListAsync();
         }
 
         public async Task<PayrollAdditionItem> GetEntryAsync(int id)
         {
-            var entry = await remuner8Context.PayrollAdditionItems.FindAsync(id);
+            var entry = await _remuner8Context.PayrollAdditionItems.FindAsync(id);
             return entry;
         }
 
         public async Task RemoveEntryAsync(int id)
         {
-            var entry = await remuner8Context.PayrollAdditionItems.FindAsync(id);
-            remuner8Context.PayrollAdditionItems.Remove(entry);
+            var entry = await _remuner8Context.PayrollAdditionItems.FindAsync(id);
+            _remuner8Context.PayrollAdditionItems.Remove(entry);
         }
 
         public async Task<bool> SavechangesAsync()
         {
-            return await remuner8Context.SaveChangesAsync() >= 0;
+            return await _remuner8Context.SaveChangesAsync() >= 0;
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿using API.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Repositories
@@ -15,11 +13,10 @@ namespace API.Repositories
 
         Task AddEntryAsync(PayrollAdditionItem payrollAdditionItem);
 
-        void EditEntry(PayrollAdditionItem payrollAdditionItem);
-
         Task RemoveEntryAsync(int id);
 
         Task<bool> SavechangesAsync();
+
         void EditEntry(Task<PayrollAdditionItem> entryModel);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Threading.Tasks;
 using API.Dtos;
 using API.Models;
@@ -17,25 +18,31 @@ namespace API.Repositories
 
         public async Task<PayslipDto> GetPayslipByIdAsync(string id)
         {
-            var payslip = await _remuner8Context.EmployeeBiodatas
-                .Include(staff => staff.JobDescription)
-                .Include(staff => staff.Tax)
-                .Include(staff => staff.Payslips)
-                .Where(staff => staff.EmployeeId == id).FirstOrDefaultAsync();
+            var employeeBiodata = await _remuner8Context.EmployeeBiodatas
+              .Include(employee => employee.JobDescription)
+              .Include(employee => employee.Tax)
+              .Where(staff => staff.EmployeeId == id).FirstOrDefaultAsync();
 
-            var PayslipDto = new PayslipDto
+            if (employeeBiodata is not null)
             {
-                FirstName = payslip.FirstName,
-                LastName = payslip.LastName,
-                OtherAllowances = payslip.OtherAllowances,
-                Pension = payslip.Tax.Pension,
-                Paye = payslip.Tax.Paye,
-                JobDescriptionName = payslip.JobDescription.JobDescriptionName,
-                BasicSalary = payslip.JobDescription.BasicSalary,
-                HousingAllowances = payslip.JobDescription.HousingAllowance,
-            };
+                var PayslipDto = new PayslipDto
+                {
+                    FirstName = employeeBiodata.FirstName,
+                    LastName = employeeBiodata.LastName,
+                    JobDescriptionName = employeeBiodata.JobDescription.JobDescriptionName,
+                    EmployeeId = employeeBiodata.EmployeeId,
+                    DateJoined = employeeBiodata.DateEmployed,
+                    BasicSalary = employeeBiodata.JobDescription.BasicSalary,
+                    HousingAllowance = employeeBiodata.JobDescription.HousingAllowance,
+                    TransportAllowance = employeeBiodata.JobDescription.TransportAllowance,
+                    OtherAllowances = employeeBiodata.OtherAllowances,
+                    Paye = employeeBiodata.Tax.Paye,
+                    Pension = employeeBiodata.Tax.Pension
+                };
 
-            return PayslipDto;
+                return PayslipDto;
+            }
+            throw new ArgumentNullException(nameof(id));
         }
     }
 }
