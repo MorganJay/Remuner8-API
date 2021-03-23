@@ -26,7 +26,9 @@ namespace API.Repositories
                 var bonus = new Bonus
                 {
                     BonusName = model.BonusName,
-                    Amount = model.Amount
+                    Amount = model.Amount,
+                  
+                    
 
                 };
 
@@ -67,7 +69,9 @@ namespace API.Repositories
 
         public async  Task< IEnumerable<BonusDto>> GetAllBonusAsync()
         {
-            var listOfBonuses =   await  context.Bonuses.ToListAsync();
+            var listOfBonuses = await context.Bonuses
+                .Include(s => s.JobDescription)
+                .Include(s => s.Department).ToListAsync();
             var listofBonusDto = new List<BonusDto>();
             
             foreach (var item in listOfBonuses)
@@ -76,6 +80,10 @@ namespace API.Repositories
                 {
                     BonusName = item.BonusName,
                     Amount = item.Amount,
+                    JobDescriptionName = item.JobDescription.JobDescriptionName,
+                    DepartmentName=item.Department.DepartmentName
+                    
+
                 };
                 listofBonusDto.Add(bonusDto);
 
