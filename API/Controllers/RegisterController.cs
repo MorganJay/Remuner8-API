@@ -1,6 +1,4 @@
-﻿using API;
-using API.Authentication;
-using API.Models;
+﻿using API.Authentication;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -33,7 +31,7 @@ namespace Remuner8_Backend.Controllers
 
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<ActionResult <IEnumerable<PasswordReadDto>>> GetUsersAsync()
+        public async Task<ActionResult<IEnumerable<PasswordReadDto>>> GetUsersAsync()
         {
             try
             {
@@ -41,15 +39,13 @@ namespace Remuner8_Backend.Controllers
             }
             catch (System.Exception)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
-            
         }
 
         [HttpGet]
         [Route("api/[controller]/{email}")]
-        public async Task<ActionResult <PasswordReadDto>> GetUserAsync(string email)
+        public async Task<ActionResult<PasswordReadDto>> GetUserAsync(string email)
         {
             try
             {
@@ -62,10 +58,8 @@ namespace Remuner8_Backend.Controllers
             }
             catch (System.Exception)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
-            
         }
 
         [HttpPost]
@@ -76,17 +70,14 @@ namespace Remuner8_Backend.Controllers
             {
                 UserName = passwordcreatedto.Email,
                 Email = passwordcreatedto.Email
-
             };
-            var signInUser=await userManager.CreateAsync(identityUser);
+            var signInUser = await userManager.CreateAsync(identityUser);
             if (signInUser.Succeeded)
             {
-                await  signInManager.SignInAsync(identityUser,true);
+                await signInManager.SignInAsync(identityUser, true);
                 return Ok();
             }
             return BadRequest();
-           
-          
         }
 
         [HttpDelete]
@@ -106,10 +97,8 @@ namespace Remuner8_Backend.Controllers
             }
             catch (System.Exception)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
-            
         }
 
         //[HttpPatch]
