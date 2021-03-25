@@ -14,12 +14,15 @@ namespace API.Models
         [Column("email")]
         [StringLength(50)]
         public string Email { get; set; }
+
         [Required]
         [Column("password")]
         [StringLength(32)]
         public string Password1 { get; set; }
+
         [Column("dateCreated", TypeName = "date")]
         public DateTime DateCreated { get; set; }
+
         [Column("roleId")]
         public int? RoleId { get; set; }
 
