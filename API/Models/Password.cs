@@ -18,6 +18,10 @@ namespace API.Models
         [Column("password")]
         [StringLength(32)]
         public string Password1 { get; set; }
+        [Column("dateCreated", TypeName = "date")]
+        public DateTime DateCreated { get; set; }
+        [Column("roleId")]
+        public int? RoleId { get; set; }
 
         [InverseProperty("EmailAddressNavigation")]
         public virtual EmployeeBiodata EmployeeBiodata { get; set; }

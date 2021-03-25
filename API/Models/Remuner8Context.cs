@@ -1,6 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
@@ -36,6 +34,7 @@ namespace API.Models
         public virtual DbSet<PayrollTransaction> PayrollTransactions { get; set; }
         public virtual DbSet<Payslip> Payslips { get; set; }
         public virtual DbSet<PensionFundAdministration> PensionFundAdministrations { get; set; }
+        public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<StatutoryDeduction> StatutoryDeductions { get; set; }
         public virtual DbSet<SystemDefault> SystemDefaults { get; set; }
         public virtual DbSet<Tax> Taxes { get; set; }
@@ -146,6 +145,12 @@ namespace API.Models
             modelBuilder.Entity<JobDescription>(entity =>
             {
                 entity.Property(e => e.JobDescriptionName).IsUnicode(false);
+
+                entity.HasOne(d => d.Department)
+                    .WithMany(p => p.JobDescriptions)
+                    .HasForeignKey(d => d.DepartmentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_JobDescriptions_Departments");
             });
 
             modelBuilder.Entity<LeaveType>(entity =>
@@ -318,6 +323,17 @@ namespace API.Models
                 entity.Property(e => e.Address).IsUnicode(false);
 
                 entity.Property(e => e.PfaName).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Request>(entity =>
+            {
+                entity.Property(e => e.Date).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.Property(e => e.Reason).IsUnicode(false);
+
+                entity.Property(e => e.Status).IsUnicode(false);
             });
 
             modelBuilder.Entity<StatutoryDeduction>(entity =>

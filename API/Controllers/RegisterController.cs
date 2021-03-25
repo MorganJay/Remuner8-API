@@ -1,12 +1,12 @@
-﻿using API;
-using API.Authentication;
-using API.Models;
+﻿using API.Authentication;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Remuner8_Backend.Dtos;
 using Remuner8_Backend.EntityModels;
 using Remuner8_Backend.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,74 +18,90 @@ namespace Remuner8_Backend.Controllers
     public class RegisterController : ControllerBase
     {
         private readonly IUserAccountRepository RegisterRepository;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IMapper _mapper;
 
-        public RegisterController(IUserAccountRepository registerRepository, IMapper mapper)
+        public RegisterController(IUserAccountRepository registerRepository, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IMapper mapper)
         {
             RegisterRepository = registerRepository;
+            _userManager = userManager;
+            _signInManager = signInManager;
             _mapper = mapper;
         }
 
         [HttpGet]
         [Route("api/[controller]")]
-        public async Task<ActionResult <IEnumerable<PasswordReadDto>>> GetUsersAsync()
+        public async Task<ActionResult<IEnumerable<PasswordReadDto>>> GetUsersAsync()
         {
             try
             {
                 return Ok(await RegisterRepository.GetUsersAsync());
             }
-            catch (System.Exception)
+            catch (Exception)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
-            
         }
 
         [HttpGet]
         [Route("api/[controller]/{email}")]
-        public async Task<ActionResult <PasswordReadDto>> GetUserAsync(string email)
+        public async Task<ActionResult<PasswordReadDto>> GetUserAsync(string email)
         {
             try
             {
                 var userItem = await RegisterRepository.GetUserAsync(email);
-                if (userItem != null)
+                if (userItem is not null)
                 {
                     return Ok(_mapper.Map<PasswordReadDto>(userItem));
                 }
                 return NotFound($"User with email: {email} was not found");
             }
-            catch (System.Exception)
+            catch (Exception)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
-            
         }
+
+        //[HttpPost]
+        //[Route("api/[controller]")]
+        //public async Task<ActionResult <PasswordReadDto>> AddUserAsync(PasswordCreateDto passwordcreatedto)
+        //{
+        //    try
+        //    {
+        //        var passwordmodel = _mapper.Map<Password>(passwordcreatedto);
+        //        var userExists = await RegisterRepository.GetUserAsync(passwordcreatedto.Email);
+        //        if (userExists == null)
+        //        {
+        //            await RegisterRepository.AddUserAsync(passwordmodel);
+        //            await RegisterRepository.SaveChangesAsync();
+        //            var passwordreaddto = _mapper.Map<PasswordReadDto>(passwordmodel);
+        //            return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "User Created Successfully" });
+        //        }
+        //        return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User Already Exists" });
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+        //    }
+        //}
 
         [HttpPost]
         [Route("api/[controller]")]
-        public async Task<ActionResult <PasswordReadDto>> AddUserAsync(PasswordCreateDto passwordcreatedto)
+        public async Task<ActionResult> AddUserAsync(PasswordCreateDto passwordCreateDto)
         {
-            try
+            var identityUser = new IdentityUser
             {
-                var passwordmodel = _mapper.Map<Password>(passwordcreatedto);
-                var userExists = await RegisterRepository.GetUserAsync(passwordcreatedto.Email);
-                if (userExists == null)
-                {
-                    await RegisterRepository.AddUserAsync(passwordmodel);
-                    await RegisterRepository.SaveChangesAsync();
-                    var passwordreaddto = _mapper.Map<PasswordReadDto>(passwordmodel);
-                    return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "User Created Successfully" });
-                }
-                return StatusCode(StatusCodes.Status409Conflict, new Response { Status = "Error", Message = "User Already Exists" });
-            }
-            catch (System.Exception)
+                UserName = passwordCreateDto.Email,
+                Email = passwordCreateDto.Email
+            };
+            var signInUser = await _userManager.CreateAsync(identityUser);
+            if (signInUser.Succeeded)
             {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                await _signInManager.SignInAsync(identityUser, true);
+                return Ok(identityUser);
             }
-          
+            return BadRequest();
         }
 
         [HttpDelete]
@@ -103,12 +119,10 @@ namespace Remuner8_Backend.Controllers
                 }
                 return NotFound($"User with email: {email} was not found");
             }
-            catch (System.Exception)
+            catch (Exception)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
-            
         }
 
         //[HttpPatch]
