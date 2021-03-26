@@ -18,7 +18,7 @@ namespace API.Models
         public int DepartmentId { get; set; }
 
         [Column("bonusName", TypeName = "decimal(19, 4)")]
-        public decimal BonusName { get; set; }
+        public string BonusName { get; set; }
 
         [Column("amount", TypeName = "decimal(19, 4)")]
         public decimal Amount { get; set; }
