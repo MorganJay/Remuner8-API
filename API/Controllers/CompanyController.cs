@@ -19,10 +19,11 @@ namespace API.Controllers
         {
             this.repo = repo;
         }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<SystemDefault>>> GetCompanyDetails()
         {
-           var companyInfo = await repo.GetCompanyDetailsAsync();
+            var companyInfo = await repo.GetCompanyDetailsAsync();
             return Ok(companyInfo);
         }
     }

@@ -34,9 +34,9 @@ namespace Remuner8_Backend.Controllers
         [Route("api/[controller]")]
         public async Task<ActionResult<IEnumerable<PasswordReadDto>>> GetUsersAsync()
         {
+            return Ok(await RegisterRepository.GetUsersAsync());
             try
             {
-                return Ok(await RegisterRepository.GetUsersAsync());
             }
             catch (Exception)
             {
@@ -106,13 +106,13 @@ namespace Remuner8_Backend.Controllers
 
         [HttpDelete]
         [Route("api/[controller]/{email}")]
-        public async Task<IActionResult> DeleteUserAsync(string email)
+        public async Task<ActionResult> DeleteUserAsync(string email)
         {
             try
             {
                 var user = await RegisterRepository.GetUserAsync(email);
 
-                if (user != null)
+                if (user is not null)
                 {
                     RegisterRepository.DeleteUser(user);
                     return Ok(new Response { Status = "Success", Message = "User Deleted Successfully" });

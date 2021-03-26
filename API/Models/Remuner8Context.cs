@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using API.Dtos;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
@@ -18,7 +19,7 @@ namespace API.Models
 
         public virtual DbSet<AssigneeTable> AssigneeTables { get; set; }
         public virtual DbSet<Bonus> Bonuses { get; set; }
-        public virtual DbSet<Departments> Departments { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<EmployeeBiodata> EmployeeBiodatas { get; set; }
         public virtual DbSet<EmploymentType> EmploymentTypes { get; set; }
         public virtual DbSet<JobDescription> JobDescriptions { get; set; }
@@ -64,6 +65,8 @@ namespace API.Models
 
             modelBuilder.Entity<Bonus>(entity =>
             {
+                entity.Property(e => e.BonusName).IsUnicode(false);
+
                 entity.HasOne(d => d.Department)
                     .WithMany()
                     .HasForeignKey(d => d.DepartmentId)
@@ -77,7 +80,7 @@ namespace API.Models
                     .HasConstraintName("FK__Bonuses__jobDesc__2C3393D0");
             });
 
-            modelBuilder.Entity<Departments>(entity =>
+            modelBuilder.Entity<Department>(entity =>
             {
                 entity.Property(e => e.DepartmentName).IsUnicode(false);
             });
@@ -413,7 +416,5 @@ namespace API.Models
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
-        public DbSet<API.Dtos.DepartmentDto> DepartmentReadDto { get; set; }
     }
 }

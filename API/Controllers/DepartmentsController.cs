@@ -68,7 +68,7 @@ namespace API.Controllers
         }
 
         //  PUT: api/Department/5
-        //  To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<ActionResult> PutDepartment(int id, DepartmentDto departmentDto)
         {
