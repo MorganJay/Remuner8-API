@@ -30,6 +30,7 @@ namespace API.Profiles
             CreateMap<PayrollDeductionItem, PayrollDeductionItemCreateDto>().ReverseMap();
             CreateMap<PayrollOvertimeItem, PayrollOvertimeItemCreateDto>().ReverseMap();
             CreateMap<PayrollOvertimeItem, PayrollOvertimeItemReadDto>().ReverseMap();
+
             CreateMap<Bonus, BonusDto>().ReverseMap();
 
             CreateMap<LeaveTypeCreateDto, LeaveType>().ReverseMap();
