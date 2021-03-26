@@ -51,6 +51,7 @@ namespace API
 
             services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
             services.AddScoped<IPayslipRepository, PayslipRepo>();
             services.AddScoped<IPayrollItemsRepository, PayrollItemsRepository>();

@@ -51,5 +51,12 @@ namespace API.Repositories
         {
             //
         }
+
+        public async Task DeleteLeaveTypeAsync(int id)
+        {
+            var leaveTypeToDelete = await _remuner8Context.LeaveTypes.FindAsync(id);
+
+            if (leaveTypeToDelete is not null) _remuner8Context.LeaveTypes.Remove(leaveTypeToDelete);
+        }
     }
 }

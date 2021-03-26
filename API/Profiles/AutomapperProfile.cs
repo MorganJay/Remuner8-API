@@ -19,6 +19,9 @@ namespace API.Profiles
             CreateMap<EmployeeBiodataCreateDto, EmployeeBiodata>().ReverseMap();
             CreateMap<EmployeeBiodata, EmployeeBiodataCreateDto>();
 
+            CreateMap<Departments, DepartmentDto>().ReverseMap();
+            CreateMap<Departments, DepartmentCreateDto>().ReverseMap();
+
             CreateMap<TimeSheet, TimeSheetDto>().ReverseMap();
 
             CreateMap<PayrollAdditionItemCreateDto, PayrollAdditionItem>().ReverseMap();

@@ -36,7 +36,7 @@ namespace API.Models
 
         [ForeignKey(nameof(DepartmentId))]
         [InverseProperty("JobDescriptions")]
-        public virtual Department Department { get; set; }
+        public virtual Departments Department { get; set; }
 
         [InverseProperty(nameof(EmployeeBiodata.JobDescription))]
         public virtual ICollection<EmployeeBiodata> EmployeeBiodatas { get; set; }

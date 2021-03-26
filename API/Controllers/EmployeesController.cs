@@ -16,12 +16,12 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeeController : ControllerBase
+    public class EmployeesController : ControllerBase
     {
         private readonly IEmployeeRepository employeeRepository;
         private readonly IMapper employeeMapper;
 
-        public EmployeeController(IEmployeeRepository employeeRepository, IMapper mapper)
+        public EmployeesController(IEmployeeRepository employeeRepository, IMapper mapper)
         {
             this.employeeRepository = employeeRepository;
             employeeMapper = mapper;

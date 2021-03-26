@@ -15,5 +15,7 @@ namespace API.Repositories
         Task CreateLeaveTypeAsync(LeaveType leaveType);
 
         void UpdateLeaveType(LeaveType leaveType);
+
+        Task DeleteLeaveTypeAsync(int id);
     }
 }
