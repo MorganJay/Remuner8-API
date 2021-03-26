@@ -9,10 +9,8 @@ namespace API.Repositories
     public interface ICompanyRepository
     {
         Task<IEnumerable<SystemDefault>> GetCompanyDetailsAsync();
+
         // Task<bool> SaveAllAsync();
         // void Update(SystemDefault Company);
-
-
-
     }
 }
