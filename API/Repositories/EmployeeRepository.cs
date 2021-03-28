@@ -22,7 +22,9 @@ namespace API.Repositories
 
         public async Task<IEnumerable<EmployeeBiodata>> GetAllEmployeesAsync()
         {
-            return await context.EmployeeBiodatas.ToListAsync();
+            return await context.EmployeeBiodatas.Include(e => e.JobDescription.JobDescriptionName)
+                                                  .Include(e => e.Department.DepartmentName)
+                                                  .ToListAsync();
         }
 
         public async Task<EmployeeBiodata> GetEmployeeByIdAsync(string id)
@@ -44,13 +46,13 @@ namespace API.Repositories
 
         public async Task DeleteEmployeeAsync(EmployeeBiodata employee)
         {
-            var employeeToDelete = await context.EmployeeBiodatas.FindAsync(employee);
+            var employeeToDelete = await context.EmployeeBiodatas.FindAsync(employee.EmployeeId);
             if (employeeToDelete is null) throw new ArgumentNullException(nameof(employee));
 
             context.EmployeeBiodatas.Remove(employee);
         }
 
-        public Task UpdateEmployee(EmployeeBiodata employee)
+        public Task UpdateEmployee(string id)
         {
             throw new NotImplementedException();
         }

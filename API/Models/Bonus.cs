@@ -17,14 +17,16 @@ namespace API.Models
         [Column("departmentId")]
         public int DepartmentId { get; set; }
 
-        [Column("bonusName", TypeName = "decimal(19, 4)")]
+        [Required]
+        [Column("bonusName")]
+        [StringLength(100)]
         public string BonusName { get; set; }
 
         [Column("amount", TypeName = "decimal(19, 4)")]
         public decimal Amount { get; set; }
 
         [ForeignKey(nameof(DepartmentId))]
-        public virtual Departments Department { get; set; }
+        public virtual Department Department { get; set; }
 
         [ForeignKey(nameof(JobDescriptionId))]
         public virtual JobDescription JobDescription { get; set; }

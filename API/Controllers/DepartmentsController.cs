@@ -31,16 +31,39 @@ namespace API.Controllers
             return _departmentsRepo.DepartmentExists(name);
         }
 
-        // GET: api/Department
+        // GET: api/Departments/count
+        [Route("count")]
+        [HttpGet]
+        public async Task<ActionResult<int>> GetEmplyeeCount()
+        {
+            try
+            {
+                var count = await _departmentsRepo.DepartmentsCountAsync();
+                return Ok(new Response { Message = "Departments count", Count = count, Status = "Success" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+        }
+
+        // GET: api/Departments
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DepartmentDto>>> GetDepartments()
         {
-            var departmentsFromRepo = await _departmentsRepo.GetAllDepartmentsAsync();
-            var departments = _mapper.Map<IEnumerable<DepartmentDto>>(departmentsFromRepo);
-            return Ok(departments);
+            try
+            {
+                var departmentsFromRepo = await _departmentsRepo.GetAllDepartmentsAsync();
+                var departments = _mapper.Map<IEnumerable<DepartmentDto>>(departmentsFromRepo);
+                return Ok(departments);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
         }
 
-        // GET: api/Department/5
+        // GET: api/Departments/5
         [HttpGet("{id}")]
         public async Task<ActionResult<DepartmentDto>> GetDepartment(int id)
         {
@@ -51,14 +74,16 @@ namespace API.Controllers
             return NotFound(new Response { Status = "Error", Message = $"The department with ID: {id} does not exist." });
         }
 
-        // POST: api/Department
+        // POST: api/Departments
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<DepartmentDto>> PostDepartment(DepartmentCreateDto departmentCreateDto)
         {
-            if (await DepartmentNameExists(departmentCreateDto.DepartmentName)) return StatusCode(StatusCodes.Status400BadRequest, new Response { Status = "Error", Message = "A department with that name already exists" });
+            if (await DepartmentNameExists(departmentCreateDto.DepartmentName))
+                return StatusCode(StatusCodes.Status400BadRequest,
+                    new Response { Status = "Error", Message = "A department with that name already exists" });
 
-            var department = _mapper.Map<Departments>(departmentCreateDto);
+            var department = _mapper.Map<Department>(departmentCreateDto);
             await _departmentsRepo.CreateDepartmentAsync(department);
             await _departmentsRepo.SaveChangesAsync();
 
@@ -67,7 +92,7 @@ namespace API.Controllers
             return CreatedAtAction("GetDepartment", new { id = departmentReadDto.DepartmentId }, departmentReadDto);
         }
 
-        //  PUT: api/Department/5
+        //  PUT: api/Departments/5
         //  To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<ActionResult> PutDepartment(int id, DepartmentDto departmentDto)
@@ -78,19 +103,19 @@ namespace API.Controllers
             try
             {
                 _mapper.Map(departmentDto, departmentFromRepo);
-                await _departmentsRepo.UpdateDepartment(departmentFromRepo);
+                // await _departmentsRepo.UpdateDepartment(id);
                 await _departmentsRepo.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (departmentFromRepo is null) return NotFound();
-                else throw;
+                else return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
 
             return NoContent();
         }
 
-        // DELETE: api/Department/5
+        // DELETE: api/Departments/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteDepartment(int id)
         {

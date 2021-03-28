@@ -1,14 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
 namespace API.Models
 {
-    public partial class Departments
+    public partial class Department
     {
-        public Departments()
+        public Department()
         {
             EmployeeBiodatas = new HashSet<EmployeeBiodata>();
             JobDescriptions = new HashSet<JobDescription>();
@@ -17,7 +19,6 @@ namespace API.Models
         [Key]
         [Column("departmentId")]
         public int DepartmentId { get; set; }
-
         [Required]
         [Column("departmentName")]
         [StringLength(50)]
@@ -25,7 +26,6 @@ namespace API.Models
 
         [InverseProperty(nameof(EmployeeBiodata.Department))]
         public virtual ICollection<EmployeeBiodata> EmployeeBiodatas { get; set; }
-
         [InverseProperty(nameof(JobDescription.Department))]
         public virtual ICollection<JobDescription> JobDescriptions { get; set; }
     }

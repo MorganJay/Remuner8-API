@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Remuner8_Backend.Dtos;
 using Remuner8_Backend.EntityModels;
 using Remuner8_Backend.Repositories;
@@ -21,13 +22,15 @@ namespace Remuner8_Backend.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IMapper _mapper;
+        private readonly ILogger _logger;
 
-        public RegisterController(IUserAccountRepository registerRepository, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IMapper mapper)
+        public RegisterController(IUserAccountRepository registerRepository, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IMapper mapper, ILogger logger)
         {
             RegisterRepository = registerRepository;
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]

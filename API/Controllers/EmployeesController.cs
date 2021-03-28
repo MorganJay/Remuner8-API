@@ -43,7 +43,7 @@ namespace API.Controllers
             }
         }
 
-        // GET: api/Employee
+        // GET: api/Employees
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EmployeeBiodataReadDto>>> GetAllEmployees()
         {
@@ -53,13 +53,13 @@ namespace API.Controllers
 
                 return Ok(employeeMapper.Map<IEnumerable<EmployeeBiodataReadDto>>(employees));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
         }
 
-        // GET: api/Employee/{id}
+        // GET: api/Employees/{id}
         [HttpGet("{id}", Name = "GetEmployeeById")]
         public async Task<ActionResult<EmployeeBiodataReadDto>> GetEmployeeById(string id)
         {
@@ -77,7 +77,7 @@ namespace API.Controllers
             }
         }
 
-        // POST: api/Employee
+        // POST: api/Employees
         [HttpPost]
         public async Task<ActionResult<EmployeeBiodataReadDto>> CreateEmployeeAsync(EmployeeBiodataCreateDto employeeBiodataCreateDto)
         {
@@ -97,7 +97,7 @@ namespace API.Controllers
             }
         }
 
-        // PATCH: api/Employee/{id}
+        // PATCH: api/Employees/{id}
         [HttpPatch("{id}")]
         public async Task<ActionResult> PartialUpdateEmployeeAsync(string id, JsonPatchDocument<EmployeeBiodataCreateDto> patchDocument)
         {
@@ -123,7 +123,7 @@ namespace API.Controllers
             }
         }
 
-        // PUT: api/Employee/{id}
+        // PUT: api/Employees/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> FullUpdateEmployeeAsync(string id, EmployeeBiodataCreateDto employeeBiodataCreateDto)
         {
@@ -137,7 +137,7 @@ namespace API.Controllers
             return NoContent();
         }
 
-        // DELETE api/Employee/{id}
+        // DELETE api/Employees/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteEmployee(string id)
         {

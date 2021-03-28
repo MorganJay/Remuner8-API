@@ -16,7 +16,7 @@ namespace API.Repositories
 
         Task CreateEmployeeAsync(EmployeeBiodata employee);
 
-        Task UpdateEmployee(EmployeeBiodata employee);
+        Task UpdateEmployee(string id);
 
         Task DeleteEmployeeAsync(EmployeeBiodata employee);
     }

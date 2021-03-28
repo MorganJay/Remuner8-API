@@ -29,9 +29,9 @@ namespace API.Dtos
 
         public string MaritalStatus { get; set; }
 
-        public int DepartmentId { get; set; }
+        public string DepartmentName { get; set; }
 
-        public int JobDescriptionId { get; set; }
+        public string JobDescriptionName { get; set; }
 
         public DateTime DateEmployed { get; set; }
 

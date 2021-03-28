@@ -74,6 +74,7 @@ namespace API.Dtos
         public int JobDescriptionId { get; set; }
 
         [Column("dateEmployed", TypeName = "date")]
+        [Required]
         public DateTime DateEmployed { get; set; }
 
         [Column("otherAllowances", TypeName = "decimal(19, 4)")]
@@ -88,7 +89,6 @@ namespace API.Dtos
         public string BankName { get; set; }
 
         [Required]
-        [Column("accountNumber")]
         [StringLength(10)]
         public string AccountNumber { get; set; }
     }
