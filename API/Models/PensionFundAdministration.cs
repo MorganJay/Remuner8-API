@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Remuner8_Backend.Models
+namespace API.Models
 {
     [Table("PensionFundAdministration")]
     public partial class PensionFundAdministration

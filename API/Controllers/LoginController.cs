@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿ using API.Authentication;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Remuner8_Backend.EntityModels;
 using Remuner8_Backend.Repositories;
 using System;
+using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,29 +14,28 @@ namespace Remuner8_Backend.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly ILoginRepository login;
+        private readonly IUserAccountRepository login;
 
-        // POST api/<LoginController>
-        public LoginController(ILoginRepository login)
+        public LoginController(IUserAccountRepository login)
         {
             this.login = login;
         }
 
-        // GET: api/<PasswordController>
+        // POST api/<LoginController>
         [HttpPost]
-        public ActionResult Validate([FromBody] PasswordModel model)
+        public async Task<ActionResult> Validate([FromBody] PasswordReadDto model)
         {
             try
             {
-                if (login.ValidateCredentials(model))
+                if (await login.ValidateCredentialsAsync(model))
                 {
-                    return Ok();
+                    return Ok(new Response { Status = "Success", Message = "Login Successful" });
                 }
-                return NotFound();
+                return NotFound(new Response { Status = "Failure", Message = "Login Unsuccessful\nInvalid Username or Password." });
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
         }
     }

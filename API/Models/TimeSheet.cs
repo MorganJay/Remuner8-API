@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Remuner8_Backend.Models
+namespace API.Models
 {
     [Keyless]
     [Table("TimeSheet")]
@@ -19,11 +19,11 @@ namespace Remuner8_Backend.Models
         [Column("date", TypeName = "date")]
         public DateTime Date { get; set; }
         [Column("timeIn", TypeName = "time(0)")]
-        public TimeSpan? TimeIn { get; set; }
+        public TimeSpan TimeIn { get; set; }
         [Column("timeOut", TypeName = "time(0)")]
-        public TimeSpan? TimeOut { get; set; }
+        public TimeSpan TimeOut { get; set; }
         [Column("hoursWorked", TypeName = "time(0)")]
-        public TimeSpan? HoursWorked { get; set; }
+        public TimeSpan HoursWorked { get; set; }
 
         [ForeignKey(nameof(EmployeeId))]
         public virtual EmployeeBiodata Employee { get; set; }

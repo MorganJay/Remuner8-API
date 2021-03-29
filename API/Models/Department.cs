@@ -6,13 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Remuner8_Backend.Models
+namespace API.Models
 {
     public partial class Department
     {
         public Department()
         {
             EmployeeBiodatas = new HashSet<EmployeeBiodata>();
+            JobDescriptions = new HashSet<JobDescription>();
         }
 
         [Key]
@@ -25,5 +26,7 @@ namespace Remuner8_Backend.Models
 
         [InverseProperty(nameof(EmployeeBiodata.Department))]
         public virtual ICollection<EmployeeBiodata> EmployeeBiodatas { get; set; }
+        [InverseProperty(nameof(JobDescription.Department))]
+        public virtual ICollection<JobDescription> JobDescriptions { get; set; }
     }
 }

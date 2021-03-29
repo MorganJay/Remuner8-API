@@ -12,6 +12,11 @@ namespace API.Models
     [Index(nameof(CategoryId), Name = "IX_PayrollAdditionItems_PayrollCategoryCategoryId")]
     public partial class PayrollAdditionItem
     {
+        public PayrollAdditionItem()
+        {
+            PayrollAdditionItemsAssignments = new HashSet<PayrollAdditionItemsAssignment>();
+        }
+
         [Key]
         [Column("id")]
         public int Id { get; set; }
@@ -19,16 +24,20 @@ namespace API.Models
         [Column("name")]
         [StringLength(100)]
         public string Name { get; set; }
+        [Column("categoryId")]
+        public int CategoryId { get; set; }
         [Column("amount", TypeName = "decimal(19, 4)")]
         public decimal Amount { get; set; }
-        public int Assigneeid { get; set; }
-        public int CategoryId { get; set; }
+        [Column("assigneeId")]
+        public int AssigneeId { get; set; }
 
-        [ForeignKey(nameof(Assigneeid))]
+        [ForeignKey(nameof(AssigneeId))]
         [InverseProperty(nameof(AssigneeTable.PayrollAdditionItems))]
         public virtual AssigneeTable Assignee { get; set; }
         [ForeignKey(nameof(CategoryId))]
         [InverseProperty(nameof(PayrollCategory.PayrollAdditionItems))]
-        public virtual PayrollCategory PayrollCategoryCategory { get; set; }
+        public virtual PayrollCategory Category { get; set; }
+        [InverseProperty(nameof(PayrollAdditionItemsAssignment.PayrollItem))]
+        public virtual ICollection<PayrollAdditionItemsAssignment> PayrollAdditionItemsAssignments { get; set; }
     }
 }

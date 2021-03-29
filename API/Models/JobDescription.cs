@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace Remuner8_Backend.Models
+namespace API.Models
 {
     public partial class JobDescription
     {
@@ -28,7 +28,12 @@ namespace Remuner8_Backend.Models
         public decimal HousingAllowance { get; set; }
         [Column("transportAllowance", TypeName = "decimal(19, 4)")]
         public decimal TransportAllowance { get; set; }
+        [Column("departmentId")]
+        public int DepartmentId { get; set; }
 
+        [ForeignKey(nameof(DepartmentId))]
+        [InverseProperty("JobDescriptions")]
+        public virtual Department Department { get; set; }
         [InverseProperty(nameof(EmployeeBiodata.JobDescription))]
         public virtual ICollection<EmployeeBiodata> EmployeeBiodatas { get; set; }
     }

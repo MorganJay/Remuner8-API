@@ -4,10 +4,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Remuner8_Backend.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using API.Repositories;
 using Remuner8_Backend.Repositories;
+using API.Models;
+using Newtonsoft.Json.Serialization;
+using API.Profiles;
 
 namespace API
 {
@@ -23,21 +26,38 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(s =>
+            {
+                s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Remuner8 API", Version = "v1" });
             });
             services.AddDbContext<Remuner8Context>(options =>
                options.UseSqlServer(
                    Configuration.GetConnectionString("DefaultConnection")));
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddAutoMapper(typeof(AutomapperProfile));
+
+            services.AddDefaultIdentity<IdentityUser>(options =>
+                options.SignIn.RequireConfirmedAccount = true
+
+                )
                 .AddEntityFrameworkStores<Remuner8Context>();
+
             services.AddControllersWithViews();
-            services.AddScoped<ILoginRepository, LoginRepository>();
-            services.AddScoped<IRegisterRepository, RegisterRepository>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
+            services.AddScoped<IPayslipRepository, PayslipRepo>();
+            services.AddScoped<IPayrollItemsRepository, PayrollItemsRepository>();
+            services.AddScoped<IPayrollDeductionRepository, PayrollDeductionRepository>();
+            services.AddScoped<IPayrollOvertimeItemRepository, PayrollOvertimeItemRepository>();
+            services.AddScoped<ILeaveRepository, LeaveRepository>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
@@ -52,7 +72,7 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Remuner8 API v1"));
             }
             app.UseCors("AllowEverthing");
 

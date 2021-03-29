@@ -42,6 +42,7 @@ CREATE TABLE Bonuses(
               salaryStartDate DATE NOT NULL,
               salaryEndDate DATE NOT NULL
  );
+ 
  CREATE TABLE UserRoles(
 			 id  INT PRIMARY KEY NOT NULL IDENTITY,
              role VARCHAR(30) NOT NULL UNIQUE
@@ -57,7 +58,7 @@ CREATE TABLE EmploymentType(
  
  CREATE TABLE EmployeeBiodata (
 	        employeeId VARCHAR(10) PRIMARY KEY NOT NULL, 
-            avatar IMAGE,
+            avatar VARCHAR(MAX),
 			firstName VARCHAR(50) NOT NULL,
 			lastName VARCHAR(50) NOT NULL, 
             otherName VARCHAR(50) NOT NULL,
