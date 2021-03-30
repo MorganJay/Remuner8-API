@@ -40,7 +40,6 @@ namespace API.Models
         public virtual DbSet<SystemDefault> SystemDefaults { get; set; }
         public virtual DbSet<Tax> Taxes { get; set; }
         public virtual DbSet<TimeSheet> TimeSheets { get; set; }
-        //public virtual DbSet<UserRole> UserRoles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -404,11 +403,6 @@ namespace API.Models
                     .HasForeignKey(d => d.EmployeeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__TimeSheet__emplo__45F365D3");
-            });
-
-            modelBuilder.Entity<UserRole>(entity =>
-            {
-                entity.Property(e => e.Role).IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);
