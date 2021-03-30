@@ -1,4 +1,5 @@
 ﻿using API.Authentication;
+using API.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -22,7 +23,7 @@ namespace Remuner8_Backend.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly IMapper _mapper;
-        private readonly ILogger _logger;
+        //private readonly ILogger _logger;
 
         public RegisterController(IUserAccountRepository registerRepository, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IMapper mapper, ILogger logger)
         {
@@ -30,7 +31,7 @@ namespace Remuner8_Backend.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
-            _logger = logger;
+            // _logger = logger;
         }
 
         [HttpGet]
@@ -68,7 +69,7 @@ namespace Remuner8_Backend.Controllers
 
         //[HttpPost]
         //[Route("api/[controller]")]
-        //public async Task<ActionResult <PasswordReadDto>> AddUserAsync(PasswordCreateDto passwordcreatedto)
+        //public async Task<ActionResult<PasswordReadDto>> AddUserAsync(PasswordCreateDto passwordcreatedto)
         //{
         //    try
         //    {

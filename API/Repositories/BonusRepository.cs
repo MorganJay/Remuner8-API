@@ -53,7 +53,7 @@ namespace API.Repositories
                     context.Bonuses.Remove(deletebonus);
                     return true;
                 }
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(deletebonus.BonusName);
             }
             catch (Exception)
             {
@@ -94,7 +94,7 @@ namespace API.Repositories
                     };
                     return bonusDto;
                 }
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(getBonusById.BonusName);
             }
             catch (Exception)
             {

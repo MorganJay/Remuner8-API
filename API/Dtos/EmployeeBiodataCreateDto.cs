@@ -80,8 +80,11 @@ namespace API.Dtos
         [Column("otherAllowances", TypeName = "decimal(19, 4)")]
         public decimal OtherAllowances { get; set; }
 
-        [Column("grossSalary", TypeName = "decimal(19, 4)")]
-        public decimal GrossSalary { get; set; }
+        public decimal BasicSalary { get; set; }
+
+        public decimal TransportAllowance { get; set; }
+
+        public decimal HousingAllowance { get; set; }
 
         [Required]
         [Column("bankName")]
@@ -91,5 +94,7 @@ namespace API.Dtos
         [Required]
         [StringLength(10)]
         public string AccountNumber { get; set; }
+
+        public decimal GrossSalary => BasicSalary + HousingAllowance + TransportAllowance + OtherAllowances;
     }
 }

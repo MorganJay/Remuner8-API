@@ -10,7 +10,6 @@ using API.Repositories;
 using Remuner8_Backend.Repositories;
 using API.Models;
 using Newtonsoft.Json.Serialization;
-using API.Profiles;
 
 namespace API
 {
@@ -48,6 +47,7 @@ namespace API
                 .AddEntityFrameworkStores<Remuner8Context>();
 
             services.AddControllersWithViews();
+            services.AddScoped<IBonusRepository, BonusRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();

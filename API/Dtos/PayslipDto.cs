@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using API.Models;
 
 namespace API.Dtos
 {
@@ -10,7 +6,7 @@ namespace API.Dtos
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public decimal GrossSalary => (decimal)(BasicSalary + OtherAllowances + HousingAllowance + TransportAllowance);
+        public decimal GrossSalary => BasicSalary + OtherAllowances + HousingAllowance + TransportAllowance;
 
         public decimal TotalDeduction => Pension + Paye;
 

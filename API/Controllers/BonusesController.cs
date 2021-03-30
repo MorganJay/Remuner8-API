@@ -14,12 +14,12 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BonusController : ControllerBase
+    public class BonusesController : ControllerBase
     {
         private readonly IBonusRepository _bonusRepository;
         private readonly LinkGenerator _linkGenerator;
 
-        public BonusController(IBonusRepository bonusRepository, LinkGenerator linkGenerator)
+        public BonusesController(IBonusRepository bonusRepository, LinkGenerator linkGenerator)
         {
             _bonusRepository = bonusRepository;
             _linkGenerator = linkGenerator;
@@ -36,7 +36,7 @@ namespace API.Controllers
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Server Error" });
             }
         }
 
@@ -64,13 +64,13 @@ namespace API.Controllers
                 var location = _linkGenerator.GetPathByAction("GetBonusByID", "Bonus", new { id = model.JobDescriptionId });
                 if (string.IsNullOrWhiteSpace(location))
                 {
-                    return BadRequest($" the uri  was not found");
+                    return BadRequest($"The URI was not found");
                 }
                 return Created(location, createdBonus);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return BadRequest(new Response { Status = "Error", Message = "The Process was not successful" });
+                return BadRequest(new Response { Status = "Error", Message = ex.Message });
             }
         }
 

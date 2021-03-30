@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Repositories
@@ -22,14 +23,15 @@ namespace API.Repositories
 
         public async Task<IEnumerable<EmployeeBiodata>> GetAllEmployeesAsync()
         {
-            return await context.EmployeeBiodatas.Include(e => e.JobDescription.JobDescriptionName)
-                                                  .Include(e => e.Department.DepartmentName)
-                                                  .ToListAsync();
+            return await context.EmployeeBiodatas.Include(e => e.JobDescription)
+                                                 .Include(e => e.Department)
+                                                 .ToListAsync();
         }
 
         public async Task<EmployeeBiodata> GetEmployeeByIdAsync(string id)
         {
-            return await context.EmployeeBiodatas.FindAsync(id);
+            return await context.EmployeeBiodatas.Where(e => e.EmployeeId == id).Include(e => e.JobDescription)
+                                                 .Include(e => e.Department).FirstOrDefaultAsync();
         }
 
         public async Task<bool> SaveChangesAsync()

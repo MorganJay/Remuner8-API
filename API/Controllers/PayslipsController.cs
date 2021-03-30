@@ -8,11 +8,11 @@ namespace API.Controllers
 {
     [Route("api/payslip")]
     [ApiController]
-    public class PayslipController : ControllerBase
+    public class PayslipsController : ControllerBase
     {
         private readonly IPayslipRepository _payslipRepository;
 
-        public PayslipController(IPayslipRepository payslipRepository)
+        public PayslipsController(IPayslipRepository payslipRepository)
         {
             _payslipRepository = payslipRepository;
         }

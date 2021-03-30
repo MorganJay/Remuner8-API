@@ -70,10 +70,10 @@ namespace API.Controllers
 
                 return NotFound(new Response { Status = "Error", Message = $"The employee with ID: {id} was not found" });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // throw;
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
         }
 

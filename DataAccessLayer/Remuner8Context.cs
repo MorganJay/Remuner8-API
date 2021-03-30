@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace API.Models
+namespace DataAccessLayer
 {
     public partial class Remuner8Context : IdentityDbContext
     {
@@ -405,15 +405,6 @@ namespace API.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__TimeSheet__emplo__45F365D3");
             });
-
-            modelBuilder.Entity<UserRole>(entity =>
-            {
-                entity.Property(e => e.Role).IsUnicode(false);
-            });
-
-            OnModelCreatingPartial(modelBuilder);
         }
-
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

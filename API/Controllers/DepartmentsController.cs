@@ -39,7 +39,7 @@ namespace API.Controllers
             try
             {
                 var count = await _departmentsRepo.DepartmentsCountAsync();
-                return Ok(new Response { Message = "Departments count", Count = count, Status = "Success" });
+                return Ok(count);
             }
             catch (Exception ex)
             {
