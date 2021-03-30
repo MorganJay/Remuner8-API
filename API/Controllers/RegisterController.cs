@@ -1,5 +1,4 @@
 ﻿using API.Authentication;
-using API.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

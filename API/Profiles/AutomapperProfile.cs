@@ -29,6 +29,7 @@ namespace API
             CreateMap<PayrollDeductionItem, PayrollDeductionItemCreateDto>().ReverseMap();
             CreateMap<PayrollOvertimeItem, PayrollOvertimeItemCreateDto>().ReverseMap();
             CreateMap<PayrollOvertimeItem, PayrollOvertimeItemReadDto>().ReverseMap();
+            CreateMap<JobDescription, JobDescriptionDto>().ReverseMap();
 
             CreateMap<Bonus, BonusDto>().ReverseMap();
 
