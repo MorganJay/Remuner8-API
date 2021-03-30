@@ -15,13 +15,13 @@ namespace Remuner8_Backend.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly IUserAccountRepository login;
-        private readonly SignInManager<IdentityUser> signInManager;
+        private readonly IUserAccountRepository _login;
+        private readonly SignInManager<IdentityUser> _signInManager;
 
-        public LoginController(IUserAccountRepository login, SignInManager<IdentityUser>signInManager)
+        public LoginController(IUserAccountRepository login, SignInManager<IdentityUser> signInManager)
         {
-            this.login = login;
-            this.signInManager = signInManager;
+            _login = login;
+            _signInManager = signInManager;
         }
 
         // POST api/<LoginController>
@@ -35,7 +35,7 @@ namespace Remuner8_Backend.Controllers
                     Email = model.Email,
                     UserName = model.Email
                 };
-               var signinUser= await  signInManager.PasswordSignInAsync(userIdentity, model.Password1, true, false);
+                var signinUser = await _signInManager.PasswordSignInAsync(userIdentity, model.Password1, true, false);
                 if (signinUser.Succeeded)
                 {
                     return Ok();

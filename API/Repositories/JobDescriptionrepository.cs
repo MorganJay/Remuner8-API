@@ -9,34 +9,34 @@ using System.Threading.Tasks;
 
 namespace API.Repositories
 {
-    public class JobDescriptionrepository : IJobDescriptionRepository
+    public class JobDescriptionRepository : IJobDescriptionRepository
     {
         private readonly Remuner8Context _context;
         private readonly IMapper _mapper;
 
-        public JobDescriptionrepository(Remuner8Context context,IMapper mapper )
+        public JobDescriptionRepository(Remuner8Context context, IMapper mapper)
         {
-            this._context = context;
-            this._mapper = mapper;
+            _context = context;
+            _mapper = mapper;
         }
-        public async  Task<JobDescriptionDto> AddJobDescriptionAsync(JobDescriptionDto model)
+
+        public async Task<JobDescriptionDto> AddJobDescriptionAsync(JobDescriptionDto model)
         {
             try
             {
                 var jobDescriptionModel = _mapper.Map<JobDescription>(model);
-                var addedJobDescription =  await _context.JobDescriptions.AddAsync(jobDescriptionModel);
-                 await _context.SaveChangesAsync();
+                var addedJobDescription = await _context.JobDescriptions.AddAsync(jobDescriptionModel);
+                await _context.SaveChangesAsync();
                 var addedJobDescriptionEntity = addedJobDescription.Entity;
                 return _mapper.Map<JobDescriptionDto>(addedJobDescriptionEntity);
-                
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
-        public bool DeleteJobDescription(int  id)
+
+        public bool DeleteJobDescription(int id)
         {
             try
             {
@@ -47,30 +47,28 @@ namespace API.Repositories
                     _context.SaveChanges();
                     return true;
                 }
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(jobDescriptionEntity.JobDescriptionName);
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
-        public async  Task<IEnumerable<JobDescriptionDto>> GetAllJobDescriptionAsync()
+
+        public async Task<IEnumerable<JobDescriptionDto>> GetAllJobDescriptionAsync()
         {
             try
             {
-                 var listOfJobDescription=await   _context.JobDescriptions.ToListAsync();
+                var listOfJobDescription = await _context.JobDescriptions.ToListAsync();
                 return _mapper.Map<IEnumerable<JobDescriptionDto>>(listOfJobDescription);
-
             }
             catch (Exception)
             {
-
                 throw;
             }
-            
         }
-        public  async Task<JobDescriptionDto> GetJobDescriptionByIdAsync(int  id)
+
+        public async Task<JobDescriptionDto> GetJobDescriptionByIdAsync(int id)
         {
             try
             {
@@ -79,32 +77,29 @@ namespace API.Repositories
                 {
                     return _mapper.Map<JobDescriptionDto>(jobdescription);
                 }
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(jobdescription.JobDescriptionName);
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
 
-        public async  Task<JobDescriptionDto> UpdateJobDescription(JobDescriptionDto model)
+        public async Task<JobDescriptionDto> UpdateJobDescription(JobDescriptionDto model)
         {
             try
             {
-                var getJobDescriptionById    = await _context.JobDescriptions.Where(s => s.JobDescriptionId == model.JobDescriptionId).FirstOrDefaultAsync();
-                if (getJobDescriptionById is not null)
+                var jobDescriptionById = await _context.JobDescriptions.Where(s => s.JobDescriptionId == model.JobDescriptionId).FirstOrDefaultAsync();
+                if (jobDescriptionById is not null)
                 {
-                    var s = _mapper.Map(model, getJobDescriptionById);
+                    var jobDescription = _mapper.Map(model, jobDescriptionById);
                     await _context.SaveChangesAsync();
-                    return _mapper.Map<JobDescriptionDto>(s);
+                    return _mapper.Map<JobDescriptionDto>(jobDescription);
                 }
-                throw new ArgumentNullException();
-
+                throw new ArgumentNullException(jobDescriptionById.JobDescriptionName);
             }
             catch (Exception)
             {
-
                 throw;
             }
         }

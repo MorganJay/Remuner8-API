@@ -10,7 +10,8 @@ using API.Repositories;
 using Remuner8_Backend.Repositories;
 using API.Models;
 using Newtonsoft.Json.Serialization;
-using API.Profiles;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace API
 {
@@ -43,13 +44,13 @@ namespace API
 
             services.AddDefaultIdentity<IdentityUser>(options =>
                 options.SignIn.RequireConfirmedAccount = true
-
                 )
                 .AddEntityFrameworkStores<Remuner8Context>();
 
             services.AddControllersWithViews();
             services.AddScoped<IBonusRepository, BonusRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IJobDescriptionRepository, JobDescriptionRepository>();
             services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IDepartmentRepository, DepartmentRepository>();
@@ -64,11 +65,11 @@ namespace API
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
                                                                                               .AllowAnyMethod()
                                                                                               .AllowAnyHeader()));
-            services.AddMvc(option =>
-            {
-                var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                option.Filters.Add(new AuthorizeFilter(authorizationPolicy));
-            });
+            //services.AddMvc(option =>
+            //{
+            //    var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+            //    option.Filters.Add(new AuthorizeFilter(authorizationPolicy));
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

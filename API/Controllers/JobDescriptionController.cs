@@ -15,7 +15,6 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    
     public class JobDescriptionController : ControllerBase
     {
         private readonly IJobDescriptionRepository _jobDescriptionRepository;
@@ -23,44 +22,44 @@ namespace API.Controllers
 
         public JobDescriptionController(IJobDescriptionRepository jobDescriptionRepository, LinkGenerator linkGenerator)
         {
-            this._jobDescriptionRepository = jobDescriptionRepository;
-            this._linkGenerator = linkGenerator;
+            _jobDescriptionRepository = jobDescriptionRepository;
+            _linkGenerator = linkGenerator;
         }
+
         // GET: api/<JobDescriptionController>
         [HttpGet]
-        public async  Task<ActionResult<IEnumerable<JobDescriptionDto>>>  GetAllJobDescription()
+        public async Task<ActionResult<IEnumerable<JobDescriptionDto>>> GetAllJobDescription()
         {
             try
             {
-                var listOfJobdescription =  await _jobDescriptionRepository.GetAllJobDescriptionAsync();
+                var listOfJobdescription = await _jobDescriptionRepository.GetAllJobDescriptionAsync();
                 return Ok(listOfJobdescription);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "not sussessful", Message = "Error occured" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Not Successful", Message = ex.Message });
             }
         }
 
         // GET api/<JobDescriptionController>/5
         [HttpGet("{id}")]
-        public  async Task< ActionResult<JobDescriptionDto>> GetJobDescriptionById(int id)
+        public async Task<ActionResult<JobDescriptionDto>> GetJobDescriptionById(int id)
         {
             try
             {
-                var getById = await  _jobDescriptionRepository.GetJobDescriptionByIdAsync(id);
+                var getById = await _jobDescriptionRepository.GetJobDescriptionByIdAsync(id);
+                if (getById is null) return NotFound(new Response { Status = "Unsuccessful", Message = $"The job description with ID:{id} does not exist" });
                 return Ok(getById);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                return NotFound(new Response { Status="Unsuccessful",Message="The operation is not successful"});
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Not Successful", Message = ex.Message });
             }
         }
 
         // POST api/<JobDescriptionController>
         [HttpPost]
-        public async  Task<ActionResult<JobDescriptionDto>> AddJobDescription([FromBody] JobDescriptionDto model)
+        public async Task<ActionResult<JobDescriptionDto>> AddJobDescription([FromBody] JobDescriptionDto model)
         {
             try
             {
@@ -70,7 +69,7 @@ namespace API.Controllers
                     var location = _linkGenerator.GetPathByAction("GetJobDescriptionById", "JobDescription", new { id = model.JobDescriptionId });
                     if (string.IsNullOrWhiteSpace(location))
                     {
-                        return BadRequest(new Response {Status="Error",Message="The uri is not available" });
+                        return BadRequest(new Response { Status = "Error", Message = "The uri is not available" });
                     }
                     return Created(location, addedJobDescription);
                 }
@@ -78,7 +77,6 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-
                 return StatusCode(StatusCodes.Status406NotAcceptable, new Response { Status = "not sussessful", Message = "Error occured" });
             }
         }
@@ -94,10 +92,10 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-
                 return StatusCode(StatusCodes.Status304NotModified, new Response { Status = "not sussessful", Message = "Error occured" });
             }
         }
+
         // DELETE api/<JobDescriptionController>/5
         [HttpDelete("{id}")]
         public ActionResult DeleteJobDescription(int id)
@@ -109,7 +107,6 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-
                 return BadRequest(new Response { Message = "The operation is not successful" });
             }
         }

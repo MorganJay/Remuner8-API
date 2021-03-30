@@ -50,7 +50,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Server Error" });
             }
         }
 
@@ -83,9 +83,9 @@ namespace API.Controllers
                 var updatedBonus = _bonusRepository.UpdateBonus(model);
                 return Ok(updatedBonus);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status304NotModified);
+                return StatusCode(StatusCodes.Status304NotModified, new Response { Status = "Error", Message = ex.Message });
             }
         }
 

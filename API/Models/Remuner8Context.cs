@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
-    public partial class Remuner8Context : IdentityDbContext
+    public partial class Remuner8Context : DbContext
     {
         public Remuner8Context()
         {
