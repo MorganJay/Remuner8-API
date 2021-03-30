@@ -8,16 +8,18 @@ namespace API.Repositories
     {
         Task<bool> SaveChangesAsync();
 
-        Task<IEnumerable<Departments>> GetAllDepartmentsAsync();
+        Task<int> DepartmentsCountAsync();
 
-        Task<Departments> GetDepartmentByIdAsync(int id);
+        Task<IEnumerable<Department>> GetAllDepartmentsAsync();
+
+        Task<Department> GetDepartmentByIdAsync(int id);
 
         Task<bool> DepartmentExists(string name);
 
-        Task CreateDepartmentAsync(Departments department);
+        Task CreateDepartmentAsync(Department department);
 
-        Task UpdateDepartment(Departments department);
+        Task UpdateDepartment(int id);
 
-        Task DeleteDepartmentAsync(Departments department);
+        Task DeleteDepartmentAsync(Department department);
     }
 }

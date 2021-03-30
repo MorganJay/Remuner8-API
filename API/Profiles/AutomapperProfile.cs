@@ -4,9 +4,8 @@ using API.Models;
 using AutoMapper;
 using Remuner8_Backend.Dtos;
 using Remuner8_Backend.EntityModels;
-using Remuner8_Backend.Models;
 
-namespace API.Profiles
+namespace API
 {
     public class AutomapperProfile : Profile
     {
@@ -19,8 +18,8 @@ namespace API.Profiles
             CreateMap<EmployeeBiodataCreateDto, EmployeeBiodata>().ReverseMap();
             CreateMap<EmployeeBiodata, EmployeeBiodataCreateDto>();
 
-            CreateMap<Departments, DepartmentDto>().ReverseMap();
-            CreateMap<Departments, DepartmentCreateDto>().ReverseMap();
+            CreateMap<Department, DepartmentDto>().ReverseMap();
+            CreateMap<Department, DepartmentCreateDto>().ReverseMap();
 
             CreateMap<TimeSheet, TimeSheetDto>().ReverseMap();
 
@@ -30,6 +29,7 @@ namespace API.Profiles
             CreateMap<PayrollDeductionItem, PayrollDeductionItemCreateDto>().ReverseMap();
             CreateMap<PayrollOvertimeItem, PayrollOvertimeItemCreateDto>().ReverseMap();
             CreateMap<PayrollOvertimeItem, PayrollOvertimeItemReadDto>().ReverseMap();
+            CreateMap<JobDescription, JobDescriptionDto>().ReverseMap();
 
             CreateMap<Bonus, BonusDto>().ReverseMap();
 

@@ -74,13 +74,17 @@ namespace API.Dtos
         public int JobDescriptionId { get; set; }
 
         [Column("dateEmployed", TypeName = "date")]
+        [Required]
         public DateTime DateEmployed { get; set; }
 
         [Column("otherAllowances", TypeName = "decimal(19, 4)")]
         public decimal OtherAllowances { get; set; }
 
-        [Column("grossSalary", TypeName = "decimal(19, 4)")]
-        public decimal GrossSalary { get; set; }
+        public decimal BasicSalary { get; set; }
+
+        public decimal TransportAllowance { get; set; }
+
+        public decimal HousingAllowance { get; set; }
 
         [Required]
         [Column("bankName")]
@@ -88,8 +92,9 @@ namespace API.Dtos
         public string BankName { get; set; }
 
         [Required]
-        [Column("accountNumber")]
         [StringLength(10)]
         public string AccountNumber { get; set; }
+
+        public decimal GrossSalary => BasicSalary + HousingAllowance + TransportAllowance + OtherAllowances;
     }
 }

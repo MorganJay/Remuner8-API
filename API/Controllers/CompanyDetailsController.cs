@@ -11,11 +11,11 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CompanyController : ControllerBase
+    public class CompanyDetailsController : ControllerBase
     {
         private readonly ICompanyRepository repo;
 
-        public CompanyController(ICompanyRepository repo)
+        public CompanyDetailsController(ICompanyRepository repo)
         {
             this.repo = repo;
         }

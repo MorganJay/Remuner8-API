@@ -14,11 +14,12 @@ namespace API.Repositories
         private readonly Remuner8Context context;
         private readonly IMapper mapper;
 
-        public BonusRepository(Remuner8Context context, IMapper mapper )
+        public BonusRepository(Remuner8Context context, IMapper mapper)
         {
             this.context = context;
             this.mapper = mapper;
         }
+
         public async Task<BonusDto> AddBonusAsync(BonusDto model)
         {
             try
@@ -27,13 +28,10 @@ namespace API.Repositories
                 {
                     BonusName = model.BonusName,
                     Amount = model.Amount,
-                  
-                    
-
                 };
 
                 var bonusentity = await context.AddAsync(bonus);
-                await  context.SaveChangesAsync();
+                await context.SaveChangesAsync();
                 var a = bonusentity.Entity;
                 model.BonusName = a.BonusName;
                 model.Amount = a.Amount;
@@ -41,11 +39,8 @@ namespace API.Repositories
             }
             catch (Exception)
             {
-
-                throw new Exception("The process was not successful");
+                throw; // new Exception("The process was not successful");
             }
-
-            
         }
 
         public bool DeleteBonus(int id)
@@ -58,22 +53,19 @@ namespace API.Repositories
                     context.Bonuses.Remove(deletebonus);
                     return true;
                 }
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(deletebonus.BonusName);
             }
             catch (Exception)
             {
-
-                throw new Exception();
+                throw; // new Exception();
             }
         }
 
-        public async  Task< IEnumerable<BonusDto>> GetAllBonusAsync()
+        public async Task<IEnumerable<BonusDto>> GetAllBonusAsync()
         {
-            var listOfBonuses = await context.Bonuses
-                .Include(s => s.JobDescription)
-                .Include(s => s.Department).ToListAsync();
+            var listOfBonuses = await context.Bonuses.Include(s => s.JobDescription).Include(s => s.Department).ToListAsync();
             var listofBonusDto = new List<BonusDto>();
-            
+
             foreach (var item in listOfBonuses)
             {
                 var bonusDto = new BonusDto
@@ -81,22 +73,19 @@ namespace API.Repositories
                     BonusName = item.BonusName,
                     Amount = item.Amount,
                     JobDescriptionName = item.JobDescription.JobDescriptionName,
-                    DepartmentName=item.Department.DepartmentName
-                    
-
+                    DepartmentName = item.Department.DepartmentName
                 };
                 listofBonusDto.Add(bonusDto);
-
             }
             return listofBonusDto;
         }
 
-        public async  Task<BonusDto> GetBonusById(int id)
+        public async Task<BonusDto> GetBonusById(int id)
         {
             try
             {
                 var getBonusById = await context.Bonuses.Where(s => s.JobDescriptionId == id).FirstOrDefaultAsync();
-                if ( getBonusById is not null) 
+                if (getBonusById is not null)
                 {
                     var bonusDto = new BonusDto
                     {
@@ -105,21 +94,19 @@ namespace API.Repositories
                     };
                     return bonusDto;
                 }
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(getBonusById.BonusName);
             }
             catch (Exception)
             {
-
                 throw new Exception();
             }
         }
 
-        public BonusDto UpdateBonusAsync(BonusDto model)
+        public BonusDto UpdateBonus(BonusDto model)
         {
             try
             {
                 var bonus = context.Bonuses.Find(model.JobDescriptionId);
-
                 bonus.BonusName = model.BonusName;
                 bonus.Amount = model.Amount;
                 context.Bonuses.Update(bonus);
@@ -129,12 +116,8 @@ namespace API.Repositories
             }
             catch (Exception)
             {
-
-                throw new Exception("The update was not successful");
+                throw; // new Exception("The update was not successful");
             }
-
-
-
         }
     }
 }

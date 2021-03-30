@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Repositories
@@ -16,27 +15,32 @@ namespace API.Repositories
             this.context = context;
         }
 
-        public async Task CreateDepartmentAsync(Departments department)
+        public async Task<int> DepartmentsCountAsync()
+        {
+            return await context.Departments.CountAsync();
+        }
+
+        public async Task CreateDepartmentAsync(Department department)
         {
             if (department is null) throw new ArgumentNullException(nameof(department));
 
             await context.Departments.AddAsync(department);
         }
 
-        public async Task DeleteDepartmentAsync(Departments department)
+        public async Task DeleteDepartmentAsync(Department department)
         {
             if (department is null) throw new ArgumentNullException(nameof(department));
-            var departmentToDelete = await context.Departments.FindAsync(department);
+            var departmentToDelete = await context.Departments.FindAsync(department.DepartmentId);
 
             context.Departments.Remove(departmentToDelete);
         }
 
-        public async Task<IEnumerable<Departments>> GetAllDepartmentsAsync()
+        public async Task<IEnumerable<Department>> GetAllDepartmentsAsync()
         {
             return await context.Departments.ToListAsync();
         }
 
-        public async Task<Departments> GetDepartmentByIdAsync(int id)
+        public async Task<Department> GetDepartmentByIdAsync(int id)
         {
             return await context.Departments.FindAsync(id);
         }
@@ -52,7 +56,7 @@ namespace API.Repositories
             return await context.SaveChangesAsync() >= 0;
         }
 
-        public Task UpdateDepartment(Departments department)
+        public Task UpdateDepartment(int id)
         {
             throw new NotImplementedException();
         }

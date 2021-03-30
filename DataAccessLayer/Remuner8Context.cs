@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
-namespace API.Models
+namespace DataAccessLayer
 {
-    public partial class Remuner8Context : DbContext
+    public partial class Remuner8Context : IdentityDbContext
     {
         public Remuner8Context()
         {
@@ -39,6 +40,7 @@ namespace API.Models
         public virtual DbSet<SystemDefault> SystemDefaults { get; set; }
         public virtual DbSet<Tax> Taxes { get; set; }
         public virtual DbSet<TimeSheet> TimeSheets { get; set; }
+        //public virtual DbSet<UserRole> UserRoles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -403,10 +405,6 @@ namespace API.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__TimeSheet__emplo__45F365D3");
             });
-
-            OnModelCreatingPartial(modelBuilder);
         }
-
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }
