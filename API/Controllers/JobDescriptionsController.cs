@@ -15,12 +15,12 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class JobDescriptionController : ControllerBase
+    public class JobDescriptionsController : ControllerBase
     {
         private readonly IJobDescriptionRepository _jobDescriptionRepository;
         private readonly LinkGenerator _linkGenerator;
 
-        public JobDescriptionController(IJobDescriptionRepository jobDescriptionRepository, LinkGenerator linkGenerator)
+        public JobDescriptionsController(IJobDescriptionRepository jobDescriptionRepository, LinkGenerator linkGenerator)
         {
             _jobDescriptionRepository = jobDescriptionRepository;
             _linkGenerator = linkGenerator;

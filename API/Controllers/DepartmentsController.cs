@@ -26,25 +26,9 @@ namespace API.Controllers
             _mapper = mapper;
         }
 
-        private Task<bool> DepartmentNameExists(string name)
+        private async Task<bool> DepartmentNameExists(string name)
         {
-            return _departmentsRepo.DepartmentExists(name);
-        }
-
-        // GET: api/Departments/count
-        [Route("count")]
-        [HttpGet]
-        public async Task<ActionResult<int>> GetEmplyeeCount()
-        {
-            try
-            {
-                var count = await _departmentsRepo.DepartmentsCountAsync();
-                return Ok(count);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
-            }
+            return await _departmentsRepo.DepartmentExists(name);
         }
 
         // GET: api/Departments

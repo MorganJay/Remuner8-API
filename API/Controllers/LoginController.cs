@@ -15,12 +15,12 @@ namespace Remuner8_Backend.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private readonly IUserAccountRepository _login;
+        //private readonly IUserAccountRepository _login;
         private readonly SignInManager<IdentityUser> _signInManager;
 
         public LoginController(IUserAccountRepository login, SignInManager<IdentityUser> signInManager)
         {
-            _login = login;
+            // _login = login;
             _signInManager = signInManager;
         }
 

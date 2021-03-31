@@ -18,29 +18,13 @@ namespace API.Controllers
     [ApiController]
     public class EmployeesController : ControllerBase
     {
-        private readonly IEmployeeRepository employeeRepository;
-        private readonly IMapper employeeMapper;
+        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IMapper _employeeMapper;
 
         public EmployeesController(IEmployeeRepository employeeRepository, IMapper mapper)
         {
-            this.employeeRepository = employeeRepository;
-            employeeMapper = mapper;
-        }
-
-        // GET: api/Employee/count
-        [Route("count")]
-        [HttpGet]
-        public async Task<ActionResult<int>> GetEmplyeeCount()
-        {
-            try
-            {
-                var employeecount = await employeeRepository.EmployeeCountAsync();
-                return Ok(employeecount);
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
-            }
+            _employeeRepository = employeeRepository;
+            _employeeMapper = mapper;
         }
 
         // GET: api/Employees
@@ -49,9 +33,9 @@ namespace API.Controllers
         {
             try
             {
-                var employees = await employeeRepository.GetAllEmployeesAsync();
+                var employees = await _employeeRepository.GetAllEmployeesAsync();
 
-                return Ok(employeeMapper.Map<IEnumerable<EmployeeBiodataReadDto>>(employees));
+                return Ok(_employeeMapper.Map<IEnumerable<EmployeeBiodataReadDto>>(employees));
             }
             catch (Exception ex)
             {
@@ -65,8 +49,8 @@ namespace API.Controllers
         {
             try
             {
-                var employeeModel = await employeeRepository.GetEmployeeByIdAsync(id);
-                if (employeeModel is not null) return Ok(employeeMapper.Map<EmployeeBiodataReadDto>(employeeModel));
+                var employeeModel = await _employeeRepository.GetEmployeeByIdAsync(id);
+                if (employeeModel is not null) return Ok(_employeeMapper.Map<EmployeeBiodataReadDto>(employeeModel));
 
                 return NotFound(new Response { Status = "Error", Message = $"The employee with ID: {id} was not found" });
             }
@@ -83,11 +67,11 @@ namespace API.Controllers
         {
             try
             {
-                var employeeModel = employeeMapper.Map<EmployeeBiodata>(employeeBiodataCreateDto);
-                await employeeRepository.CreateEmployeeAsync(employeeModel);
-                await employeeRepository.SaveChangesAsync();
+                var employeeModel = _employeeMapper.Map<EmployeeBiodata>(employeeBiodataCreateDto);
+                await _employeeRepository.CreateEmployeeAsync(employeeModel);
+                await _employeeRepository.SaveChangesAsync();
 
-                var employeeReadDto = employeeMapper.Map<EmployeeBiodataReadDto>(employeeModel);
+                var employeeReadDto = _employeeMapper.Map<EmployeeBiodataReadDto>(employeeModel);
                 return CreatedAtRoute(nameof(GetEmployeeById), new { employeeReadDto.EmployeeId }, employeeReadDto);
             }
             catch (Exception)
@@ -103,17 +87,17 @@ namespace API.Controllers
         {
             try
             {
-                var employeeModel = await employeeRepository.GetEmployeeByIdAsync(id);
+                var employeeModel = await _employeeRepository.GetEmployeeByIdAsync(id);
                 if (employeeModel is null) return NotFound(new Response { Status = "Error", Message = $"The employee with ID {id} does not exist" });
 
-                var employeeToPatch = employeeMapper.Map<EmployeeBiodataCreateDto>(employeeModel);
+                var employeeToPatch = _employeeMapper.Map<EmployeeBiodataCreateDto>(employeeModel);
                 patchDocument.ApplyTo(employeeToPatch, ModelState);
 
                 if (!TryValidateModel(employeeToPatch)) return ValidationProblem(ModelState);
 
-                employeeMapper.Map(employeeToPatch, employeeModel);
+                _employeeMapper.Map(employeeToPatch, employeeModel);
 
-                if (!await employeeRepository.SaveChangesAsync()) return BadRequest();
+                if (!await _employeeRepository.SaveChangesAsync()) return BadRequest();
 
                 return NoContent();
             }
@@ -127,12 +111,12 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> FullUpdateEmployeeAsync(string id, EmployeeBiodataCreateDto employeeBiodataCreateDto)
         {
-            var employeeModel = await employeeRepository.GetEmployeeByIdAsync(id);
+            var employeeModel = await _employeeRepository.GetEmployeeByIdAsync(id);
             if (employeeModel is null) return NotFound(new Response { Status = "Error", Message = $"The employee with ID {id} could not be found." });
 
-            employeeMapper.Map(employeeBiodataCreateDto, employeeModel);
+            _employeeMapper.Map(employeeBiodataCreateDto, employeeModel);
 
-            if (!await employeeRepository.SaveChangesAsync()) return BadRequest();
+            if (!await _employeeRepository.SaveChangesAsync()) return BadRequest();
 
             return NoContent();
         }
@@ -141,12 +125,12 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteEmployee(string id)
         {
-            var employeeModel = await employeeRepository.GetEmployeeByIdAsync(id);
+            var employeeModel = await _employeeRepository.GetEmployeeByIdAsync(id);
             if (employeeModel is null) return NotFound(new Response { Status = "Error", Message = $"The employee with ID {id} could not be found." });
 
-            await employeeRepository.DeleteEmployeeAsync(employeeModel);
+            await _employeeRepository.DeleteEmployeeAsync(employeeModel);
 
-            await employeeRepository.SaveChangesAsync();
+            await _employeeRepository.SaveChangesAsync();
 
             return StatusCode(StatusCodes.Status204NoContent, new Response { Status = "Success", Message = "Employee deleted successfully" });
         }

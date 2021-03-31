@@ -15,11 +15,6 @@ namespace API.Repositories
             this.context = context;
         }
 
-        public async Task<int> DepartmentsCountAsync()
-        {
-            return await context.Departments.CountAsync();
-        }
-
         public async Task CreateDepartmentAsync(Department department)
         {
             if (department is null) throw new ArgumentNullException(nameof(department));
