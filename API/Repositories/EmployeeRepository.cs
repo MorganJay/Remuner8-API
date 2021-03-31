@@ -16,11 +16,6 @@ namespace API.Repositories
             this.context = context;
         }
 
-        public async Task<int> EmployeeCountAsync()
-        {
-            return await context.EmployeeBiodatas.CountAsync();
-        }
-
         public async Task<IEnumerable<EmployeeBiodata>> GetAllEmployeesAsync()
         {
             return await context.EmployeeBiodatas.Include(e => e.JobDescription)
@@ -30,7 +25,8 @@ namespace API.Repositories
 
         public async Task<EmployeeBiodata> GetEmployeeByIdAsync(string id)
         {
-            return await context.EmployeeBiodatas.Where(e => e.EmployeeId == id).Include(e => e.JobDescription)
+            return await context.EmployeeBiodatas.Where(e => e.EmployeeId == id)
+                                                 .Include(e => e.JobDescription)
                                                  .Include(e => e.Department).FirstOrDefaultAsync();
         }
 
