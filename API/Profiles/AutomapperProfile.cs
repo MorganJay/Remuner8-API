@@ -30,6 +30,8 @@ namespace API.Profiles
 
             CreateMap<LeaveTypeCreateDto, LeaveType>().ReverseMap();
             CreateMap<LeaveType, LeaveTypeReadDto>().ReverseMap();
+            CreateMap<EmploymentType, EmploymentTypeCreateDto>().ReverseMap();
+            CreateMap<EmploymentType, EmploymentTypeReadDto>().ReverseMap();
         }
     }
 }
