@@ -62,6 +62,7 @@ namespace API
             services.AddScoped<ILeaveRepository, LeaveRepository>();
             services.AddScoped<IStatisticsRepository, StatisticsRepository>();
             services.AddScoped<IJobDescriptionRepository, JobDescriptionrepository>();
+            services.AddScoped<IRequestsRepository, RequestsRepository>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()

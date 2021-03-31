@@ -35,6 +35,8 @@ namespace API
 
             CreateMap<LeaveTypeCreateDto, LeaveType>().ReverseMap();
             CreateMap<LeaveType, LeaveTypeReadDto>().ReverseMap();
+            CreateMap<Request, RequestReadDto>().ReverseMap();
+            CreateMap<Request, RequestCreateDto>().ReverseMap();
         }
     }
 }
