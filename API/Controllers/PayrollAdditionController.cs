@@ -8,7 +8,10 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace API.Controllers
 {
@@ -103,6 +106,7 @@ namespace API.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
+            throw new ArgumentNullException();
         }
 
         // DELETE api/<PayrollAddition>/5
@@ -123,3 +127,4 @@ namespace API.Controllers
         }
     }
 }
+
