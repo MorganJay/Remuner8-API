@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Newmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -47,22 +47,6 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "JobDescriptions",
-                columns: table => new
-                {
-                    jobDescriptionId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    jobDescriptionName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    basicSalary = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
-                    housingAllowance = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
-                    transportAllowance = table.Column<decimal>(type: "decimal(19,4)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_JobDescriptions", x => x.jobDescriptionId);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "LeaveTypes",
                 columns: table => new
                 {
@@ -82,7 +66,9 @@ namespace API.Migrations
                 columns: table => new
                 {
                     email = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    password = table.Column<string>(type: "varchar(32)", unicode: false, maxLength: 32, nullable: false)
+                    password = table.Column<string>(type: "varchar(32)", unicode: false, maxLength: 32, nullable: false),
+                    dateCreated = table.Column<DateTime>(type: "date", nullable: false),
+                    roleId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -127,6 +113,22 @@ namespace API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK__PensionF__056D327AA7859729", x => x.pfaCode);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Requests",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: false),
+                    Date = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
+                    Reason = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    Status = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Requests", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -183,76 +185,25 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Bonuses",
+                name: "JobDescriptions",
                 columns: table => new
                 {
-                    jobDescriptionId = table.Column<int>(type: "int", nullable: false),
-                    departmentId = table.Column<int>(type: "int", nullable: false),
-                    bonusName = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
-                    amount = table.Column<decimal>(type: "decimal(19,4)", nullable: false)
+                    jobDescriptionId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    jobDescriptionName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
+                    basicSalary = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    housingAllowance = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    transportAllowance = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    departmentId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_JobDescriptions", x => x.jobDescriptionId);
                     table.ForeignKey(
-                        name: "FK__Bonuses__departm__2B3F6F97",
+                        name: "FK_JobDescriptions_Departments",
                         column: x => x.departmentId,
                         principalTable: "Departments",
                         principalColumn: "departmentId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK__Bonuses__jobDesc__2C3393D0",
-                        column: x => x.jobDescriptionId,
-                        principalTable: "JobDescriptions",
-                        principalColumn: "jobDescriptionId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "EmployeeBiodata",
-                columns: table => new
-                {
-                    employeeId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
-                    avatar = table.Column<byte[]>(type: "image", nullable: true),
-                    firstName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    lastName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    otherName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    dateOfBirth = table.Column<DateTime>(type: "date", nullable: false),
-                    address = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: false),
-                    phoneNumber = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
-                    emailAddress = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    gender = table.Column<string>(type: "char(6)", unicode: false, fixedLength: true, maxLength: 6, nullable: false),
-                    countryName = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
-                    stateName = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
-                    maritalStatus = table.Column<string>(type: "char(12)", unicode: false, fixedLength: true, maxLength: 12, nullable: false),
-                    departmentId = table.Column<int>(type: "int", nullable: false),
-                    jobDescriptionId = table.Column<int>(type: "int", nullable: false),
-                    dateEmployed = table.Column<DateTime>(type: "date", nullable: false),
-                    otherAllowances = table.Column<decimal>(type: "decimal(10,4)", nullable: true),
-                    grossSalary = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
-                    bankName = table.Column<string>(type: "varchar(150)", unicode: false, maxLength: 150, nullable: false),
-                    accountNumber = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
-                    payslipID = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Employee__C134C9C1771E4F30", x => x.employeeId);
-                    table.ForeignKey(
-                        name: "FK__EmployeeB__depar__3A81B327",
-                        column: x => x.departmentId,
-                        principalTable: "Departments",
-                        principalColumn: "departmentId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK__EmployeeB__email__3D5E1FD2",
-                        column: x => x.emailAddress,
-                        principalTable: "Passwords",
-                        principalColumn: "email",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK__EmployeeB__jobDe__3B75D760",
-                        column: x => x.jobDescriptionId,
-                        principalTable: "JobDescriptions",
-                        principalColumn: "jobDescriptionId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -305,6 +256,105 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Bonuses",
+                columns: table => new
+                {
+                    jobDescriptionId = table.Column<int>(type: "int", nullable: false),
+                    departmentId = table.Column<int>(type: "int", nullable: false),
+                    bonusName = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: false),
+                    amount = table.Column<decimal>(type: "decimal(19,4)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.ForeignKey(
+                        name: "FK__Bonuses__departm__2B3F6F97",
+                        column: x => x.departmentId,
+                        principalTable: "Departments",
+                        principalColumn: "departmentId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK__Bonuses__jobDesc__2C3393D0",
+                        column: x => x.jobDescriptionId,
+                        principalTable: "JobDescriptions",
+                        principalColumn: "jobDescriptionId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EmployeeBiodata",
+                columns: table => new
+                {
+                    employeeId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    avatar = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
+                    firstName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
+                    lastName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
+                    otherName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
+                    dateOfBirth = table.Column<DateTime>(type: "date", nullable: false),
+                    address = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
+                    phoneNumber = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
+                    emailAddress = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
+                    gender = table.Column<string>(type: "char(6)", unicode: false, fixedLength: true, maxLength: 6, nullable: false),
+                    countryName = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
+                    stateName = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
+                    maritalStatus = table.Column<string>(type: "char(12)", unicode: false, fixedLength: true, maxLength: 12, nullable: false),
+                    departmentId = table.Column<int>(type: "int", nullable: false),
+                    jobDescriptionId = table.Column<int>(type: "int", nullable: false),
+                    dateEmployed = table.Column<DateTime>(type: "date", nullable: false),
+                    otherAllowances = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    grossSalary = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    bankName = table.Column<string>(type: "varchar(150)", unicode: false, maxLength: 150, nullable: false),
+                    accountNumber = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK__Employee__C134C9C1771E4F30", x => x.employeeId);
+                    table.ForeignKey(
+                        name: "FK__EmployeeB__depar__3A81B327",
+                        column: x => x.departmentId,
+                        principalTable: "Departments",
+                        principalColumn: "departmentId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK__EmployeeB__email__3D5E1FD2",
+                        column: x => x.emailAddress,
+                        principalTable: "Passwords",
+                        principalColumn: "email",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK__EmployeeB__jobDe__3B75D760",
+                        column: x => x.jobDescriptionId,
+                        principalTable: "JobDescriptions",
+                        principalColumn: "jobDescriptionId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PayrollAdditionItemsAssignment",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false),
+                    PayrollItemId = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(19,4)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PayrollAdditionItemsAssignment", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_PayrollAdditionItemsAssignment_EmployeeBiodata",
+                        column: x => x.EmployeeId,
+                        principalTable: "EmployeeBiodata",
+                        principalColumn: "employeeId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PayrollAdditionItemsAssignment_PayrollAdditionItems",
+                        column: x => x.PayrollItemId,
+                        principalTable: "PayrollAdditionItems",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PayrollDeductionItemsAssignment",
                 columns: table => new
                 {
@@ -331,6 +381,32 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PayrollOvertimeItemsAssignment",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false),
+                    PayrollItemId = table.Column<int>(type: "int", nullable: false),
+                    EmployeeId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(19,4)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PayrollOvertimeItemsAssignment", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_PayrollOvertimeItemsAssignment_EmployeeBiodata",
+                        column: x => x.EmployeeId,
+                        principalTable: "EmployeeBiodata",
+                        principalColumn: "employeeId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PayrollOvertimeItemsAssignment_PayrollOvertimeItems",
+                        column: x => x.PayrollItemId,
+                        principalTable: "PayrollOvertimeItems",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "PayrollTransactions",
                 columns: table => new
                 {
@@ -349,6 +425,28 @@ namespace API.Migrations
                     table.PrimaryKey("PK__PayrollT__9B57CF7249445F48", x => x.transactionId);
                     table.ForeignKey(
                         name: "FK__PayrollTr__emplo__440B1D61",
+                        column: x => x.employeeId,
+                        principalTable: "EmployeeBiodata",
+                        principalColumn: "employeeId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payslip",
+                columns: table => new
+                {
+                    payslipId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    date = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
+                    employeeId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    totalEarnings = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    totalDeductions = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    netSalary = table.Column<decimal>(type: "decimal(19,4)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payslip", x => x.payslipId);
+                    table.ForeignKey(
+                        name: "FK_Payslip_EmployeeBiodata",
                         column: x => x.employeeId,
                         principalTable: "EmployeeBiodata",
                         principalColumn: "employeeId",
@@ -393,8 +491,8 @@ namespace API.Migrations
                     taxId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     employeeId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
-                    PAYE = table.Column<decimal>(type: "decimal(19,4)", nullable: true),
-                    pension = table.Column<decimal>(type: "decimal(19,4)", nullable: true)
+                    PAYE = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    pension = table.Column<decimal>(type: "decimal(19,4)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -424,87 +522,6 @@ namespace API.Migrations
                         column: x => x.employeeId,
                         principalTable: "EmployeeBiodata",
                         principalColumn: "employeeId",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PayrollAdditionItemsAssignment",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false),
-                    PayrollItemId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(19,4)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PayrollAdditionItemsAssignment", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_PayrollAdditionItemsAssignment_EmployeeBiodata",
-                        column: x => x.EmployeeId,
-                        principalTable: "EmployeeBiodata",
-                        principalColumn: "employeeId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_PayrollAdditionItemsAssignment_PayrollAdditionItems",
-                        column: x => x.PayrollItemId,
-                        principalTable: "PayrollAdditionItems",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "PayrollOvertimeItemsAssignment",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false),
-                    PayrollItemId = table.Column<int>(type: "int", nullable: false),
-                    EmployeeId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(19,4)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PayrollOvertimeItemsAssignment", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_PayrollOvertimeItemsAssignment_EmployeeBiodata",
-                        column: x => x.EmployeeId,
-                        principalTable: "EmployeeBiodata",
-                        principalColumn: "employeeId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_PayrollOvertimeItemsAssignment_PayrollOvertimeItems",
-                        column: x => x.PayrollItemId,
-                        principalTable: "PayrollOvertimeItems",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Payslip",
-                columns: table => new
-                {
-                    payslipId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
-                    date = table.Column<DateTime>(type: "date", nullable: false),
-                    employeeId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
-                    totalEarnings = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
-                    totalDeductions = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
-                    netSalary = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
-                    taxId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payslip", x => x.payslipId);
-                    table.ForeignKey(
-                        name: "FK_Payslip_EmployeeBiodata",
-                        column: x => x.employeeId,
-                        principalTable: "EmployeeBiodata",
-                        principalColumn: "employeeId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Payslip_Taxes",
-                        column: x => x.taxId,
-                        principalTable: "Taxes",
-                        principalColumn: "taxId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -547,18 +564,23 @@ namespace API.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_JobDescriptions_departmentId",
+                table: "JobDescriptions",
+                column: "departmentId");
+
+            migrationBuilder.CreateIndex(
                 name: "UQ__LeaveTyp__72E12F1BF20C58BD",
                 table: "LeaveTypes",
                 column: "name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_PayrollAdditionItems_assigneeId",
+                name: "IX_PayrollAdditionItems_AssigneeTableAssigneeid",
                 table: "PayrollAdditionItems",
                 column: "assigneeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PayrollAdditionItems_categoryId",
+                name: "IX_PayrollAdditionItems_PayrollCategoryCategoryId",
                 table: "PayrollAdditionItems",
                 column: "categoryId");
 
@@ -611,11 +633,6 @@ namespace API.Migrations
                 name: "IX_Payslip_employeeId",
                 table: "Payslip",
                 column: "employeeId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Payslip_taxId",
-                table: "Payslip",
-                column: "taxId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_StatutoryDeductions_employeeId",
@@ -672,10 +689,16 @@ namespace API.Migrations
                 name: "Payslip");
 
             migrationBuilder.DropTable(
+                name: "Requests");
+
+            migrationBuilder.DropTable(
                 name: "StatutoryDeductions");
 
             migrationBuilder.DropTable(
                 name: "SystemDefaults");
+
+            migrationBuilder.DropTable(
+                name: "Taxes");
 
             migrationBuilder.DropTable(
                 name: "TimeSheet");
@@ -693,10 +716,10 @@ namespace API.Migrations
                 name: "PayrollOvertimeItems");
 
             migrationBuilder.DropTable(
-                name: "Taxes");
+                name: "PensionFundAdministration");
 
             migrationBuilder.DropTable(
-                name: "PensionFundAdministration");
+                name: "EmployeeBiodata");
 
             migrationBuilder.DropTable(
                 name: "PayrollCategories");
@@ -708,16 +731,13 @@ namespace API.Migrations
                 name: "PayrollRates");
 
             migrationBuilder.DropTable(
-                name: "EmployeeBiodata");
-
-            migrationBuilder.DropTable(
-                name: "Departments");
-
-            migrationBuilder.DropTable(
                 name: "Passwords");
 
             migrationBuilder.DropTable(
                 name: "JobDescriptions");
+
+            migrationBuilder.DropTable(
+                name: "Departments");
         }
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
-    [Index(nameof(Assigneeid), Name = "IX_PayrollAdditionItems_AssigneeTableAssigneeid")]
+    [Index(nameof(AssigneeId), Name = "IX_PayrollAdditionItems_AssigneeTableAssigneeid")]
     [Index(nameof(CategoryId), Name = "IX_PayrollAdditionItems_PayrollCategoryCategoryId")]
     public partial class PayrollAdditionItem
     {

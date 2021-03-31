@@ -58,6 +58,7 @@ namespace API
             services.AddScoped<IPayrollDeductionRepository, PayrollDeductionRepository>();
             services.AddScoped<IPayrollOvertimeItemRepository, PayrollOvertimeItemRepository>();
             services.AddScoped<ILeaveRepository, LeaveRepository>();
+            services.AddScoped<IRequestsRepository, RequestsRepository>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
