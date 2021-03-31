@@ -56,9 +56,17 @@ namespace API.Controllers
 
         // PUT api/<RequestsController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<ActionResult> Put(int id, [FromBody] RequestCreateDto requestCreate)
         {
-        
+            //var mappedmodel = mapper.Map<Request>(requestCreate);
+            var requestFromRepo = await requestsRepository.GetRequestAsync(id);
+            if (requestFromRepo == null)
+            {
+                return NotFound();
+            }
+            var mappeedModel = mapper.Map(requestCreate, requestFromRepo);
+            await requestsRepository.SaveAsync();
+            return Ok(mappeedModel);
         }
 
         // DELETE api/<RequestsController>/5

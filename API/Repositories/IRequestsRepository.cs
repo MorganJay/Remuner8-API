@@ -1,7 +1,5 @@
 ﻿using API.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Repositories
@@ -14,9 +12,5 @@ namespace API.Repositories
         void EditRequest(int id);
         Task RemoveRequestAsync(int id);
         Task<bool> SaveAsync();
-
-        
-
-
     }
 }
