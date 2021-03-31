@@ -66,11 +66,11 @@ namespace API
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
                                                                                               .AllowAnyMethod()
                                                                                               .AllowAnyHeader()));
-            services.AddMvc(option =>
-            {
-                var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
-                option.Filters.Add(new AuthorizeFilter(authorizationPolicy));
-            });
+            //services.AddMvc(option =>
+            //{
+            //    var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+            //    option.Filters.Add(new AuthorizeFilter(authorizationPolicy));
+            //});
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
