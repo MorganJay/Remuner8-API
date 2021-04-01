@@ -1,4 +1,5 @@
-﻿using API.Dtos;
+﻿using API.Authentication;
+using API.Dtos;
 using API.Models;
 using API.Repositories;
 using AutoMapper;
@@ -36,12 +37,11 @@ namespace API.Controllers
                 var mappedmodel = mapper.Map<IEnumerable<RequestReadDto>>(request);
                 return Ok(mappedmodel);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
-            
+
         }
 
         // GET api/<RequestsController>/5
@@ -53,12 +53,11 @@ namespace API.Controllers
                 var request = await requestsRepository.GetRequestAsync(id);
                 return Ok(request);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
-            
+
         }
 
         // POST api/<RequestsController>
@@ -72,10 +71,9 @@ namespace API.Controllers
                 await requestsRepository.SaveAsync();
                 return StatusCode(StatusCodes.Status201Created);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
 
         }
@@ -102,12 +100,11 @@ namespace API.Controllers
                 }
                 return NotFound();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
-       
+
         }
     }
 }
