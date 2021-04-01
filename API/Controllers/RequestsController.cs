@@ -1,4 +1,5 @@
-﻿using API.Dtos;
+﻿using API.Authentication;
+using API.Dtos;
 using API.Models;
 using API.Repositories;
 using AutoMapper;
@@ -30,27 +31,54 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RequestReadDto>>> GetAllRequestsAsync()
         {
-            var request = await requestsRepository.GetAllAsync();
-            var mappedmodel = mapper.Map<IEnumerable<RequestReadDto>>(request);
-            return Ok(mappedmodel);
+            try
+            {
+                var request = await requestsRepository.GetAllAsync();
+                var mappedmodel = mapper.Map<IEnumerable<RequestReadDto>>(request);
+                return Ok(mappedmodel);
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+            }  
+            
         }
 
         // GET api/<RequestsController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<RequestReadDto>> GetRequestById(int id)
         {
-            var request = await requestsRepository.GetRequestAsync(id);
-            return Ok(request);
+            try
+            {
+                var request = await requestsRepository.GetRequestAsync(id);
+                return Ok(request);
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+            }
+            
         }
 
         // POST api/<RequestsController>
         [HttpPost]
         public async Task<ActionResult> PostRequest(RequestCreateDto requestCreate)
         {
-            var mappedmodel = mapper.Map<Request>(requestCreate);
-            await requestsRepository.CreateRequestAsync(mappedmodel);
-            await requestsRepository.SaveAsync();
-            return StatusCode(StatusCodes.Status201Created);
+            try
+            {
+                var mappedmodel = mapper.Map<Request>(requestCreate);
+                await requestsRepository.CreateRequestAsync(mappedmodel);
+                await requestsRepository.SaveAsync();
+                return StatusCode(StatusCodes.Status201Created);
+            }
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+            }
+            
 
         }
 
@@ -58,31 +86,46 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] RequestCreateDto requestCreate)
         {
-            //var mappedmodel = mapper.Map<Request>(requestCreate);
-            var requestFromRepo = await requestsRepository.GetRequestAsync(id);
-            if (requestFromRepo == null)
+            try
             {
-                return NotFound();
+                var requestFromRepo = await requestsRepository.GetRequestAsync(id);
+                if (requestFromRepo == null)
+                {
+                    return NotFound();
+                }
+                var mappeedModel = mapper.Map(requestCreate, requestFromRepo);
+                await requestsRepository.SaveAsync();
+                return Ok(mappeedModel);
             }
-            var mappeedModel = mapper.Map(requestCreate, requestFromRepo);
-            await requestsRepository.SaveAsync();
-            return Ok(mappeedModel);
+            catch (Exception)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+            }
+            
         }
 
         // DELETE api/<RequestsController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var request = await requestsRepository.GetRequestAsync(id);
-            if (request != null)
+            try
             {
-                await requestsRepository.RemoveRequestAsync(id);
-                await requestsRepository.SaveAsync();
-                return Ok();
+                var request = await requestsRepository.GetRequestAsync(id);
+                if (request != null)
+                {
+                    await requestsRepository.RemoveRequestAsync(id);
+                    await requestsRepository.SaveAsync();
+                    return Ok();
+                }
+                return NotFound();
             }
-            return NotFound();
+            catch (Exception)
+            {
 
-            
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+            }
+             
         }
     }
 }
