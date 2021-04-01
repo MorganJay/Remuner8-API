@@ -127,18 +127,5 @@ namespace Remuner8_Backend.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
             }
         }
-
-        //[HttpPatch]
-        //[Route("api/[controller]/{email}")]
-        //public IActionResult EditUser(Password password)
-        //{
-        //    var existingUser = await RegisterRepository.GetUserAsync(password.Email);
-        //    if (existingUser != null)
-        //    {
-        //        // password.Password1 = existingUser.Password1;
-        //        RegisterRepository.EditUser(password);
-        //    }
-        //    return Ok(password);
-        //}
     }
 }
