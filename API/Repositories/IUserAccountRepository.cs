@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using API.Models;
+﻿using API.Models;
 using Remuner8_Backend.EntityModels;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Remuner8_Backend.Repositories
 {

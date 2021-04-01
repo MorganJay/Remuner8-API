@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using API.Dtos;
 using System.Threading.Tasks;
-using API.Dtos;
-using API.Models;
 
 namespace API.Repositories
 {
     public interface IPayslipRepository
     {
-      Task< PayslipDto> GetPayslipByIdAsync(string id);
+        Task<PayslipDto> GetPayslipByIdAsync(string id);
     }
 }

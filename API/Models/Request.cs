@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
+    [Keyless]
     public partial class Request
     {
         [Key]

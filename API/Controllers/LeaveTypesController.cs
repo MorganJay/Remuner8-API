@@ -6,6 +6,8 @@ using API.Models;
 using API.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace API.Controllers
 {

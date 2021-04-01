@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using API.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using API.Models;
 
 namespace API.Repositories
 {

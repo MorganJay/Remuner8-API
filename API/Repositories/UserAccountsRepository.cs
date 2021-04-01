@@ -19,12 +19,11 @@ namespace Remuner8_Backend.Repositories
 
         public async Task AddUserAsync(Password password)
         {
-            if (password == null) 
+            if (password == null)
             {
                 throw new ArgumentNullException(nameof(password));
             }
             await remuner8Context.Passwords.AddAsync(password);
-            
         }
 
         public void DeleteUser(Password password)

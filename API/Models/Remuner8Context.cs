@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
 namespace API.Models
 {
-    public partial class Remuner8Context : DbContext
+    public partial class Remuner8Context : IdentityDbContext
     {
         public Remuner8Context()
         {
@@ -28,6 +29,7 @@ namespace API.Models
         public virtual DbSet<PayrollCategory> PayrollCategories { get; set; }
         public virtual DbSet<PayrollDeductionItem> PayrollDeductionItems { get; set; }
         public virtual DbSet<PayrollDeductionItemsAssignment> PayrollDeductionItemsAssignments { get; set; }
+        public virtual DbSet<PayrollDefault> PayrollDefaults { get; set; }
         public virtual DbSet<PayrollOvertimeItem> PayrollOvertimeItems { get; set; }
         public virtual DbSet<PayrollOvertimeItemsAssignment> PayrollOvertimeItemsAssignments { get; set; }
         public virtual DbSet<PayrollRate> PayrollRates { get; set; }
@@ -50,6 +52,7 @@ namespace API.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
             modelBuilder.Entity<AssigneeTable>(entity =>
@@ -241,6 +244,15 @@ namespace API.Models
                     .HasForeignKey(d => d.PayrollItemId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PayrollDeductionItemsAssignment_PayrollDeductionItems");
+            });
+
+            modelBuilder.Entity<PayrollDefault>(entity =>
+            {
+                entity.Property(e => e.Address).IsUnicode(false);
+
+                entity.Property(e => e.Office).IsUnicode(false);
+
+                entity.Property(e => e.Tax).IsUnicode(false);
             });
 
             modelBuilder.Entity<PayrollOvertimeItem>(entity =>
