@@ -14,9 +14,9 @@ namespace API.Repositories
 
         Task CreateEmploymentTypeAsync(EmploymentType employmentType);
 
-        Task UpdateEmploymentTypeAsync(int EmploymentTypeId, EmploymentType employmentType);
+        void UpdateEmploymentTypeAsync(int EmploymentTypeId, EmploymentType employmentType);
 
-        void DeleteEmploymentType(int EmploymentTypeId);
+        void DeleteEmploymentType(int id);
 
         Task<bool> SaveAsync();
     }

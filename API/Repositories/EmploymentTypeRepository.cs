@@ -21,13 +21,15 @@ namespace API.Repositories
             await _remuner8Context.EmploymentTypes.AddAsync(employmentType);
         }
 
-        public void DeleteEmploymentType(int EmploymentTypeId)
+        public void DeleteEmploymentType(int id)
         {
-            var employeeType = _remuner8Context.EmploymentTypes.Find(EmploymentTypeId);
-            if (employeeType is not null)
+            var EmploymentTypeId = _remuner8Context.EmploymentTypes.Find(id);
+
+            if (EmploymentTypeId is null)
             {
-                _remuner8Context.EmploymentTypes.Remove(employeeType);
+                throw new ArgumentNullException(nameof(EmploymentTypeId));
             }
+            _remuner8Context.EmploymentTypes.Remove(EmploymentTypeId);
         }
 
         public async Task<IEnumerable<EmploymentType>> GetEmploymentTypeAsync()
@@ -35,9 +37,9 @@ namespace API.Repositories
             return await _remuner8Context.EmploymentTypes.ToListAsync();
         }
 
-        public async Task<EmploymentType> GetEmploymentTypeByIdAsync(int EmploymentTypeId)
+        public async Task<EmploymentType> GetEmploymentTypeByIdAsync(int id)
         {
-            return await _remuner8Context.EmploymentTypes.FirstOrDefaultAsync();
+            return await _remuner8Context.EmploymentTypes.Where(s => s.EmploymentTypeId == id).FirstOrDefaultAsync();
         }
 
         public async Task<bool> SaveAsync()
@@ -45,9 +47,8 @@ namespace API.Repositories
             return await _remuner8Context.SaveChangesAsync() >= 0;
         }
 
-        public Task UpdateEmploymentTypeAsync(int EmploymentTypeId, EmploymentType employmentType)
+        public void UpdateEmploymentTypeAsync(int id, EmploymentType employmentType)
         {
-            throw new NotImplementedException();
         }
     }
 }

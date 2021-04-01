@@ -27,7 +27,7 @@ namespace API.Repositories
 
         public async Task<EmployeeBiodata> GetEmployeeByIdAsync(string id)
         {
-            return await context.EmployeeBiodatas.FindAsync(id);
+            return await context.EmployeeBiodatas.FirstOrDefaultAsync();
         }
 
         public async Task<bool> SaveChangesAsync()
