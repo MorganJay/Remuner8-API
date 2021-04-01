@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
@@ -15,6 +14,7 @@ namespace API.Models
         [Key]
         [Column("employmentTypeId")]
         public int EmploymentTypeId { get; set; }
+
         [Required]
         [Column("employmentName")]
         [StringLength(50)]

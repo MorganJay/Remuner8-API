@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(Remuner8Context))]
-    [Migration("20210306161932_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210401074029_createdatabase")]
+    partial class createdatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,7 +19,7 @@ namespace API.Migrations
             modelBuilder
                 .HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.3")
+                .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("API.Models.AssigneeTable", b =>
@@ -105,13 +105,14 @@ namespace API.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasMaxLength(200)
+                        .HasMaxLength(500)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("varchar(500)")
                         .HasColumnName("address");
 
-                    b.Property<byte[]>("Avatar")
-                        .HasColumnType("image")
+                    b.Property<string>("Avatar")
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(max)")
                         .HasColumnName("avatar");
 
                     b.Property<string>("BankName")
@@ -185,8 +186,8 @@ namespace API.Migrations
                         .HasColumnName("maritalStatus")
                         .IsFixedLength(true);
 
-                    b.Property<decimal?>("OtherAllowances")
-                        .HasColumnType("decimal(10,4)")
+                    b.Property<decimal>("OtherAllowances")
+                        .HasColumnType("decimal(19,4)")
                         .HasColumnName("otherAllowances");
 
                     b.Property<string>("OtherName")
@@ -195,13 +196,6 @@ namespace API.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)")
                         .HasColumnName("otherName");
-
-                    b.Property<string>("PayslipId")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("payslipID");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -611,8 +605,11 @@ namespace API.Migrations
                         .HasColumnType("varchar(10)")
                         .HasColumnName("payslipId");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("date")
+                    b.Property<string>("Date")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("date");
 
                     b.Property<string>("EmployeeId")
@@ -626,10 +623,6 @@ namespace API.Migrations
                         .HasColumnType("decimal(19,4)")
                         .HasColumnName("netSalary");
 
-                    b.Property<int>("TaxId")
-                        .HasColumnType("int")
-                        .HasColumnName("taxId");
-
                     b.Property<decimal>("TotalDeductions")
                         .HasColumnType("decimal(19,4)")
                         .HasColumnName("totalDeductions");
@@ -641,8 +634,6 @@ namespace API.Migrations
                     b.HasKey("PayslipId");
 
                     b.HasIndex("EmployeeId");
-
-                    b.HasIndex("TaxId");
 
                     b.ToTable("Payslip");
                 });
@@ -821,11 +812,11 @@ namespace API.Migrations
                         .HasColumnType("varchar(10)")
                         .HasColumnName("employeeId");
 
-                    b.Property<decimal?>("Paye")
+                    b.Property<decimal>("Paye")
                         .HasColumnType("decimal(19,4)")
                         .HasColumnName("PAYE");
 
-                    b.Property<decimal?>("Pension")
+                    b.Property<decimal>("Pension")
                         .HasColumnType("decimal(19,4)")
                         .HasColumnName("pension");
 
@@ -1053,15 +1044,7 @@ namespace API.Migrations
                         .HasConstraintName("FK_Payslip_EmployeeBiodata")
                         .IsRequired();
 
-                    b.HasOne("API.Models.Tax", "Tax")
-                        .WithMany("Payslips")
-                        .HasForeignKey("TaxId")
-                        .HasConstraintName("FK_Payslip_Taxes")
-                        .IsRequired();
-
                     b.Navigation("Employee");
-
-                    b.Navigation("Tax");
                 });
 
             modelBuilder.Entity("API.Models.StatutoryDeduction", b =>
@@ -1172,11 +1155,6 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.PensionFundAdministration", b =>
                 {
                     b.Navigation("StatutoryDeductions");
-                });
-
-            modelBuilder.Entity("API.Models.Tax", b =>
-                {
-                    b.Navigation("Payslips");
                 });
 #pragma warning restore 612, 618
         }

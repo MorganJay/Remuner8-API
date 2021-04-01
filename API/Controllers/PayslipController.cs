@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
-using API.Authentication;
+﻿using API.Authentication;
 using API.Dtos;
 using API.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace API.Controllers
 {

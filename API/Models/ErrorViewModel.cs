@@ -1,5 +1,3 @@
-using System;
-
 namespace Remuner8_Backend.Models
 {
     public class ErrorViewModel

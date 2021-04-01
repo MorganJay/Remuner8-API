@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 namespace API.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class createdatabase : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -212,12 +212,12 @@ namespace API.Migrations
                 columns: table => new
                 {
                     employeeId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
-                    avatar = table.Column<byte[]>(type: "image", nullable: true),
+                    avatar = table.Column<string>(type: "varchar(max)", unicode: false, nullable: true),
                     firstName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     lastName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     otherName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     dateOfBirth = table.Column<DateTime>(type: "date", nullable: false),
-                    address = table.Column<string>(type: "varchar(200)", unicode: false, maxLength: 200, nullable: false),
+                    address = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
                     phoneNumber = table.Column<string>(type: "varchar(20)", unicode: false, maxLength: 20, nullable: false),
                     emailAddress = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     gender = table.Column<string>(type: "char(6)", unicode: false, fixedLength: true, maxLength: 6, nullable: false),
@@ -227,11 +227,10 @@ namespace API.Migrations
                     departmentId = table.Column<int>(type: "int", nullable: false),
                     jobDescriptionId = table.Column<int>(type: "int", nullable: false),
                     dateEmployed = table.Column<DateTime>(type: "date", nullable: false),
-                    otherAllowances = table.Column<decimal>(type: "decimal(10,4)", nullable: true),
+                    otherAllowances = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
                     grossSalary = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
                     bankName = table.Column<string>(type: "varchar(150)", unicode: false, maxLength: 150, nullable: false),
-                    accountNumber = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
-                    payslipID = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false)
+                    accountNumber = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -356,6 +355,28 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Payslip",
+                columns: table => new
+                {
+                    payslipId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    date = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
+                    employeeId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
+                    totalEarnings = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    totalDeductions = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    netSalary = table.Column<decimal>(type: "decimal(19,4)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payslip", x => x.payslipId);
+                    table.ForeignKey(
+                        name: "FK_Payslip_EmployeeBiodata",
+                        column: x => x.employeeId,
+                        principalTable: "EmployeeBiodata",
+                        principalColumn: "employeeId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "StatutoryDeductions",
                 columns: table => new
                 {
@@ -393,8 +414,8 @@ namespace API.Migrations
                     taxId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     employeeId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
-                    PAYE = table.Column<decimal>(type: "decimal(19,4)", nullable: true),
-                    pension = table.Column<decimal>(type: "decimal(19,4)", nullable: true)
+                    PAYE = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
+                    pension = table.Column<decimal>(type: "decimal(19,4)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -476,35 +497,6 @@ namespace API.Migrations
                         column: x => x.PayrollItemId,
                         principalTable: "PayrollOvertimeItems",
                         principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Payslip",
-                columns: table => new
-                {
-                    payslipId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
-                    date = table.Column<DateTime>(type: "date", nullable: false),
-                    employeeId = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: false),
-                    totalEarnings = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
-                    totalDeductions = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
-                    netSalary = table.Column<decimal>(type: "decimal(19,4)", nullable: false),
-                    taxId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Payslip", x => x.payslipId);
-                    table.ForeignKey(
-                        name: "FK_Payslip_EmployeeBiodata",
-                        column: x => x.employeeId,
-                        principalTable: "EmployeeBiodata",
-                        principalColumn: "employeeId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Payslip_Taxes",
-                        column: x => x.taxId,
-                        principalTable: "Taxes",
-                        principalColumn: "taxId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -613,11 +605,6 @@ namespace API.Migrations
                 column: "employeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Payslip_taxId",
-                table: "Payslip",
-                column: "taxId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_StatutoryDeductions_employeeId",
                 table: "StatutoryDeductions",
                 column: "employeeId");
@@ -678,6 +665,9 @@ namespace API.Migrations
                 name: "SystemDefaults");
 
             migrationBuilder.DropTable(
+                name: "Taxes");
+
+            migrationBuilder.DropTable(
                 name: "TimeSheet");
 
             migrationBuilder.DropTable(
@@ -693,10 +683,10 @@ namespace API.Migrations
                 name: "PayrollOvertimeItems");
 
             migrationBuilder.DropTable(
-                name: "Taxes");
+                name: "PensionFundAdministration");
 
             migrationBuilder.DropTable(
-                name: "PensionFundAdministration");
+                name: "EmployeeBiodata");
 
             migrationBuilder.DropTable(
                 name: "PayrollCategories");
@@ -706,9 +696,6 @@ namespace API.Migrations
 
             migrationBuilder.DropTable(
                 name: "PayrollRates");
-
-            migrationBuilder.DropTable(
-                name: "EmployeeBiodata");
 
             migrationBuilder.DropTable(
                 name: "Departments");

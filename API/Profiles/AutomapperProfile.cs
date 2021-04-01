@@ -2,9 +2,6 @@
 using API.Dtos;
 using API.Models;
 using AutoMapper;
-using Remuner8_Backend.Dtos;
-using Remuner8_Backend.EntityModels;
-using Remuner8_Backend.Models;
 
 namespace API.Profiles
 {
@@ -12,9 +9,6 @@ namespace API.Profiles
     {
         public AutomapperProfile()
         {
-            CreateMap<Password, PasswordReadDto>().ReverseMap();
-            CreateMap<PasswordCreateDto, Password>().ReverseMap();
-
             CreateMap<EmployeeBiodata, EmployeeBiodataReadDto>();
             CreateMap<EmployeeBiodataCreateDto, EmployeeBiodata>().ReverseMap();
             CreateMap<EmployeeBiodata, EmployeeBiodataCreateDto>();

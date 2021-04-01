@@ -17,7 +17,7 @@ namespace API.Migrations
             modelBuilder
                 .HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.3")
+                .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("API.Models.AssigneeTable", b =>
@@ -103,13 +103,14 @@ namespace API.Migrations
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasMaxLength(200)
+                        .HasMaxLength(500)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(200)")
+                        .HasColumnType("varchar(500)")
                         .HasColumnName("address");
 
-                    b.Property<byte[]>("Avatar")
-                        .HasColumnType("image")
+                    b.Property<string>("Avatar")
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(max)")
                         .HasColumnName("avatar");
 
                     b.Property<string>("BankName")
@@ -184,7 +185,7 @@ namespace API.Migrations
                         .IsFixedLength(true);
 
                     b.Property<decimal>("OtherAllowances")
-                        .HasColumnType("decimal(10,4)")
+                        .HasColumnType("decimal(19,4)")
                         .HasColumnName("otherAllowances");
 
                     b.Property<string>("OtherName")
@@ -193,13 +194,6 @@ namespace API.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)")
                         .HasColumnName("otherName");
-
-                    b.Property<string>("PayslipId")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("payslipID");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -376,6 +370,10 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.PayrollAdditionItemsAssignment", b =>
                 {
+                    b.Property<int>("Id")
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(19,4)");
 
@@ -387,6 +385,12 @@ namespace API.Migrations
 
                     b.Property<int>("PayrollItemId")
                         .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("PayrollItemId");
 
                     b.ToTable("PayrollAdditionItemsAssignment");
                 });
@@ -444,6 +448,10 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.PayrollDeductionItemsAssignment", b =>
                 {
+                    b.Property<int>("Id")
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(19,4)");
 
@@ -455,6 +463,12 @@ namespace API.Migrations
 
                     b.Property<int>("PayrollItemId")
                         .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("PayrollItemId");
 
                     b.ToTable("PayrollDeductionItemsAssignment");
                 });
@@ -487,6 +501,10 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.PayrollOvertimeItemsAssignment", b =>
                 {
+                    b.Property<int>("Id")
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(19,4)");
 
@@ -498,6 +516,12 @@ namespace API.Migrations
 
                     b.Property<int>("PayrollItemId")
                         .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EmployeeId");
+
+                    b.HasIndex("PayrollItemId");
 
                     b.ToTable("PayrollOvertimeItemsAssignment");
                 });
@@ -579,8 +603,11 @@ namespace API.Migrations
                         .HasColumnType("varchar(10)")
                         .HasColumnName("payslipId");
 
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("date")
+                    b.Property<string>("Date")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)")
                         .HasColumnName("date");
 
                     b.Property<string>("EmployeeId")
@@ -594,10 +621,6 @@ namespace API.Migrations
                         .HasColumnType("decimal(19,4)")
                         .HasColumnName("netSalary");
 
-                    b.Property<int>("TaxId")
-                        .HasColumnType("int")
-                        .HasColumnName("taxId");
-
                     b.Property<decimal>("TotalDeductions")
                         .HasColumnType("decimal(19,4)")
                         .HasColumnName("totalDeductions");
@@ -609,8 +632,6 @@ namespace API.Migrations
                     b.HasKey("PayslipId");
 
                     b.HasIndex("EmployeeId");
-
-                    b.HasIndex("TaxId");
 
                     b.ToTable("Payslip");
                 });
@@ -855,7 +876,207 @@ namespace API.Migrations
                     b.HasIndex(new[] { "Role" }, "UQ__UserRole__863D21484D4C2003")
                         .IsUnique();
 
-                    b.ToTable("UserRoles");
+                    b.ToTable("UsersRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRoleClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("ClaimType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ClaimValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserClaims");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ProviderKey")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("ProviderDisplayName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("LoginProvider", "ProviderKey");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("AspNetUserLogins");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("RoleId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetUserRoles");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("LoginProvider")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId", "LoginProvider", "Name");
+
+                    b.ToTable("AspNetUserTokens");
                 });
 
             modelBuilder.Entity("API.Models.Bonus", b =>
@@ -923,6 +1144,25 @@ namespace API.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("API.Models.PayrollAdditionItemsAssignment", b =>
+                {
+                    b.HasOne("API.Models.EmployeeBiodata", "Employee")
+                        .WithMany("PayrollAdditionItemsAssignments")
+                        .HasForeignKey("EmployeeId")
+                        .HasConstraintName("FK_PayrollAdditionItemsAssignment_EmployeeBiodata")
+                        .IsRequired();
+
+                    b.HasOne("API.Models.PayrollAdditionItem", "PayrollItem")
+                        .WithMany("PayrollAdditionItemsAssignments")
+                        .HasForeignKey("PayrollItemId")
+                        .HasConstraintName("FK_PayrollAdditionItemsAssignment_PayrollAdditionItems")
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("PayrollItem");
+                });
+
             modelBuilder.Entity("API.Models.PayrollDeductionItem", b =>
                 {
                     b.HasOne("API.Models.AssigneeTable", "Assignee")
@@ -934,6 +1174,25 @@ namespace API.Migrations
                     b.Navigation("Assignee");
                 });
 
+            modelBuilder.Entity("API.Models.PayrollDeductionItemsAssignment", b =>
+                {
+                    b.HasOne("API.Models.EmployeeBiodata", "Employee")
+                        .WithMany("PayrollDeductionItemsAssignments")
+                        .HasForeignKey("EmployeeId")
+                        .HasConstraintName("FK_PayrollDeductionItemsAssignment_EmployeeBiodata")
+                        .IsRequired();
+
+                    b.HasOne("API.Models.PayrollDeductionItem", "PayrollItem")
+                        .WithMany("PayrollDeductionItemsAssignments")
+                        .HasForeignKey("PayrollItemId")
+                        .HasConstraintName("FK_PayrollDeductionItemsAssignment_PayrollDeductionItems")
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("PayrollItem");
+                });
+
             modelBuilder.Entity("API.Models.PayrollOvertimeItem", b =>
                 {
                     b.HasOne("API.Models.PayrollRate", "Rate")
@@ -943,6 +1202,25 @@ namespace API.Migrations
                         .IsRequired();
 
                     b.Navigation("Rate");
+                });
+
+            modelBuilder.Entity("API.Models.PayrollOvertimeItemsAssignment", b =>
+                {
+                    b.HasOne("API.Models.EmployeeBiodata", "Employee")
+                        .WithMany("PayrollOvertimeItemsAssignments")
+                        .HasForeignKey("EmployeeId")
+                        .HasConstraintName("FK_PayrollOvertimeItemsAssignment_EmployeeBiodata")
+                        .IsRequired();
+
+                    b.HasOne("API.Models.PayrollOvertimeItem", "PayrollItem")
+                        .WithMany("PayrollOvertimeItemsAssignments")
+                        .HasForeignKey("PayrollItemId")
+                        .HasConstraintName("FK_PayrollOvertimeItemsAssignment_PayrollOvertimeItems")
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+
+                    b.Navigation("PayrollItem");
                 });
 
             modelBuilder.Entity("API.Models.PayrollTransaction", b =>
@@ -964,15 +1242,7 @@ namespace API.Migrations
                         .HasConstraintName("FK_Payslip_EmployeeBiodata")
                         .IsRequired();
 
-                    b.HasOne("API.Models.Tax", "Tax")
-                        .WithMany("Payslips")
-                        .HasForeignKey("TaxId")
-                        .HasConstraintName("FK_Payslip_Taxes")
-                        .IsRequired();
-
                     b.Navigation("Employee");
-
-                    b.Navigation("Tax");
                 });
 
             modelBuilder.Entity("API.Models.StatutoryDeduction", b =>
@@ -1016,6 +1286,57 @@ namespace API.Migrations
                     b.Navigation("Employee");
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("API.Models.AssigneeTable", b =>
                 {
                     b.Navigation("PayrollAdditionItems");
@@ -1030,6 +1351,12 @@ namespace API.Migrations
 
             modelBuilder.Entity("API.Models.EmployeeBiodata", b =>
                 {
+                    b.Navigation("PayrollAdditionItemsAssignments");
+
+                    b.Navigation("PayrollDeductionItemsAssignments");
+
+                    b.Navigation("PayrollOvertimeItemsAssignments");
+
                     b.Navigation("PayrollTransactions");
 
                     b.Navigation("Payslips");
@@ -1049,9 +1376,24 @@ namespace API.Migrations
                     b.Navigation("EmployeeBiodata");
                 });
 
+            modelBuilder.Entity("API.Models.PayrollAdditionItem", b =>
+                {
+                    b.Navigation("PayrollAdditionItemsAssignments");
+                });
+
             modelBuilder.Entity("API.Models.PayrollCategory", b =>
                 {
                     b.Navigation("PayrollAdditionItems");
+                });
+
+            modelBuilder.Entity("API.Models.PayrollDeductionItem", b =>
+                {
+                    b.Navigation("PayrollDeductionItemsAssignments");
+                });
+
+            modelBuilder.Entity("API.Models.PayrollOvertimeItem", b =>
+                {
+                    b.Navigation("PayrollOvertimeItemsAssignments");
                 });
 
             modelBuilder.Entity("API.Models.PayrollRate", b =>
@@ -1062,11 +1404,6 @@ namespace API.Migrations
             modelBuilder.Entity("API.Models.PensionFundAdministration", b =>
                 {
                     b.Navigation("StatutoryDeductions");
-                });
-
-            modelBuilder.Entity("API.Models.Tax", b =>
-                {
-                    b.Navigation("Payslips");
                 });
 #pragma warning restore 612, 618
         }
