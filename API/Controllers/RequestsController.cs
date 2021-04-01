@@ -30,27 +30,53 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RequestReadDto>>> GetAllRequestsAsync()
         {
-            var request = await requestsRepository.GetAllAsync();
-            var mappedmodel = mapper.Map<IEnumerable<RequestReadDto>>(request);
-            return Ok(mappedmodel);
+            try
+            {
+                var request = await requestsRepository.GetAllAsync();
+                var mappedmodel = mapper.Map<IEnumerable<RequestReadDto>>(request);
+                return Ok(mappedmodel);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         // GET api/<RequestsController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<RequestReadDto>> GetRequestById(int id)
         {
-            var request = await requestsRepository.GetRequestAsync(id);
-            return Ok(request);
+            try
+            {
+                var request = await requestsRepository.GetRequestAsync(id);
+                return Ok(request);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
 
         // POST api/<RequestsController>
         [HttpPost]
         public async Task<ActionResult> PostRequest(RequestCreateDto requestCreate)
         {
-            var mappedmodel = mapper.Map<Request>(requestCreate);
-            await requestsRepository.CreateRequestAsync(mappedmodel);
-            await requestsRepository.SaveAsync();
-            return StatusCode(StatusCodes.Status201Created);
+            try
+            {
+                var mappedmodel = mapper.Map<Request>(requestCreate);
+                await requestsRepository.CreateRequestAsync(mappedmodel);
+                await requestsRepository.SaveAsync();
+                return StatusCode(StatusCodes.Status201Created);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
 
         }
 
@@ -65,16 +91,23 @@ namespace API.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var request = await requestsRepository.GetRequestAsync(id);
-            if (request != null)
+            try
             {
-                await requestsRepository.RemoveRequestAsync(id);
-                await requestsRepository.SaveAsync();
-                return Ok();
+                var request = await requestsRepository.GetRequestAsync(id);
+                if (request != null)
+                {
+                    await requestsRepository.RemoveRequestAsync(id);
+                    await requestsRepository.SaveAsync();
+                    return Ok();
+                }
+                return NotFound();
             }
-            return NotFound();
+            catch (Exception)
+            {
 
-            
+                throw;
+            }
+       
         }
     }
 }
