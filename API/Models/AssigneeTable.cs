@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
@@ -18,7 +20,6 @@ namespace API.Models
         [Key]
         [Column("assigneeid")]
         public int Assigneeid { get; set; }
-
         [Required]
         [Column("assigneeName")]
         [StringLength(50)]
@@ -26,7 +27,6 @@ namespace API.Models
 
         [InverseProperty(nameof(PayrollAdditionItem.Assignee))]
         public virtual ICollection<PayrollAdditionItem> PayrollAdditionItems { get; set; }
-
         [InverseProperty(nameof(PayrollDeductionItem.Assignee))]
         public virtual ICollection<PayrollDeductionItem> PayrollDeductionItems { get; set; }
     }

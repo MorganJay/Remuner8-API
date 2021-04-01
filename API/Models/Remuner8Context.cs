@@ -29,17 +29,18 @@ namespace API.Models
         public virtual DbSet<PayrollCategory> PayrollCategories { get; set; }
         public virtual DbSet<PayrollDeductionItem> PayrollDeductionItems { get; set; }
         public virtual DbSet<PayrollDeductionItemsAssignment> PayrollDeductionItemsAssignments { get; set; }
+        public virtual DbSet<PayrollDefault> PayrollDefaults { get; set; }
         public virtual DbSet<PayrollOvertimeItem> PayrollOvertimeItems { get; set; }
         public virtual DbSet<PayrollOvertimeItemsAssignment> PayrollOvertimeItemsAssignments { get; set; }
         public virtual DbSet<PayrollRate> PayrollRates { get; set; }
         public virtual DbSet<PayrollTransaction> PayrollTransactions { get; set; }
         public virtual DbSet<Payslip> Payslips { get; set; }
         public virtual DbSet<PensionFundAdministration> PensionFundAdministrations { get; set; }
+        public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<StatutoryDeduction> StatutoryDeductions { get; set; }
         public virtual DbSet<SystemDefault> SystemDefaults { get; set; }
         public virtual DbSet<Tax> Taxes { get; set; }
         public virtual DbSet<TimeSheet> TimeSheets { get; set; }
-        public virtual DbSet<UserRole> UsersRoles { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -64,6 +65,8 @@ namespace API.Models
 
             modelBuilder.Entity<Bonus>(entity =>
             {
+                entity.Property(e => e.BonusName).IsUnicode(false);
+
                 entity.HasOne(d => d.Department)
                     .WithMany()
                     .HasForeignKey(d => d.DepartmentId)
@@ -146,6 +149,12 @@ namespace API.Models
             modelBuilder.Entity<JobDescription>(entity =>
             {
                 entity.Property(e => e.JobDescriptionName).IsUnicode(false);
+
+                entity.HasOne(d => d.Department)
+                    .WithMany(p => p.JobDescriptions)
+                    .HasForeignKey(d => d.DepartmentId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_JobDescriptions_Departments");
             });
 
             modelBuilder.Entity<LeaveType>(entity =>
@@ -237,6 +246,15 @@ namespace API.Models
                     .HasConstraintName("FK_PayrollDeductionItemsAssignment_PayrollDeductionItems");
             });
 
+            modelBuilder.Entity<PayrollDefault>(entity =>
+            {
+                entity.Property(e => e.Address).IsUnicode(false);
+
+                entity.Property(e => e.Office).IsUnicode(false);
+
+                entity.Property(e => e.Tax).IsUnicode(false);
+            });
+
             modelBuilder.Entity<PayrollOvertimeItem>(entity =>
             {
                 entity.Property(e => e.Name).IsUnicode(false);
@@ -320,6 +338,17 @@ namespace API.Models
                 entity.Property(e => e.PfaName).IsUnicode(false);
             });
 
+            modelBuilder.Entity<Request>(entity =>
+            {
+                entity.Property(e => e.Date).IsUnicode(false);
+
+                entity.Property(e => e.Name).IsUnicode(false);
+
+                entity.Property(e => e.Reason).IsUnicode(false);
+
+                entity.Property(e => e.Status).IsUnicode(false);
+            });
+
             modelBuilder.Entity<StatutoryDeduction>(entity =>
             {
                 entity.HasKey(e => e.StatutoryTypeId)
@@ -387,15 +416,9 @@ namespace API.Models
                     .HasConstraintName("FK__TimeSheet__emplo__45F365D3");
             });
 
-            modelBuilder.Entity<UserRole>(entity =>
-            {
-                entity.Property(e => e.Role).IsUnicode(false);
-            });
-
             OnModelCreatingPartial(modelBuilder);
         }
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
-
     }
 }

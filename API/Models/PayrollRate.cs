@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
@@ -16,7 +18,6 @@ namespace API.Models
         [Key]
         [Column("rateId")]
         public int RateId { get; set; }
-
         [Required]
         [Column("rateType")]
         [StringLength(50)]

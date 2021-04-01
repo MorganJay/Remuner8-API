@@ -19,10 +19,11 @@ namespace API.Controllers
 
         public AccountController(UserManager<IdentityUser> userManager)
         {
-            this._userManager = userManager;
+            _userManager = userManager;
         }
 
-        // GET: api/<AccountController>
+        // POST: api/<AccountController>/register
+        [Route("register")]
         [HttpPost]
         public async Task<ActionResult> RegisterUser(RegisterDto model)
         {
@@ -37,7 +38,7 @@ namespace API.Controllers
                     };
                     var exist = await _userManager.FindByEmailAsync(model.Email);
 
-                    if (exist is null)
+                    if (exist is not null)
                     {
                         return BadRequest(new Response { Status = "Not sucessful", Message = "The Email already exist" });
                     }
@@ -52,6 +53,7 @@ namespace API.Controllers
             }
         }
 
+        [Route("login")]
         [HttpPost]
         public async Task<ActionResult> Login(LoginDto model)
         {
@@ -80,24 +82,6 @@ namespace API.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
-        }
-
-        // POST api/<AccountController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT api/<AccountController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<AccountController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }
