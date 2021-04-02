@@ -59,6 +59,7 @@ namespace API
             services.AddScoped<IPayrollDeductionRepository, PayrollDeductionRepository>();
             services.AddScoped<IPayrollOvertimeItemRepository, PayrollOvertimeItemRepository>();
             services.AddScoped<ILeaveRepository, LeaveRepository>();
+            services.AddScoped<IEmploymentTypeRepo, EmploymentTypeRepository>();
             services.AddScoped<IStatisticsRepository, StatisticsRepository>();
             services.AddScoped<IJobDescriptionRepository, JobDescriptionRepository>();
             services.AddScoped<IRequestsRepository, RequestsRepository>();
