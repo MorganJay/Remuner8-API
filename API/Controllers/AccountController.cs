@@ -39,7 +39,7 @@ namespace API.Controllers
 
                     if (exist is not null)
                     {
-                        return BadRequest(new Response { Status = "Not successful", Message = "The Email already exist" });
+                        return BadRequest(new Response { Status = "Not successful", Message = "That user already exists" });
                     }
                     await _userManager.CreateAsync(user, model.Password);
                     return Ok(new Response { Status = "Success", Message = "You have sucessfully registered" });
