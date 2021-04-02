@@ -35,14 +35,13 @@ namespace API.Repositories
 
         public async Task<Request> GetRequestAsync(int id)
         {
-           var request =  await _remuner8Context.Requests.FindAsync(id);
+            var request = await _remuner8Context.Requests.FindAsync(id);
             return request;
-
         }
 
         public async Task RemoveRequestAsync(int id)
         {
-           var request = await _remuner8Context.Requests.FindAsync(id);
+            var request = await _remuner8Context.Requests.FindAsync(id);
             _remuner8Context.Requests.Remove(request);
         }
 
