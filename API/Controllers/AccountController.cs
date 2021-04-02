@@ -1,9 +1,9 @@
 ﻿using API.Authentication;
 using API.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Remuner8_Backend.Dtos;
 using System;
 using System.Threading.Tasks;
 
@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
+    //[AllowAnonymous]
     [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
