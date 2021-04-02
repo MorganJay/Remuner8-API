@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Models
 {
-    public partial class Remuner8Context : DbContext
+    public partial class Remuner8Context : IdentityDbContext
     {
         public Remuner8Context()
         {
@@ -23,12 +23,12 @@ namespace API.Models
         public virtual DbSet<EmploymentType> EmploymentTypes { get; set; }
         public virtual DbSet<JobDescription> JobDescriptions { get; set; }
         public virtual DbSet<LeaveType> LeaveTypes { get; set; }
-        public virtual DbSet<Password> Passwords { get; set; }
         public virtual DbSet<PayrollAdditionItem> PayrollAdditionItems { get; set; }
         public virtual DbSet<PayrollAdditionItemsAssignment> PayrollAdditionItemsAssignments { get; set; }
         public virtual DbSet<PayrollCategory> PayrollCategories { get; set; }
         public virtual DbSet<PayrollDeductionItem> PayrollDeductionItems { get; set; }
         public virtual DbSet<PayrollDeductionItemsAssignment> PayrollDeductionItemsAssignments { get; set; }
+        public virtual DbSet<PayrollDefault> PayrollDefaults { get; set; }
         public virtual DbSet<PayrollOvertimeItem> PayrollOvertimeItems { get; set; }
         public virtual DbSet<PayrollOvertimeItemsAssignment> PayrollOvertimeItemsAssignments { get; set; }
         public virtual DbSet<PayrollRate> PayrollRates { get; set; }
@@ -51,6 +51,7 @@ namespace API.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             modelBuilder.HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS");
 
             modelBuilder.Entity<AssigneeTable>(entity =>
@@ -126,11 +127,11 @@ namespace API.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__EmployeeB__depar__3A81B327");
 
-                entity.HasOne(d => d.EmailAddressNavigation)
-                    .WithOne(p => p.EmployeeBiodata)
-                    .HasForeignKey<EmployeeBiodata>(d => d.EmailAddress)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__EmployeeB__email__3D5E1FD2");
+                //entity.HasOne(d => d.EmailAddressNavigation)
+                //    .WithOne(p => p.EmployeeBiodata)
+                //    .HasForeignKey<EmployeeBiodata>(d => d.EmailAddress)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK__EmployeeB__email__3D5E1FD2");
 
                 entity.HasOne(d => d.JobDescription)
                     .WithMany(p => p.EmployeeBiodatas)
@@ -158,16 +159,6 @@ namespace API.Models
             modelBuilder.Entity<LeaveType>(entity =>
             {
                 entity.Property(e => e.Name).IsUnicode(false);
-            });
-
-            modelBuilder.Entity<Password>(entity =>
-            {
-                entity.HasKey(e => e.Email)
-                    .HasName("PK__Password__AB6E6165CEDA53DD");
-
-                entity.Property(e => e.Email).IsUnicode(false);
-
-                entity.Property(e => e.Password1).IsUnicode(false);
             });
 
             modelBuilder.Entity<PayrollAdditionItem>(entity =>
@@ -242,6 +233,15 @@ namespace API.Models
                     .HasForeignKey(d => d.PayrollItemId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_PayrollDeductionItemsAssignment_PayrollDeductionItems");
+            });
+
+            modelBuilder.Entity<PayrollDefault>(entity =>
+            {
+                entity.Property(e => e.Address).IsUnicode(false);
+
+                entity.Property(e => e.Office).IsUnicode(false);
+
+                entity.Property(e => e.Tax).IsUnicode(false);
             });
 
             modelBuilder.Entity<PayrollOvertimeItem>(entity =>
