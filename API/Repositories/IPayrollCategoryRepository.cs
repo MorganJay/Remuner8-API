@@ -11,7 +11,7 @@ namespace API.Repositories
         Task<IEnumerable<PayrollCategory>> GetAllCategoriesAsync();
         Task<PayrollCategory> GetCategoryByIdAsync(int id);
         Task CreateCategoryAsync(PayrollCategory payrollCategory);
-        void EditCategory(PayrollCategory payrollCategory);
+        void EditCategory(int id, PayrollCategory payrollCategory);
         void DeleteCategory(int id);
         Task<bool> SaveAsync();
     }

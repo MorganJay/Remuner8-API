@@ -30,13 +30,9 @@ namespace API.Repositories
             }
         }
 
-        public void EditCategory(PayrollCategory payrollCategory)
+        public void EditCategory(int id, PayrollCategory payrollCategory)
         {
-            var category = _remuner8Context.PayrollCategories.FindAsync(payrollCategory.CategoryId);
-            if (category != null)
-            {
-                //category = payrollCategory.CategoryId;
-            }
+            
         }
 
         public async Task<IEnumerable<PayrollCategory>> GetAllCategoriesAsync()
