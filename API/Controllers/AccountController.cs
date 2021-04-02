@@ -30,7 +30,7 @@ namespace API.Controllers
         {
             try
             {
-                if (ModelState.IsValid || model is null)
+                if (ModelState.IsValid && model is not null)
                 {
                     var user = new IdentityUser
                     {
@@ -41,12 +41,12 @@ namespace API.Controllers
 
                     if (exist is not null)
                     {
-                        return BadRequest(new Response { Status = "Not sucessful", Message = "The Email already exist" });
+                        return BadRequest(new Response { Status = "Not successful", Message = "The Email already exist" });
                     }
                     await _userManager.CreateAsync(user, model.Password);
-                    return Ok(new Response { Status = " success", Message = "You have sucessfully registered" });
+                    return Ok(new Response { Status = "Success", Message = "You have sucessfully registered" });
                 }
-                return BadRequest(new Response { Status = "Not sucessful", Message = "The data is not valid please enter valid data" });
+                return BadRequest(new Response { Status = "Not successful", Message = "The data is not valid please enter valid data" });
             }
             catch (Exception)
             {
@@ -74,14 +74,14 @@ namespace API.Controllers
                     {
                         return Ok(new Response { Status = "Success", Message = "You are verified" });
                     }
-                    return Unauthorized(new Response { Status = "Not sucessful", Message = "The data is not in the database " });
+                    return Unauthorized(new Response { Status = "Not Successful", Message = "The data is not in the database" });
                 }
 
-                return BadRequest(new Response { Status = "Not sucessful", Message = "The data is not valid please enter valid data" });
+                return BadRequest(new Response { Status = "Not Successful", Message = "The data is not valid please enter valid data" });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Source });
             }
         }
     }
