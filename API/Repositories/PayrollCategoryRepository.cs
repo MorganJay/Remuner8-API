@@ -18,7 +18,7 @@ namespace API.Repositories
 
         public async Task CreateCategoryAsync(PayrollCategory payrollCategory)
         {
-            var category = await _remuner8Context.PayrollCategories.AddAsync(payrollCategory);
+            await _remuner8Context.PayrollCategories.AddAsync(payrollCategory);
         }
 
         public void DeleteCategory(int id)
