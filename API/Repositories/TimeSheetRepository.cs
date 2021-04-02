@@ -1,9 +1,7 @@
 ﻿using API.Data_Models.Dtos;
 using API.Models;
 using AutoMapper;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;

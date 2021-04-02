@@ -7,13 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Remove="Migrations\**" />
-	  <Content Remove="Migrations\**" />
-	  <EmbeddedResource Remove="Migrations\**" />
-	  <None Remove="Migrations\**" />
-	</ItemGroup>
-
-	<ItemGroup>
 		<PackageReference Include="AutoMapper" Version="10.1.1" />
 		<PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
 		<PackageReference Include="Bricelam.EntityFrameworkCore.Pluralizer" Version="1.0.0">

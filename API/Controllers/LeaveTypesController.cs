@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    //api/leaveType
+    //api/leaveTypes
     [Route("api/[controller]")]
     [ApiController]
     public class LeaveTypesController : ControllerBase
