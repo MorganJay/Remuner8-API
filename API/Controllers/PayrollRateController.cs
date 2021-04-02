@@ -1,4 +1,5 @@
-﻿using API.Dtos;
+﻿using API.Authentication;
+using API.Dtos;
 using API.Models;
 using API.Repositories;
 using AutoMapper;
@@ -30,56 +31,101 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult <IEnumerable<PayrollRateReadDto>>> GetAllAsync()
         {
-            var rate = await _rateRepository.GetAllRatesAsync();
-            var mappedModel = _mapper.Map<IEnumerable<PayrollRateReadDto>>(rate);
-            return Ok(mappedModel);
+            try
+            {
+                var rate = await _rateRepository.GetAllRatesAsync();
+                var mappedModel = _mapper.Map<IEnumerable<PayrollRateReadDto>>(rate);
+                return Ok(mappedModel);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+            
         }
 
         // GET api/<PayrollRateController>/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PayrollRateReadDto>> GetASync(int id)
         {
-            var rate = await _rateRepository.GetRateByIdAsync(id);
-            var mappedModel = _mapper.Map<PayrollRateReadDto>(rate);
-            return Ok(mappedModel);
+            try
+            {
+                var rate = await _rateRepository.GetRateByIdAsync(id);
+                var mappedModel = _mapper.Map<PayrollRateReadDto>(rate);
+                return Ok(mappedModel);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+            
         }
 
         // POST api/<PayrollRateController>
         [HttpPost]
         public async Task<ActionResult> PostRateAsync(PayrollRateCreateDto payrollRateCreateDto)
         {
-            var mappedModel = _mapper.Map<PayrollRate>(payrollRateCreateDto);
-            await _rateRepository.CreateRateAsync(mappedModel);
-            await _rateRepository.SaveAsync();
-            return StatusCode(StatusCodes.Status201Created);
+            try
+            {
+                var mappedModel = _mapper.Map<PayrollRate>(payrollRateCreateDto);
+                await _rateRepository.CreateRateAsync(mappedModel);
+                await _rateRepository.SaveAsync();
+                return StatusCode(StatusCodes.Status201Created);
+            }
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+            
         }
 
         // PUT api/<PayrollRateController>/5
         [HttpPut("{id}")]
         public async Task<ActionResult> PutAsync(int id, PayrollRateCreateDto payrollRateCreateDto)
         {
-            var rate = await _rateRepository.GetRateByIdAsync(id);
-            if (rate == null)
+            try
             {
-                return NotFound();
+                var rate = await _rateRepository.GetRateByIdAsync(id);
+                if (rate == null)
+                {
+                    return NotFound();
+                }
+                var putmodel = _mapper.Map(payrollRateCreateDto, rate);
+                await _rateRepository.SaveAsync();
+                return NoContent();
             }
-            var putmodel = _mapper.Map(payrollRateCreateDto, rate);
-            await _rateRepository.SaveAsync();
-            return NoContent();
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+            
         }
 
         // DELETE api/<PayrollRateController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> RemoveRateAsync(int id)
         {
-           var rate = await _rateRepository.GetRateByIdAsync(id);
-            if (rate == null)
+            try
             {
-                return NotFound();
+                var rate = await _rateRepository.GetRateByIdAsync(id);
+                if (rate == null)
+                {
+                    return NotFound();
+                }
+                _rateRepository.DeleteRate(rate);
+                await _rateRepository.SaveAsync();
+                return Ok();
             }
-            _rateRepository.DeleteRate(rate);
-            await _rateRepository.SaveAsync();
-            return Ok();
+            catch (Exception ex)
+            {
+
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+            }
+           
 
         }
     }
