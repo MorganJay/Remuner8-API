@@ -23,7 +23,6 @@ namespace API.Models
         public virtual DbSet<EmploymentType> EmploymentTypes { get; set; }
         public virtual DbSet<JobDescription> JobDescriptions { get; set; }
         public virtual DbSet<LeaveType> LeaveTypes { get; set; }
-        public virtual DbSet<Password> Passwords { get; set; }
         public virtual DbSet<PayrollAdditionItem> PayrollAdditionItems { get; set; }
         public virtual DbSet<PayrollAdditionItemsAssignment> PayrollAdditionItemsAssignments { get; set; }
         public virtual DbSet<PayrollCategory> PayrollCategories { get; set; }
@@ -128,11 +127,11 @@ namespace API.Models
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__EmployeeB__depar__3A81B327");
 
-                entity.HasOne(d => d.EmailAddressNavigation)
-                    .WithOne(p => p.EmployeeBiodata)
-                    .HasForeignKey<EmployeeBiodata>(d => d.EmailAddress)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__EmployeeB__email__3D5E1FD2");
+                //entity.HasOne(d => d.EmailAddressNavigation)
+                //    .WithOne(p => p.EmployeeBiodata)
+                //    .HasForeignKey<EmployeeBiodata>(d => d.EmailAddress)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FK__EmployeeB__email__3D5E1FD2");
 
                 entity.HasOne(d => d.JobDescription)
                     .WithMany(p => p.EmployeeBiodatas)
@@ -160,16 +159,6 @@ namespace API.Models
             modelBuilder.Entity<LeaveType>(entity =>
             {
                 entity.Property(e => e.Name).IsUnicode(false);
-            });
-
-            modelBuilder.Entity<Password>(entity =>
-            {
-                entity.HasKey(e => e.Email)
-                    .HasName("PK__Password__AB6E6165CEDA53DD");
-
-                entity.Property(e => e.Email).IsUnicode(false);
-
-                entity.Property(e => e.Password1).IsUnicode(false);
             });
 
             modelBuilder.Entity<PayrollAdditionItem>(entity =>
