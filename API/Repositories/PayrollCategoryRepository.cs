@@ -41,8 +41,8 @@ namespace API.Repositories
 
         public async Task<IEnumerable<PayrollCategory>> GetAllCategoriesAsync()
         {
-           var category = await _remuner8Context.PayrollCategories.ToListAsync();
-           return category;
+            var category = await _remuner8Context.PayrollCategories.ToListAsync();
+            return category;
         }
 
         public async Task<PayrollCategory> GetCategoryByIdAsync(int id)
@@ -53,7 +53,7 @@ namespace API.Repositories
 
         public async Task<bool> SaveAsync()
         {
-           return  await _remuner8Context.SaveChangesAsync() >= 0;
+            return await _remuner8Context.SaveChangesAsync() >= 0;
         }
     }
 }

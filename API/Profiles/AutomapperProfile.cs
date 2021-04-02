@@ -36,7 +36,6 @@ namespace API
             CreateMap<PayrollRate, PayrollRateReadDto>().ReverseMap();
             CreateMap<PayrollCategory, PayrollCategoryReadDto>().ReverseMap();
             CreateMap<PayrollCategory, PayrollRateCreateDto>().ReverseMap();
-
         }
     }
 }
