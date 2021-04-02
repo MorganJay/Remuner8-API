@@ -1,5 +1,6 @@
 ﻿using API.Authentication;
 using API.Dtos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,6 +24,7 @@ namespace API.Controllers
         }
 
         // GET: api/<AccountController>
+        [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult> RegisterUser(RegisterDto model)
         {
@@ -69,6 +71,7 @@ namespace API.Controllers
                     var verifyPassword = await _userManager.CheckPasswordAsync(user, model.Password);
                     if (verifyEmail is not null && verifyPassword)
                     {
+                        
                         return Ok(new Response { Status = "Success", Message = "You are verified" });
                     }
                     return Unauthorized(new Response { Status = "Not sucessful", Message = "The data is not in the database " });
