@@ -1,8 +1,8 @@
 using API.Models;
 using API.Repositories;
+using API.Security;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -28,21 +28,33 @@ namespace API
             {
                 s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Remuner8 API", Version = "v1" });
             });
+
             services.AddDbContext<Remuner8Context>(options =>
                options.UseSqlServer(
                    Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddDbContext<AppIdentityDbContext>(options =>
+                options.UseSqlServer(
+                   Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<AppIdentityUser, AppIdentityRole>()
+                .AddEntityFrameworkStores<AppIdentityDbContext>();
+
+            services.ConfigureApplicationCookie(Options =>
+            {
+                Options.LoginPath = "/Security/SignIn";
+                Options.AccessDeniedPath = "/Security/AccessDenied";
+            });
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddAutoMapper(typeof(AutomapperProfile));
 
-            services.AddDefaultIdentity<IdentityUser>(options =>
-                options.SignIn.RequireConfirmedAccount = true
-                )
-                .AddEntityFrameworkStores<Remuner8Context>();
 
             services.AddControllersWithViews();
             services.AddScoped<IBonusRepository, BonusRepository>();
@@ -89,6 +101,8 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
