@@ -63,7 +63,7 @@ namespace API.Controllers
                 return NotFound();
             }
             var putModel = _mapper.Map(payrollCategoryCreateDto, existingCategory);
-            return NoContent();
+            return Ok(existingCategory);
         }
 
         // DELETE api/<PayrollCategoryController>/5
