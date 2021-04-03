@@ -51,7 +51,8 @@ namespace API.Controllers
             var mappedModel = _mapper.Map<PayrollDefault>(payrollDefaultCreateDto);
             await _payrollDefaultRepository.CreateDefaultAsync(mappedModel);
             await _payrollDefaultRepository.SaveAsync();
-            return StatusCode(StatusCodes.Status201Created);
+            var createdReadModel = _mapper.Map<PayrollDefaultReadDto>(mappedModel);
+            return CreatedAtRoute(nameof(Get), new {Id = createdReadModel.Id}, createdReadModel);
 
         }
 
@@ -64,7 +65,7 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            var putModel = _mapper.Map(item, payrollDefaultCreateDto);
+            var putModel = _mapper.Map(payrollDefaultCreateDto, item);
             await _payrollDefaultRepository.SaveAsync();
             return Ok(putModel);
 
@@ -79,7 +80,7 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            _payrollDefaultRepository.DeleteDefault(item.Id);
+            _payrollDefaultRepository.DeleteDefault(id);
             await _payrollDefaultRepository.SaveAsync();
             return Ok();
         }

@@ -50,7 +50,8 @@ namespace API.Controllers
             var mappedModel = _mapper.Map<PayrollCategory>(payrollCategoryCreateDto);
             await _payrollCategoryRepository.CreateCategoryAsync(mappedModel);
             await _payrollCategoryRepository.SaveAsync();
-            return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "Category Created Successfully" });
+            var createdReadModel = _mapper.Map<PayrollCategoryReadDto>(mappedModel);
+            return CreatedAtRoute(nameof(GetAsync),new {Id = createdReadModel.CategoryId}, createdReadModel);
         }
 
         // PUT api/<PayrollCategoryController>/5
@@ -64,7 +65,9 @@ namespace API.Controllers
             }
             _mapper.Map(payrollCategoryCreateDto, existingCategory);
             await _payrollCategoryRepository.SaveAsync();
-            return Ok(existingCategory);
+            //return Ok(existingCategory);
+            var CreatedReadModel = _mapper.Map<PayrollCategoryReadDto>(existingCategory);
+            return Ok(CreatedReadModel);
         }
 
         // DELETE api/<PayrollCategoryController>/5
@@ -76,7 +79,7 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            _payrollCategoryRepository.DeleteCategory(category.CategoryId);
+            _payrollCategoryRepository.DeleteCategory(id);
             await _payrollCategoryRepository.SaveAsync();
             return Ok();
         }

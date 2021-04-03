@@ -75,9 +75,10 @@ namespace API.Controllers
                 {
                     await _payrollDeductionRepository.AddItemsAsync(model);
                     await _payrollDeductionRepository.SaveChangesAsync();
-                    return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "Entry Successfully Created" });
+                    var createdReadModel = _imapper.Map<PayrollDeductionItemReadDto>(model);
+                    return CreatedAtRoute(nameof(GetItemAsync), new {Id = createdReadModel.Id}, createdReadModel);
                 }
-                return StatusCode(StatusCodes.Status400BadRequest);
+                return StatusCode(StatusCodes.Status400BadRequest, new Response { Status = "Error", Message = "Entry Already Exists" });
             }
             catch (Exception)
             {
