@@ -59,8 +59,10 @@ namespace API
             services.AddScoped<ILeaveRepository, LeaveRepository>();
             services.AddScoped<IEmploymentTypeRepo, EmploymentTypeRepository>();
             services.AddScoped<IStatisticsRepository, StatisticsRepository>();
-            services.AddScoped<IJobDescriptionRepository, JobDescriptionRepository>();
+            services.AddScoped<IPayrollRateRepository, PayrollRateRepository>();
             services.AddScoped<IRequestsRepository, RequestsRepository>();
+            services.AddScoped<IPayrollCategoryRepository, PayrollCategoryRepository>();
+            services.AddScoped<IPayrollDefaultRepository, PayrollDefaultRepository>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()

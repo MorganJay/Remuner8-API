@@ -39,7 +39,7 @@ namespace API.Controllers
             {
                 var departmentsFromRepo = await _departmentsRepo.GetAllDepartmentsAsync();
                 var departments = _mapper.Map<IEnumerable<DepartmentDto>>(departmentsFromRepo);
-                return Ok(departments);
+                return Ok(new { data = departments, total = departments.Count() });
             }
             catch (Exception ex)
             {
