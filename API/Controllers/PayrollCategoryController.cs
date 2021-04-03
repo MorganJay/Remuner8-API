@@ -5,9 +5,7 @@ using API.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -29,7 +27,7 @@ namespace API.Controllers
 
         // GET: api/<PayrollCategoryController>
         [HttpGet]
-        public async Task<ActionResult <IEnumerable<PayrollCategoryReadDto>>> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<PayrollCategoryReadDto>>> GetAllAsync()
         {
             var category = await _payrollCategoryRepository.GetAllCategoriesAsync();
             var mappedModel = _mapper.Map<IEnumerable<PayrollCategoryReadDto>>(category);
@@ -49,7 +47,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult> PostAsync(PayrollCategoryCreateDto payrollCategoryCreateDto)
         {
-            var mappedModel =  _mapper.Map<PayrollCategory>(payrollCategoryCreateDto);
+            var mappedModel = _mapper.Map<PayrollCategory>(payrollCategoryCreateDto);
             await _payrollCategoryRepository.CreateCategoryAsync(mappedModel);
             await _payrollCategoryRepository.SaveAsync();
             return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "Category Created Successfully" });

@@ -29,7 +29,7 @@ namespace API.Controllers
 
         // GET: api/<PayrollRateController>
         [HttpGet]
-        public async Task<ActionResult <IEnumerable<PayrollRateReadDto>>> GetAllAsync()
+        public async Task<ActionResult<IEnumerable<PayrollRateReadDto>>> GetAllAsync()
         {
             try
             {
@@ -39,10 +39,8 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
-            
         }
 
         // GET api/<PayrollRateController>/5
@@ -57,10 +55,8 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
-            
         }
 
         // POST api/<PayrollRateController>
@@ -76,10 +72,8 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
-            
         }
 
         // PUT api/<PayrollRateController>/5
@@ -99,10 +93,8 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
-            
         }
 
         // DELETE api/<PayrollRateController>/5
@@ -122,11 +114,8 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
-           
-
         }
     }
 }
