@@ -62,7 +62,8 @@ namespace API.Controllers
             {
                 return NotFound();
             }
-            var putModel = _mapper.Map(payrollCategoryCreateDto, existingCategory);
+            _mapper.Map(payrollCategoryCreateDto, existingCategory);
+            await _payrollCategoryRepository.SaveAsync();
             return Ok(existingCategory);
         }
 
