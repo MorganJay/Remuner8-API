@@ -28,18 +28,18 @@ namespace API.Controllers
 
         // GET: api/<PayrollDefaultController>
         [HttpGet]
-        public async Task<ActionResult <IEnumerable<PayrollDefaultReadDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<PayrollDefaultReadDto>>> GetAll()
         {
-           var item = await _payrollDefaultRepository.GetAllDefaultsAsync();
+            var item = await _payrollDefaultRepository.GetAllDefaultsAsync();
             var mappedModel = _mapper.Map<PayrollDefaultCreateDto>(item);
             return Ok(mappedModel);
         }
 
         // GET api/<PayrollDefaultController>/5
         [HttpGet("{id}")]
-        public async Task<ActionResult <PayrollDefaultReadDto>> Get(int id)
+        public async Task<ActionResult<PayrollDefaultReadDto>> Get(int id)
         {
-           var item = await _payrollDefaultRepository.GetDefaultByIdAsync(id);
+            var item = await _payrollDefaultRepository.GetDefaultByIdAsync(id);
             var mappedModel = _mapper.Map<PayrollDefaultReadDto>(item);
             return Ok(mappedModel);
         }
@@ -52,7 +52,6 @@ namespace API.Controllers
             await _payrollDefaultRepository.CreateDefaultAsync(mappedModel);
             await _payrollDefaultRepository.SaveAsync();
             return StatusCode(StatusCodes.Status201Created);
-
         }
 
         // PUT api/<PayrollDefaultController>/5
@@ -67,7 +66,6 @@ namespace API.Controllers
             var putModel = _mapper.Map(item, payrollDefaultCreateDto);
             await _payrollDefaultRepository.SaveAsync();
             return Ok(putModel);
-
         }
 
         // DELETE api/<PayrollDefaultController>/5
