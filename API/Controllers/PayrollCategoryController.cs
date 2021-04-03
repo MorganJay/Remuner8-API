@@ -79,20 +79,13 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, PayrollCategoryCreateDto payrollCategoryCreateDto)
         {
-            try
+            var existingCategory = await _payrollCategoryRepository.GetCategoryByIdAsync(id);
+            if (existingCategory == null)
             {
-                var existingCategory = await _payrollCategoryRepository.GetCategoryByIdAsync(id);
-                if (existingCategory == null)
-                {
-                    return NotFound();
-                }
-                var putModel = _mapper.Map(payrollCategoryCreateDto, existingCategory);
-                return NoContent();
+                return NotFound();
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            var putModel = _mapper.Map(payrollCategoryCreateDto, existingCategory);
+            return Ok(existingCategory);
         }
 
         // DELETE api/<PayrollCategoryController>/5
