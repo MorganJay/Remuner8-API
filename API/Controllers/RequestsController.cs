@@ -42,6 +42,7 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
         }
+        }
 
         // GET api/<RequestsController>/5
         [HttpGet("{id}")]
@@ -56,6 +57,7 @@ namespace API.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
+        }
         }
 
         // POST api/<RequestsController>
