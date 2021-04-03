@@ -74,7 +74,8 @@ namespace API.Controllers
                 var mappedmodel = _imapper.Map<PayrollAdditionItem>(payrollAdditionItemCreateDto);
                 await _payrollItemsRepository.AddEntryAsync(mappedmodel);
                 await _payrollItemsRepository.SavechangesAsync();
-                return CreatedAtRoute(nameof(ReadEntryAsync), new { id = mappedmodel.Id }, mappedmodel);
+                var createdReadModel = _imapper.Map<PayrollAdditionItemReadDto>(mappedmodel);
+                return CreatedAtRoute(nameof(ReadEntryAsync), new { id = createdReadModel.Id }, createdReadModel);
             }
             catch (Exception)
             {

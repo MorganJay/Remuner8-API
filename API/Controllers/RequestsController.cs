@@ -66,7 +66,8 @@ namespace API.Controllers
                 var mappedmodel = mapper.Map<Request>(requestCreate);
                 await requestsRepository.CreateRequestAsync(mappedmodel);
                 await requestsRepository.SaveAsync();
-                return StatusCode(StatusCodes.Status201Created);
+                var createdReadModel = mapper.Map<RequestReadDto>(mappedmodel);
+                return CreatedAtRoute(nameof(GetRequestById), new {Id = createdReadModel.Id}, createdReadModel);
             }
             catch (Exception ex)
             {

@@ -62,17 +62,11 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult> PostAsync(PayrollCategoryCreateDto payrollCategoryCreateDto)
         {
-            try
-            {
-                var mappedModel = _mapper.Map<PayrollCategory>(payrollCategoryCreateDto);
-                await _payrollCategoryRepository.CreateCategoryAsync(mappedModel);
-                await _payrollCategoryRepository.SaveAsync();
-                return StatusCode(StatusCodes.Status201Created, new Response { Status = "Success", Message = "Category Created Successfully" });
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            var mappedModel = _mapper.Map<PayrollCategory>(payrollCategoryCreateDto);
+            await _payrollCategoryRepository.CreateCategoryAsync(mappedModel);
+            await _payrollCategoryRepository.SaveAsync();
+            var createdReadModel = _mapper.Map<PayrollCategoryReadDto>(mappedModel);
+            return CreatedAtRoute(nameof(GetAsync),new {Id = createdReadModel.CategoryId}, createdReadModel);
         }
 
         // PUT api/<PayrollCategoryController>/5
@@ -86,28 +80,23 @@ namespace API.Controllers
             }
             _mapper.Map(payrollCategoryCreateDto, existingCategory);
             await _payrollCategoryRepository.SaveAsync();
-            return Ok(existingCategory);
+            //return Ok(existingCategory);
+            var CreatedReadModel = _mapper.Map<PayrollCategoryReadDto>(existingCategory);
+            return Ok(CreatedReadModel);
         }
 
         // DELETE api/<PayrollCategoryController>/5
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteAsync(int id)
         {
-            try
+            var category = await _payrollCategoryRepository.GetCategoryByIdAsync(id);
+            if (category == null)
             {
-                var category = await _payrollCategoryRepository.GetCategoryByIdAsync(id);
-                if (category == null)
-                {
-                    return NotFound();
-                }
-                _payrollCategoryRepository.DeleteCategory(category.CategoryId);
-                await _payrollCategoryRepository.SaveAsync();
-                return Ok();
+                return NotFound();
             }
-            catch (Exception)
-            {
-                throw;
-            }
+            _payrollCategoryRepository.DeleteCategory(id);
+            await _payrollCategoryRepository.SaveAsync();
+            return Ok();
         }
     }
 }
