@@ -16,29 +16,24 @@ namespace API.Repositories
         {
             company1 = company;
         }
+
+        public async Task CreateCompanyAsync(SystemDefault systemDefault)
+        {
+            await company1.SystemDefaults.AddAsync(systemDefault);
+        }
+
         public async Task<IEnumerable<SystemDefault>> GetCompanyDetailsAsync()
         {
             return await company1.SystemDefaults.ToListAsync();
         }
 
-        // public Task<bool> SaveAllAsync()
-        // {
-        //     throw new NotImplementedException();
-        // }
+        public async Task<bool> SaveAllAsync()
+        {
+            return await company1.SaveChangesAsync() >= 0;
+        }
 
-        // public void Update(SystemDefault Company)
-        // {
-        //     throw new NotImplementedException();
-        // }
-
-        // public Task<bool> SaveAllAsync()
-        // {
-
-        // }
-
-        // public void Update(SystemDefault Company)
-        // {
-
-        // }
+        public void UpdateAsync(SystemDefault company)
+        {
+        }
     }
 }

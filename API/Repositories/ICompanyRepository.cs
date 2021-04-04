@@ -10,7 +10,10 @@ namespace API.Repositories
     {
         Task<IEnumerable<SystemDefault>> GetCompanyDetailsAsync();
 
-        // Task<bool> SaveAllAsync();
-        // void Update(SystemDefault Company);
+        Task CreateCompanyAsync(SystemDefault systemDefault);
+
+        Task<bool> SaveAllAsync();
+
+        void UpdateAsync(SystemDefault Company);
     }
 }
