@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 #nullable disable
 
 namespace API.Models
 {
-    public partial class Remuner8Context : IdentityDbContext
+    public partial class Remuner8Context : IdentityDbContext<ApplicationUser>
     {
-        public Remuner8Context()
-        {
-        }
+      
 
         public Remuner8Context(DbContextOptions<Remuner8Context> options)
             : base(options)

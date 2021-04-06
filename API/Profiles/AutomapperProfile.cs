@@ -1,8 +1,6 @@
 ﻿using API.Data_Models.Dtos;
 using API.Dtos;
 using API.Models;
-using API.Resource;
-using API.Security;
 using AutoMapper;
 
 namespace API
@@ -43,8 +41,8 @@ namespace API
             CreateMap<PayrollDefault, PayrollDefaultCreateDto>().ReverseMap();
             CreateMap<PayrollDefault, PayrollDefaultReadDto>().ReverseMap();
 
-            CreateMap<UserSignUpResource, AppIdentityUser>()
-                .ForMember(u => u.UserName, opt => opt.MapFrom(ur => ur.Email));
+            //CreateMap<UserSignUpResource, AppIdentityUser>()
+            //    .ForMember(u => u.UserName, opt => opt.MapFrom(ur => ur.Email));
         }
     }
 }

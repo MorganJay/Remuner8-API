@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace API.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -98,20 +98,6 @@ namespace API.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_LeaveTypes", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Passwords",
-                columns: table => new
-                {
-                    email = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    password = table.Column<string>(type: "varchar(32)", unicode: false, maxLength: 32, nullable: false),
-                    dateCreated = table.Column<DateTime>(type: "date", nullable: false),
-                    roleId = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Password__AB6E6165CEDA53DD", x => x.email);
                 });
 
             migrationBuilder.CreateTable(
@@ -262,8 +248,8 @@ namespace API.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
                 },
@@ -307,8 +293,8 @@ namespace API.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(128)", maxLength: 128, nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
@@ -472,12 +458,6 @@ namespace API.Migrations
                         column: x => x.departmentId,
                         principalTable: "Departments",
                         principalColumn: "departmentId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK__EmployeeB__email__3D5E1FD2",
-                        column: x => x.emailAddress,
-                        principalTable: "Passwords",
-                        principalColumn: "email",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK__EmployeeB__jobDe__3B75D760",
@@ -942,9 +922,6 @@ namespace API.Migrations
 
             migrationBuilder.DropTable(
                 name: "PayrollRates");
-
-            migrationBuilder.DropTable(
-                name: "Passwords");
 
             migrationBuilder.DropTable(
                 name: "JobDescriptions");
