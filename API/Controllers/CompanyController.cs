@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using API.Dtos;
 using API.Models;
@@ -34,25 +33,18 @@ namespace API.Controllers
             return Ok(mappedModel);
         }
 
-        // GET api/<CompanyController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
         // POST api/<CompanyController>
         [HttpPost]
         public async Task<ActionResult> Post(CompanyDto companyDto)
         {
-            var mappedModel = _mapper.Map<SystemDefault>(companyDto);
+            var mappedModel = _mapper.Map<CompanyDetails>(companyDto);
             await _companyRepository.CreateCompanyAsync(mappedModel);
             await _companyRepository.SaveAllAsync();
             return Ok();
         }
 
-        // PUT api/<CompanyController>/5
-        [HttpPut("{id}")]
+        // PUT api/<CompanyController>
+        [HttpPut]
         public async Task<ActionResult> Put(CompanyDto companyDto)
         {
             try
@@ -63,7 +55,7 @@ namespace API.Controllers
                     return NotFound();
                 }
                 var newCompanyType = _mapper.Map(companyDto, companyItem);
-                _companyRepository.UpdateAsync((SystemDefault)companyItem);
+                _companyRepository.UpdateAsync(newCompanyType);
                 await _companyRepository.SaveAllAsync();
                 return Ok(newCompanyType);
             }
@@ -72,11 +64,5 @@ namespace API.Controllers
                 throw;
             }
         }
-
-        //// DELETE api/<CompanyController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
     }
 }

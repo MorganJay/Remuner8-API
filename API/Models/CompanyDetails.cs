@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 namespace API.Models
 {
     [Keyless]
-    public partial class SystemDefault
+    public partial class CompanyDetails
     {
         [Required]
         [Column("companyName")]
