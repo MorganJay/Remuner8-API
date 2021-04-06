@@ -21,7 +21,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SystemDefault>>> GetCompanyDetails()
+        public async Task<ActionResult<IEnumerable<CompanyDetails>>> GetCompanyDetails()
         {
             var companyInfo = await repo.GetCompanyDetailsAsync();
             return Ok(companyInfo);
