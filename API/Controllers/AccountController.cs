@@ -35,7 +35,7 @@ namespace API.Controllers
                 {
                     var user = new ApplicationUser
                     {
-                        UserName=model.Email,
+                        UserName=model.UserName,
                         Email = model.Email
                     };
                     var exist = await _userManager.FindByEmailAsync(model.Email);

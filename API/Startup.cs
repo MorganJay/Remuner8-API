@@ -1,11 +1,9 @@
 using API.Models;
 using API.Profiles;
 using API.Repositories;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -43,11 +41,10 @@ namespace API
 
             services.AddAutoMapper(typeof(AutomapperProfile));
 
-            services.AddIdentity<ApplicationUser,IdentityRole>(
-                
+            services.AddIdentity<ApplicationUser, IdentityRole>(
 
                )
-                .AddEntityFrameworkStores<Remuner8Context>().AddDefaultTokenProviders() ;
+                .AddEntityFrameworkStores<Remuner8Context>().AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
 
@@ -65,7 +62,7 @@ namespace API
                                                                                               .AllowAnyMethod()
                                                                                               .AllowAnyHeader()));
             //services.AddMvc(option =>
-             //{
+            //{
             //    var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
             //    option.Filters.Add(new AuthorizeFilter(authorizationPolicy));
             //});

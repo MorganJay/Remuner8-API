@@ -10,6 +10,8 @@ namespace Remuner8_Backend.Dtos
       
         [EmailAddress]
         public string Email { get; set; }
+        [Required]
+        public string  UserName { get; set; }
 
         [Required]
         
