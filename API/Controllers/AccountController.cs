@@ -1,5 +1,6 @@
 ﻿using API.Authentication;
 using API.Dtos;
+using API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -16,30 +17,30 @@ namespace API.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AccountController(UserManager<IdentityUser> userManager)
+        public AccountController(UserManager<ApplicationUser> userManager)
         {
             this._userManager = userManager;
         }
 
         // GET: api/<AccountController>
-        [AllowAnonymous]
-        [HttpPost]
+        
+        [HttpPost("Register")]
         public async Task<ActionResult> RegisterUser(RegisterDto model)
         {
             try
             {
-                if (ModelState.IsValid || model is null)
+                if (ModelState.IsValid )
                 {
-                    var user = new IdentityUser
+                    var user = new ApplicationUser
                     {
-                        UserName = model.Email,
+                        UserName=model.Email,
                         Email = model.Email
                     };
                     var exist = await _userManager.FindByEmailAsync(model.Email);
 
-                    if (exist is null)
+                    if (exist is not null)
                     {
                         return BadRequest(new Response { Status = "Not sucessful", Message = "The Email already exist" });
                     }
@@ -54,7 +55,7 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpPost("Login")]
         public async Task<ActionResult> Login(LoginDto model)
         {
             try
@@ -62,18 +63,23 @@ namespace API.Controllers
                 if (ModelState.IsValid)
                 {
                     var verifyEmail = await _userManager.FindByEmailAsync(model.Email);
-                    var user = new IdentityUser
+                    if (verifyEmail is not null)
                     {
-                        UserName = model.Email,
-                        Email = model.Email
-                    };
+                       
 
-                    var verifyPassword = await _userManager.CheckPasswordAsync(user, model.Password);
-                    if (verifyEmail is not null && verifyPassword)
-                    {
-                        
-                        return Ok(new Response { Status = "Success", Message = "You are verified" });
+                        var verifyPassword = await _userManager.CheckPasswordAsync(verifyEmail, model.Password);
+                        if (verifyPassword)
+                        {
+                            return Ok(new Response { Status = "Success", Message = "You are verified" });
+
+                        }
+
+                       
                     }
+
+
+                   
+                   
                     return Unauthorized(new Response { Status = "Not sucessful", Message = "The data is not in the database " });
                 }
 

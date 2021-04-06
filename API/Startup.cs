@@ -43,11 +43,11 @@ namespace API
 
             services.AddAutoMapper(typeof(AutomapperProfile));
 
-            services.AddDefaultIdentity<IdentityUser>(options =>
-                options.SignIn.RequireConfirmedAccount = true
+            services.AddIdentity<ApplicationUser,IdentityRole>(
+                
 
-                )
-                .AddEntityFrameworkStores<Remuner8Context>();
+               )
+                .AddEntityFrameworkStores<Remuner8Context>().AddDefaultTokenProviders() ;
 
             services.AddControllersWithViews();
 
@@ -65,7 +65,7 @@ namespace API
                                                                                               .AllowAnyMethod()
                                                                                               .AllowAnyHeader()));
             //services.AddMvc(option =>
-            //{
+             //{
             //    var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
             //    option.Filters.Add(new AuthorizeFilter(authorizationPolicy));
             //});
