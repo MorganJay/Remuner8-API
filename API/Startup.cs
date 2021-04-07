@@ -94,6 +94,7 @@ namespace API
 
             services.AddAutoMapper(typeof(AutomapperProfile));
 
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<Remuner8Context>().AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
             services.AddScoped<IBonusRepository, BonusRepository>();
@@ -114,6 +115,7 @@ namespace API
             services.AddScoped<IRequestsRepository, RequestsRepository>();
             services.AddScoped<IPayrollCategoryRepository, PayrollCategoryRepository>();
             services.AddScoped<IPayrollDefaultRepository, PayrollDefaultRepository>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()

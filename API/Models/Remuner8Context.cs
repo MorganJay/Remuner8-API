@@ -1,15 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 #nullable disable
 
 namespace API.Models
 {
-    public partial class Remuner8Context : IdentityDbContext
+    public partial class Remuner8Context : IdentityDbContext<ApplicationUser>
     {
-        public Remuner8Context()
-        {
-        }
+      
 
         public Remuner8Context(DbContextOptions<Remuner8Context> options)
             : base(options)
@@ -37,7 +36,7 @@ namespace API.Models
         public virtual DbSet<PensionFundAdministration> PensionFundAdministrations { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<StatutoryDeduction> StatutoryDeductions { get; set; }
-        public virtual DbSet<SystemDefault> SystemDefaults { get; set; }
+        public virtual DbSet<CompanyDetails> SystemDefaults { get; set; }
         public virtual DbSet<Tax> Taxes { get; set; }
         public virtual DbSet<TimeSheet> TimeSheets { get; set; }
 
@@ -366,7 +365,7 @@ namespace API.Models
                     .HasConstraintName("FK__Statutory__pfaCo__412EB0B6");
             });
 
-            modelBuilder.Entity<SystemDefault>(entity =>
+            modelBuilder.Entity<CompanyDetails>(entity =>
             {
                 entity.Property(e => e.Address).IsUnicode(false);
 

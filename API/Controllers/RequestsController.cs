@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+//// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace API.Controllers
 {
@@ -67,7 +67,7 @@ namespace API.Controllers
                 await requestsRepository.CreateRequestAsync(mappedmodel);
                 await requestsRepository.SaveAsync();
                 var createdReadModel = mapper.Map<RequestReadDto>(mappedmodel);
-                return CreatedAtRoute(nameof(GetRequestById), new {Id = createdReadModel.Id}, createdReadModel);
+                return CreatedAtRoute(nameof(GetRequestById), new { createdReadModel.Id }, createdReadModel);
             }
             catch (Exception ex)
             {

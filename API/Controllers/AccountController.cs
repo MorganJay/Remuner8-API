@@ -1,5 +1,6 @@
 ﻿using API.Authentication;
 using API.Dtos;
+using API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,37 +15,35 @@ namespace API.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public AccountController(UserManager<IdentityUser> userManager)
+        public AccountController(UserManager<ApplicationUser> userManager)
         {
             _userManager = userManager;
         }
 
-        // POST: api/<AccountController>/register
-        [Route("register")]
-        [HttpPost]
+        // GET: api/<AccountController>
+
+        [HttpPost("Register")]
         public async Task<ActionResult> RegisterUser(RegisterDto model)
         {
             try
             {
-                if (ModelState.IsValid && model is not null)
-                {
-                    var user = new IdentityUser
-                    {
-                        UserName = model.Email,
-                        Email = model.Email
-                    };
-                    var exist = await _userManager.FindByEmailAsync(model.Email);
+                if (!ModelState.IsValid) return BadRequest(new Response { Status = "Not successful", Message = "The data is not valid please enter valid data" });
 
-                    if (exist is not null)
-                    {
-                        return BadRequest(new Response { Status = "Not successful", Message = "That user already exists" });
-                    }
-                    await _userManager.CreateAsync(user, model.Password);
-                    return Ok(new Response { Status = "Success", Message = "You have sucessfully registered" });
+                var user = new ApplicationUser
+                {
+                    UserName = model.Email,
+                    Email = model.Email
+                };
+                var exist = await _userManager.FindByEmailAsync(model.Email);
+
+                if (exist is not null)
+                {
+                    return BadRequest(new Response { Status = "Not successful", Message = "That user already exists" });
                 }
-                return BadRequest(new Response { Status = "Not successful", Message = "The data is not valid please enter valid data" });
+                await _userManager.CreateAsync(user, model.Password);
+                return Ok(new Response { Status = "Success", Message = "You have sucessfully registered" });
             }
             catch (Exception)
             {
@@ -52,8 +51,7 @@ namespace API.Controllers
             }
         }
 
-        [Route("login")]
-        [HttpPost]
+        [HttpPost("Login")]
         public async Task<ActionResult> Login(LoginDto model)
         {
             try
@@ -61,18 +59,16 @@ namespace API.Controllers
                 if (ModelState.IsValid)
                 {
                     var verifyEmail = await _userManager.FindByEmailAsync(model.Email);
-                    var user = new IdentityUser
+                    if (verifyEmail is not null)
                     {
-                        UserName = model.Email,
-                        Email = model.Email
-                    };
-
-                    var verifyPassword = await _userManager.CheckPasswordAsync(user, model.Password);
-                    if (verifyEmail is not null && verifyPassword)
-                    {
-                        return Ok(new Response { Status = "Success", Message = "You are verified" });
+                        var verifyPassword = await _userManager.CheckPasswordAsync(verifyEmail, model.Password);
+                        if (verifyPassword)
+                        {
+                            return Ok(new Response { Status = "Success", Message = "You are verified" });
+                        }
                     }
-                    return Unauthorized(new Response { Status = "Not Successful", Message = "The data is not in the database" });
+
+                    return Unauthorized(new Response { Status = "Not sucessful", Message = "The data is not in the database " });
                 }
 
                 return BadRequest(new Response { Status = "Not Successful", Message = "The data is not valid please enter valid data" });
