@@ -33,14 +33,14 @@ namespace API.Controllers
 
                 var user = new ApplicationUser
                 {
-                    UserName = model.Email,
+                    UserName = model.UserName,
                     Email = model.Email
                 };
                 var exist = await _userManager.FindByEmailAsync(model.Email);
 
                 if (exist is not null)
                 {
-                    return BadRequest(new Response { Status = "Not successful", Message = "That user already exists" });
+                    return BadRequest(new Response { Status = "Error", Message = "User already exists" });
                 }
                 await _userManager.CreateAsync(user, model.Password);
                 return Ok(new Response { Status = "Success", Message = "You have sucessfully registered" });
@@ -68,10 +68,10 @@ namespace API.Controllers
                         }
                     }
 
-                    return Unauthorized(new Response { Status = "Not sucessful", Message = "The data is not in the database " });
+                    return Unauthorized(new Response { Status = "Error", Message = "User does not exist" });
                 }
 
-                return BadRequest(new Response { Status = "Not Successful", Message = "The data is not valid please enter valid data" });
+                return BadRequest(new Response { Status = "Error", Message = "The data is not valid please enter valid data" });
             }
             catch (Exception ex)
             {
