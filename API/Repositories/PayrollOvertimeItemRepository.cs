@@ -46,7 +46,7 @@ namespace API.Repositories
 
         public async Task UpdateItem(int id, PayrollOvertimeItem payrollOvertimeItem)
         {
-            var item = await _remuner8Context.SaveChangesAsync();
+            await _remuner8Context.SaveChangesAsync();
         }
     }
 }
