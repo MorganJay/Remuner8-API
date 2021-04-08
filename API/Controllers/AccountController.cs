@@ -4,7 +4,9 @@ using API.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -21,8 +23,6 @@ namespace API.Controllers
         {
             _userManager = userManager;
         }
-
-        // GET: api/<AccountController>
 
         [HttpPost("Register")]
         public async Task<ActionResult> RegisterUser(RegisterDto model)
@@ -64,18 +64,43 @@ namespace API.Controllers
                         var verifyPassword = await _userManager.CheckPasswordAsync(verifyEmail, model.Password);
                         if (verifyPassword)
                         {
-                            return Ok(new Response { Status = "Success", Message = "You are verified" });
+                            return Ok(new LoginResponse { Status = "Success", Message = "You are verified", UserName = verifyEmail.UserName });
                         }
                     }
 
-                    return Unauthorized(new Response { Status = "Error", Message = "User does not exist" });
+                    return Unauthorized(new Response { Status = "Not sucessful", Message = "The data is not in the database " });
                 }
 
-                return BadRequest(new Response { Status = "Error", Message = "The data is not valid please enter valid data" });
+                return BadRequest(new Response { Status = "Not sucessful", Message = "The data is not valid please enter valid data" });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Source });
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<RegisterReadDto>>> GetAllUsers()
+        {
+            try
+            {
+                var listOfUser = new List<RegisterReadDto>();
+                var users = await _userManager.Users.ToListAsync();
+                foreach (var item in users)
+                {
+                    var registeredUser = new RegisterReadDto()
+                    {
+                        Id = item.Id,
+                        UserName = item.UserName,
+                        Email = item.Email
+                    };
+                    listOfUser.Add(registeredUser);
+                }
+                return Ok(listOfUser);
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
     }
