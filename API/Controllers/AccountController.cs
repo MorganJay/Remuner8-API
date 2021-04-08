@@ -89,18 +89,25 @@ namespace API.Controllers
                         var verifyPassword = await _userManager.CheckPasswordAsync(verifyEmail, model.Password);
                         if (verifyPassword)
                         {
-                            return Ok(new Response { Status = "Success", Message = "You are verified" });
+                            var jwtToken = GenerateJwtToken(verifyEmail);
+                            return Ok(new RegistrationResponse { Success = true, Token = jwtToken });
                         }
                     }
 
-                    return Unauthorized(new Response { Status = "Error", Message = "User does not exist" });
+                    return Unauthorized(new RegistrationResponse
+                    {
+                        Errors = new List<string>(){
+                        "Invalid login request"
+                    },
+                        Success = false
+                    }); 
                 }
 
                 return BadRequest(new Response { Status = "Error", Message = "The data is not valid please enter valid data" });
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Source });
+                return StatusCode(StatusCodes.Status500InternalServerError, new RegistrationResponse { Status = "Error", Message = ex.Source });
             }
         }
 
