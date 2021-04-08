@@ -60,13 +60,13 @@ namespace API.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult> Login(LoginDto model)
+        public async Task<ActionResult<string >> Login([FromBody]LoginDto model, string userName)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var verifyEmail = await _userManager.FindByEmailAsync(model.Email);
+                    var verifyEmail = await _userManager.FindByEmailAsync(model.Email );
                     if (verifyEmail is not null)
                     { 
                         
@@ -75,10 +75,10 @@ namespace API.Controllers
                         var verifyPassword = await _userManager.CheckPasswordAsync(verifyEmail, model.Password);
                         if (verifyPassword)
                         {
-                            
+
+                            userName = verifyEmail.UserName;
                            
-                           
-                            return Ok(new LoginResponse { Status = "Success", Message = "You are verified",UserName=verifyEmail.UserName });
+                            return Ok( userName);
 
                         }
 
