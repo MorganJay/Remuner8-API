@@ -5,8 +5,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Remuner8_Backend.Dtos;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -31,6 +34,7 @@ namespace API.Controllers
         {
             try
             {
+                
                 if (ModelState.IsValid )
                 {
                     var user = new ApplicationUser
@@ -92,9 +96,32 @@ namespace API.Controllers
         }
 
         // POST api/<AccountController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet]
+        public async Task< ActionResult<IEnumerable<RegisterReadDto>>> GetAllUsers()
         {
+            try
+            {
+                var listOfUser = new List<RegisterReadDto>();
+                var users = await _userManager.Users.ToListAsync();
+                foreach (var item in users)
+                {
+                    var registeredUser = new RegisterReadDto()
+                    {
+                        Id = item.Id,
+                        UserName = item.UserName,
+                        Email = item.Email
+                    };
+                    listOfUser.Add(registeredUser);
+
+                }
+                return Ok(listOfUser);
+            }
+            catch (Exception)
+            {
+
+
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
         }
 
         // PUT api/<AccountController>/5

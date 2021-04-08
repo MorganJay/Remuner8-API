@@ -5,9 +5,8 @@ namespace Remuner8_Backend.Dtos
 {
     public class RegisterDto
     {
-        [Required]
-       
       
+        [Required] 
         [EmailAddress]
         public string Email { get; set; }
         [Required]
