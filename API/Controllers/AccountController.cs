@@ -68,13 +68,17 @@ namespace API.Controllers
                 {
                     var verifyEmail = await _userManager.FindByEmailAsync(model.Email);
                     if (verifyEmail is not null)
-                    {
+                    { 
+                        
                        
 
                         var verifyPassword = await _userManager.CheckPasswordAsync(verifyEmail, model.Password);
                         if (verifyPassword)
                         {
-                            return Ok(new Response { Status = "Success", Message = "You are verified" });
+                            
+                           
+                           
+                            return Ok(new LoginResponse { Status = "Success", Message = "You are verified",UserName=verifyEmail.UserName });
 
                         }
 
