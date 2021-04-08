@@ -1,6 +1,5 @@
 using API.Models;
 using API.Repositories;
-using API.Security;
 using API.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -44,11 +43,7 @@ namespace API
                options.UseSqlServer(
                    Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(
-                   Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddIdentity<AppIdentityUser, AppIdentityRole>(options =>
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
                 options.Password.RequiredLength = 8;
@@ -87,14 +82,12 @@ namespace API
                     ValidateLifetime = true,
                     RequireExpirationTime = false
 
-                };
+                }; 
             });
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddAutoMapper(typeof(AutomapperProfile));
-
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<Remuner8Context>().AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
             services.AddScoped<IBonusRepository, BonusRepository>();
