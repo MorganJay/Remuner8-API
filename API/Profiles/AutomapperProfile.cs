@@ -40,6 +40,9 @@ namespace API
             CreateMap<PayrollCategory, PayrollCategoryCreateDto>().ReverseMap();
             CreateMap<PayrollDefault, PayrollDefaultCreateDto>().ReverseMap();
             CreateMap<PayrollDefault, PayrollDefaultReadDto>().ReverseMap();
+
+            //CreateMap<UserSignUpResource, AppIdentityUser>()
+            //    .ForMember(u => u.UserName, opt => opt.MapFrom(ur => ur.Email));
         }
     }
 }

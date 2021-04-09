@@ -1,44 +1,36 @@
-﻿using API.Models;
+﻿using System.Threading.Tasks;
+using API.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace API.Repositories
 {
     public class CompanyRepository : ICompanyRepository
     {
         //private readonly SystemDefault company;
-        private readonly Remuner8Context company1;
+        private readonly Remuner8Context context;
 
         public CompanyRepository(Remuner8Context company)
         {
-            company1 = company;
+            context = company;
         }
-        public async Task<IEnumerable<SystemDefault>> GetCompanyDetailsAsync()
+
+        public async Task CreateCompanyAsync(CompanyDetails systemDefault)
         {
-            return await company1.SystemDefaults.ToListAsync();
+            await context.SystemDefaults.AddAsync(systemDefault);
         }
 
-        // public Task<bool> SaveAllAsync()
-        // {
-        //     throw new NotImplementedException();
-        // }
+        public async Task<CompanyDetails> GetCompanyDetailsAsync()
+        {
+            return await context.SystemDefaults.FirstOrDefaultAsync();
+        }
 
-        // public void Update(SystemDefault Company)
-        // {
-        //     throw new NotImplementedException();
-        // }
+        public async Task<bool> SaveAllAsync()
+        {
+            return await context.SaveChangesAsync() >= 0;
+        }
 
-        // public Task<bool> SaveAllAsync()
-        // {
-
-        // }
-
-        // public void Update(SystemDefault Company)
-        // {
-
-        // }
+        public void UpdateAsync(CompanyDetails company)
+        {
+        }
     }
 }

@@ -1,10 +1,7 @@
 ﻿using API.Models;
 using API.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Controllers
@@ -21,7 +18,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<SystemDefault>>> GetCompanyDetails()
+        public async Task<ActionResult<IEnumerable<CompanyDetails>>> GetCompanyDetails()
         {
             var companyInfo = await repo.GetCompanyDetailsAsync();
             return Ok(companyInfo);

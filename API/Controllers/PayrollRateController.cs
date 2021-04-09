@@ -68,7 +68,8 @@ namespace API.Controllers
                 var mappedModel = _mapper.Map<PayrollRate>(payrollRateCreateDto);
                 await _rateRepository.CreateRateAsync(mappedModel);
                 await _rateRepository.SaveAsync();
-                return StatusCode(StatusCodes.Status201Created);
+                var createdReadModel = _mapper.Map<PayrollRateReadDto>(mappedModel);
+                return CreatedAtRoute(nameof(GetASync), new {Id = createdReadModel.RateId}, createdReadModel);
             }
             catch (Exception ex)
             {
