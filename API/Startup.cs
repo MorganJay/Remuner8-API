@@ -1,6 +1,5 @@
 using API.Models;
 using API.Repositories;
-using API.Security;
 using API.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -59,7 +58,7 @@ namespace API
             })
                 .AddEntityFrameworkStores<Remuner8Context>()
                 .AddDefaultTokenProviders();
-            
+
             services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 
             services.ConfigureApplicationCookie(Options =>
@@ -74,7 +73,8 @@ namespace API
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(jwt => {
+            .AddJwtBearer(jwt =>
+            {
                 var key = Encoding.ASCII.GetBytes(Configuration["JwtSettings:Secret"]);
 
                 jwt.SaveToken = true;
@@ -86,7 +86,6 @@ namespace API
                     ValidateAudience = false,
                     ValidateLifetime = true,
                     RequireExpirationTime = false
-
                 };
             });
 
