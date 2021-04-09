@@ -43,11 +43,7 @@ namespace API
                options.UseSqlServer(
                    Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDbContext<AppIdentityDbContext>(options =>
-                options.UseSqlServer(
-                   Configuration.GetConnectionString("DefaultConnection")));
-
-            services.AddIdentity<AppIdentityUser, AppIdentityRole>(options =>
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
                 options.Password.RequiredLength = 8;
@@ -92,8 +88,6 @@ namespace API
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddAutoMapper(typeof(AutomapperProfile));
-
-            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<Remuner8Context>().AddDefaultTokenProviders();
 
             services.AddControllersWithViews();
             services.AddScoped<IBonusRepository, BonusRepository>();
