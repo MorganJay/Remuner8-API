@@ -39,12 +39,12 @@ namespace API.Controllers
         {
             try
             {
-                //if (!ModelState.IsValid) return BadRequest(new RegistrationResponse
-                //{
-                //    Errors = new List<string>() { "Email already in use" },
-                //    Success = false,
-                //    Message = "Email already in use. Try a different email address"
-                //});
+                if (!ModelState.IsValid) return BadRequest(new RegistrationResponse
+                {
+                    Errors = new List<string>() { "Email already in use" },
+                    Success = false,
+                    Message = "Email already in use. Try a different email address"
+                });
 
                 var user = new ApplicationUser
                 {
