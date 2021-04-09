@@ -5,6 +5,7 @@ using API.Settings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -25,7 +26,7 @@ namespace API.Controllers
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly JwtSettings _jwtSettings;
-        private readonly IOptionsMonitor<JwtSettings> _optionsMonitor;
+        // private readonly IOptionsMonitor<JwtSettings> _optionsMonitor;
 
         public AccountController(UserManager<ApplicationUser> userManager, IOptionsMonitor<JwtSettings> optionsMonitor)
         {
@@ -38,8 +39,11 @@ namespace API.Controllers
         {
             try
             {
-                if (!ModelState.IsValid) return BadRequest(new RegistrationResponse { Errors = new List<string>(){"Email already in use"},
-                    Success = false });
+                if (!ModelState.IsValid) return BadRequest(new RegistrationResponse
+                {
+                    Errors = new List<string>() { "Email already in use" },
+                    Success = false
+                });
 
                 var user = new ApplicationUser
                 {
@@ -50,7 +54,7 @@ namespace API.Controllers
 
                 if (exist is not null)
                 {
-                    return BadRequest(new Response { Status = "Not successful", Message = "That user already exists" , Success= false });
+                    return BadRequest(new Response { Status = "Not successful", Message = "That user already exists", Success = false });
                 }
 
                 var newUser = new IdentityUser() { Email = user.Email, UserName = user.UserName };
@@ -127,7 +131,7 @@ namespace API.Controllers
                 }
                 return Ok(listOfUser);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new RegistrationResponse { Status = "Error", Message = ex.Source });
             }
