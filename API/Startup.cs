@@ -1,3 +1,4 @@
+using API.Dtos;
 using API.Models;
 using API.Profiles;
 using API.Repositories;
@@ -61,6 +62,7 @@ namespace API
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
                                                                                               .AllowAnyMethod()
                                                                                               .AllowAnyHeader()));
+            services.Configure<MailConfig>(Configuration.GetSection("MailConfig"));
             //services.AddMvc(option =>
             //{
             //    var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();

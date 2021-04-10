@@ -1,6 +1,7 @@
 ﻿using API.Authentication;
 using API.Dtos;
 using API.Models;
+using API.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -21,10 +22,12 @@ namespace API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IEmailSender _emailSender;
 
-        public AccountController(UserManager<ApplicationUser> userManager)
+        public AccountController(UserManager<ApplicationUser> userManager,IEmailSender emailSender)
         {
             this._userManager = userManager;
+            this._emailSender = emailSender;
         }
 
         // GET: api/<AccountController>
@@ -48,8 +51,18 @@ namespace API.Controllers
                     {
                         return BadRequest(new Response { Status = "Not sucessful", Message = "The Email already exist" });
                     }
-                    await _userManager.CreateAsync(user, model.Password);
-                    return Ok(new Response { Status = " success", Message = "You have sucessfully registered" });
+                 var registeredUser=   await _userManager.CreateAsync(user, model.Password);
+                    if (registeredUser.Succeeded)
+                    {
+                        var message = new Message
+                        {
+                            To = new List<string> { "Test@test.com" }
+                        };
+                        await _emailSender.EmailSender(message);
+                        return Ok(new Response { Status = " success", Message = "You have sucessfully registered" });
+
+                    }
+                 
                 }
                 return BadRequest(new Response { Status = "Not sucessful", Message = "The data is not valid please enter valid data" });
             }
