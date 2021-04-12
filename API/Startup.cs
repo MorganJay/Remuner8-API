@@ -54,7 +54,7 @@ namespace API
             })
                 .AddEntityFrameworkStores<Remuner8Context>()
                 .AddDefaultTokenProviders();
-            
+            ;
             services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 
             services.ConfigureApplicationCookie(Options =>
@@ -63,6 +63,20 @@ namespace API
                 Options.AccessDeniedPath = "/Security/AccessDenied";
             });
 
+            var key = Encoding.ASCII.GetBytes(Configuration["JwtSettings:Secret"]);
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                RequireExpirationTime = false
+
+            };
+
+            services.AddSingleton(tokenValidationParameters);
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -70,19 +84,8 @@ namespace API
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
             .AddJwtBearer(jwt => {
-                var key = Encoding.ASCII.GetBytes(Configuration["JwtSettings:Secret"]);
-
+                jwt.RequireHttpsMetadata = true;
                 jwt.SaveToken = true;
-                jwt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    RequireExpirationTime = false
-
-                }; 
             });
 
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -109,6 +112,7 @@ namespace API
             services.AddScoped<IPayrollCategoryRepository, PayrollCategoryRepository>();
             services.AddScoped<IPayrollDefaultRepository, PayrollDefaultRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
+            
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
