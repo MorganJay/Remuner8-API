@@ -12,6 +12,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using Remuner8_Backend.Repositories;
+using System;
+using System.Net;
+using System.Net.Mail;
 
 namespace API
 {
@@ -63,7 +66,24 @@ namespace API
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
                                                                                               .AllowAnyMethod()
                                                                                               .AllowAnyHeader()));
-            services.Configure<MailConfig>(Configuration.GetSection("MailConfig"));
+            var sender = Configuration.GetSection("MailConfig")["senderAddress"];
+            var senderName = Configuration.GetSection("MailConfig")["senderDisplayName"];
+           
+            var port = Convert.ToInt32(Configuration.GetSection("MailConfig")["Port"]);
+            var password = Configuration.GetSection("MailConfig")["Password"];
+
+            services
+                .AddFluentEmail(sender, senderName)
+                .AddRazorRenderer()
+                .AddSmtpSender(new SmtpClient("smtp.gmail.com")
+                {
+                    Port = port,
+                  
+                    Credentials = new NetworkCredential(sender, password),
+                    EnableSsl = true,
+                    UseDefaultCredentials = false
+
+                });
             //services.AddMvc(option =>
             //{
             //    var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
