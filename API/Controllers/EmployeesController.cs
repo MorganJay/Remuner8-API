@@ -16,78 +16,62 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EmployeeController : ControllerBase
+    public class EmployeesController : ControllerBase
     {
-        private readonly IEmployeeRepository employeeRepository;
-        private readonly IMapper employeeMapper;
+        private readonly IEmployeeRepository _employeeRepository;
+        private readonly IMapper _employeeMapper;
 
-        public EmployeeController(IEmployeeRepository employeeRepository, IMapper mapper)
+        public EmployeesController(IEmployeeRepository employeeRepository, IMapper mapper)
         {
-            this.employeeRepository = employeeRepository;
-            employeeMapper = mapper;
+            _employeeRepository = employeeRepository;
+            _employeeMapper = mapper;
         }
 
-        // GET: api/Employee/count
-        [Route("count")]
-        [HttpGet]
-        public async Task<ActionResult<int>> GetEmplyeeCount()
-        {
-            try
-            {
-                var employeecount = await employeeRepository.EmployeeCountAsync();
-                return Ok(employeecount);
-            }
-            catch (Exception)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
-            }
-        }
-
-        // GET: api/Employee
+        // GET: api/Employees
         [HttpGet]
         public async Task<ActionResult<IEnumerable<EmployeeBiodataReadDto>>> GetAllEmployees()
         {
             try
             {
-                var employees = await employeeRepository.GetAllEmployeesAsync();
+                var employees = await _employeeRepository.GetAllEmployeesAsync();
 
-                return Ok(employeeMapper.Map<IEnumerable<EmployeeBiodataReadDto>>(employees));
+                return Ok(_employeeMapper.Map<IEnumerable<EmployeeBiodataReadDto>>(employees));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
         }
 
-        // GET: api/Employee/{id}
+        // GET: api/Employees/{id}
         [HttpGet("{id}", Name = "GetEmployeeById")]
         public async Task<ActionResult<EmployeeBiodataReadDto>> GetEmployeeById(string id)
         {
             try
             {
-                var employeeModel = await employeeRepository.GetEmployeeByIdAsync(id);
-                if (employeeModel is not null) return Ok(employeeMapper.Map<EmployeeBiodataReadDto>(employeeModel));
+                var employeeModel = await _employeeRepository.GetEmployeeByIdAsync(id);
+                if (employeeModel is not null) return Ok(_employeeMapper.Map<EmployeeBiodataReadDto>(employeeModel));
 
                 return NotFound(new Response { Status = "Error", Message = $"The employee with ID: {id} was not found" });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 // throw;
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
         }
 
-        // POST: api/Employee
+        // POST: api/Employees
         [HttpPost]
         public async Task<ActionResult<EmployeeBiodataReadDto>> CreateEmployeeAsync(EmployeeBiodataCreateDto employeeBiodataCreateDto)
         {
             try
             {
-                var employeeModel = employeeMapper.Map<EmployeeBiodata>(employeeBiodataCreateDto);
-                await employeeRepository.CreateEmployeeAsync(employeeModel);
-                await employeeRepository.SaveChangesAsync();
+                var employeeModel = _employeeMapper.Map<EmployeeBiodata>(employeeBiodataCreateDto);
+                await _employeeRepository.CreateEmployeeAsync(employeeModel);
+                await _employeeRepository.SaveChangesAsync();
 
-                var employeeReadDto = employeeMapper.Map<EmployeeBiodataReadDto>(employeeModel);
+                var employeeReadDto = _employeeMapper.Map<EmployeeBiodataReadDto>(employeeModel);
                 return CreatedAtRoute(nameof(GetEmployeeById), new { employeeReadDto.EmployeeId }, employeeReadDto);
             }
             catch (Exception)
@@ -97,23 +81,23 @@ namespace API.Controllers
             }
         }
 
-        // PATCH: api/Employee/{id}
+        // PATCH: api/Employees/{id}
         [HttpPatch("{id}")]
         public async Task<ActionResult> PartialUpdateEmployeeAsync(string id, JsonPatchDocument<EmployeeBiodataCreateDto> patchDocument)
         {
             try
             {
-                var employeeModel = await employeeRepository.GetEmployeeByIdAsync(id);
+                var employeeModel = await _employeeRepository.GetEmployeeByIdAsync(id);
                 if (employeeModel is null) return NotFound(new Response { Status = "Error", Message = $"The employee with ID {id} does not exist" });
 
-                var employeeToPatch = employeeMapper.Map<EmployeeBiodataCreateDto>(employeeModel);
+                var employeeToPatch = _employeeMapper.Map<EmployeeBiodataCreateDto>(employeeModel);
                 patchDocument.ApplyTo(employeeToPatch, ModelState);
 
                 if (!TryValidateModel(employeeToPatch)) return ValidationProblem(ModelState);
 
-                employeeMapper.Map(employeeToPatch, employeeModel);
+                _employeeMapper.Map(employeeToPatch, employeeModel);
 
-                if (!await employeeRepository.SaveChangesAsync()) return BadRequest();
+                if (!await _employeeRepository.SaveChangesAsync()) return BadRequest();
 
                 return NoContent();
             }
@@ -123,30 +107,30 @@ namespace API.Controllers
             }
         }
 
-        // PUT: api/Employee/{id}
+        // PUT: api/Employees/{id}
         [HttpPut("{id}")]
         public async Task<ActionResult> FullUpdateEmployeeAsync(string id, EmployeeBiodataCreateDto employeeBiodataCreateDto)
         {
-            var employeeModel = await employeeRepository.GetEmployeeByIdAsync(id);
+            var employeeModel = await _employeeRepository.GetEmployeeByIdAsync(id);
             if (employeeModel is null) return NotFound(new Response { Status = "Error", Message = $"The employee with ID {id} could not be found." });
 
-            employeeMapper.Map(employeeBiodataCreateDto, employeeModel);
+            _employeeMapper.Map(employeeBiodataCreateDto, employeeModel);
 
-            if (!await employeeRepository.SaveChangesAsync()) return BadRequest();
+            if (!await _employeeRepository.SaveChangesAsync()) return BadRequest();
 
             return NoContent();
         }
 
-        // DELETE api/Employee/{id}
+        // DELETE api/Employees/{id}
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteEmployee(string id)
         {
-            var employeeModel = await employeeRepository.GetEmployeeByIdAsync(id);
+            var employeeModel = await _employeeRepository.GetEmployeeByIdAsync(id);
             if (employeeModel is null) return NotFound(new Response { Status = "Error", Message = $"The employee with ID {id} could not be found." });
 
-            await employeeRepository.DeleteEmployeeAsync(employeeModel);
+            await _employeeRepository.DeleteEmployeeAsync(employeeModel);
 
-            await employeeRepository.SaveChangesAsync();
+            await _employeeRepository.SaveChangesAsync();
 
             return StatusCode(StatusCodes.Status204NoContent, new Response { Status = "Success", Message = "Employee deleted successfully" });
         }

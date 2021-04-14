@@ -31,6 +31,13 @@ namespace API.Models
         [Column("transportAllowance", TypeName = "decimal(19, 4)")]
         public decimal TransportAllowance { get; set; }
 
+        [Column("departmentId")]
+        public int DepartmentId { get; set; }
+
+        [ForeignKey(nameof(DepartmentId))]
+        [InverseProperty("JobDescriptions")]
+        public virtual Department Department { get; set; }
+
         [InverseProperty(nameof(EmployeeBiodata.JobDescription))]
         public virtual ICollection<EmployeeBiodata> EmployeeBiodatas { get; set; }
     }

@@ -1,4 +1,5 @@
-﻿using API.Dtos;
+﻿using API.Authentication;
+using API.Dtos;
 using API.Models;
 using API.Repositories;
 using AutoMapper;
@@ -8,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    //api/leaveType
+    //api/leaveTypes
     [Route("api/[controller]")]
     [ApiController]
-    public class LeaveTypeController : ControllerBase
+    public class LeaveTypesController : ControllerBase
     {
         private readonly ILeaveRepository _leaveType;
         private readonly IMapper _mapper;
 
-        public LeaveTypeController(ILeaveRepository leaveType, IMapper mapper)
+        public LeaveTypesController(ILeaveRepository leaveType, IMapper mapper)
         {
             _leaveType = leaveType;
             _mapper = mapper;
@@ -60,14 +61,27 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateLeaveTypeDto(int id, LeaveTypeCreateDto leaveTypeUpdate)
         {
-            var leaveFromrepo = await _leaveType.GetLeaveById(id);
-            if (leaveFromrepo is null)
+            var leaveFromRepo = await _leaveType.GetLeaveById(id);
+            if (leaveFromRepo is null)
             {
                 return NotFound();
             }
-            _mapper.Map(leaveTypeUpdate, leaveFromrepo);
+            _mapper.Map(leaveTypeUpdate, leaveFromRepo);
 
-            _leaveType.UpdateLeaveType(leaveFromrepo);
+            _leaveType.UpdateLeaveType(leaveFromRepo);
+            await _leaveType.SaveChanges();
+
+            return NoContent();
+        }
+
+        // DELETE api/leavetype/{id}
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteLeaveType(int id)
+        {
+            var leaveTypeFromRepo = await _leaveType.GetLeaveById(id);
+            if (leaveTypeFromRepo is null) return NotFound(new Response { Status = "Error", Message = $"The leave type with ID: {id} does not exist." });
+
+            await _leaveType.DeleteLeaveTypeAsync(id);
             await _leaveType.SaveChanges();
 
             return NoContent();

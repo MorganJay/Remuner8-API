@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 #nullable disable
@@ -14,8 +15,10 @@ namespace API.Models
         [Column("departmentId")]
         public int DepartmentId { get; set; }
 
-        [Column("bonusName", TypeName = "decimal(19, 4)")]
-        public decimal BonusName { get; set; }
+        [Required]
+        [Column("bonusName")]
+        [StringLength(100)]
+        public string BonusName { get; set; }
 
         [Column("amount", TypeName = "decimal(19, 4)")]
         public decimal Amount { get; set; }

@@ -113,9 +113,9 @@ namespace API.Models
         [InverseProperty("EmployeeBiodatas")]
         public virtual Department Department { get; set; }
 
-        [ForeignKey(nameof(EmailAddress))]
-        [InverseProperty(nameof(Password.EmployeeBiodata))]
-        public virtual Password EmailAddressNavigation { get; set; }
+        //[ForeignKey(nameof(EmailAddress))]
+        //[InverseProperty(nameof(Password.EmployeeBiodata))]
+        //public virtual Password EmailAddressNavigation { get; set; }
 
         [ForeignKey(nameof(JobDescriptionId))]
         [InverseProperty("EmployeeBiodatas")]

@@ -14,12 +14,12 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class TimeSheetController : ControllerBase
+    public class TimeSheetsController : ControllerBase
     {
         private readonly ITimeSheetRepository timeSheetRepository;
         private readonly LinkGenerator linkGenerator;
 
-        public TimeSheetController(ITimeSheetRepository timeSheetRepository, LinkGenerator linkGenerator)
+        public TimeSheetsController(ITimeSheetRepository timeSheetRepository, LinkGenerator linkGenerator)
         {
             this.timeSheetRepository = timeSheetRepository;
             this.linkGenerator = linkGenerator;

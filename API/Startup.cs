@@ -1,7 +1,7 @@
-using API.Dtos;
 using API.Models;
-using API.Profiles;
 using API.Repositories;
+using API.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -9,12 +9,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
-using Remuner8_Backend.Repositories;
 using System;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 
 namespace API
 {
@@ -34,33 +35,76 @@ namespace API
             {
                 s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Remuner8 API", Version = "v1" });
             });
+
             services.AddDbContext<Remuner8Context>(options =>
                options.UseSqlServer(
                    Configuration.GetConnectionString("DefaultConnection")));
+
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedAccount = true;
+                options.Password.RequiredLength = 8;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(1d);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+            })
+                .AddEntityFrameworkStores<Remuner8Context>()
+                .AddDefaultTokenProviders();
+
+            services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
+
+            services.ConfigureApplicationCookie(Options =>
+            {
+                Options.LoginPath = "/Security/SignIn";
+                Options.AccessDeniedPath = "/Security/AccessDenied";
+            });
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(jwt =>
+            {
+                var key = Encoding.ASCII.GetBytes(Configuration["JwtSettings:Secret"]);
+
+                jwt.SaveToken = true;
+                jwt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    RequireExpirationTime = false
+                };
+            });
+
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddAutoMapper(typeof(AutomapperProfile));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(
-
-               )
-                .AddEntityFrameworkStores<Remuner8Context>().AddDefaultTokenProviders();
-
             services.AddControllersWithViews();
-
+            services.AddScoped<IBonusRepository, BonusRepository>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IJobDescriptionRepository, JobDescriptionRepository>();
             services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
             services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
             services.AddScoped<IPayslipRepository, PayslipRepo>();
             services.AddScoped<IPayrollItemsRepository, PayrollItemsRepository>();
             services.AddScoped<IPayrollDeductionRepository, PayrollDeductionRepository>();
             services.AddScoped<IPayrollOvertimeItemRepository, PayrollOvertimeItemRepository>();
             services.AddScoped<ILeaveRepository, LeaveRepository>();
-            services.AddScoped<IEmailSender,EmailSenderRepository>();
+            services.AddScoped<IEmailSender, EmailSenderRepository>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
@@ -68,7 +112,7 @@ namespace API
                                                                                               .AllowAnyHeader()));
             var sender = Configuration.GetSection("MailConfig")["senderAddress"];
             var senderName = Configuration.GetSection("MailConfig")["senderDisplayName"];
-           
+
             var port = Convert.ToInt32(Configuration.GetSection("MailConfig")["Port"]);
             var password = Configuration.GetSection("MailConfig")["Password"];
 
@@ -78,11 +122,10 @@ namespace API
                 .AddSmtpSender(new SmtpClient("smtp.gmail.com")
                 {
                     Port = port,
-                  
+
                     Credentials = new NetworkCredential(sender, password),
                     EnableSsl = true,
                     UseDefaultCredentials = false
-
                 });
             //services.AddMvc(option =>
             //{
@@ -98,13 +141,15 @@ namespace API
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "API v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Remuner8 API v1"));
             }
             app.UseCors("AllowEverthing");
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

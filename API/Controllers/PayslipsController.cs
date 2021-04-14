@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace API.Controllers
 {
-    [Route("api/payslip")]
+    [Route("api/[controller]")]
     [ApiController]
-    public class PayslipController : ControllerBase
+    public class PayslipsController : ControllerBase
     {
         private readonly IPayslipRepository _payslipRepository;
 
-        public PayslipController(IPayslipRepository payslipRepository)
+        public PayslipsController(IPayslipRepository payslipRepository)
         {
             _payslipRepository = payslipRepository;
         }

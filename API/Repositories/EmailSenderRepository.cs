@@ -1,17 +1,7 @@
-﻿using API.Dtos;
-using FluentEmail.Core;
-using FluentEmail.Razor;
-using FluentEmail.Smtp;
+﻿using FluentEmail.Core;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Remuner8_Backend.Dtos;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Mail;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace API.Repositories
@@ -24,8 +14,6 @@ namespace API.Repositories
         {
             this._serviceProvider = serviceProvider;
         }
-
-
 
         //private readonly MailConfig _mailConfig;
         //private string mailPath = @"MailTemplate/{0}.html";
@@ -44,7 +32,6 @@ namespace API.Repositories
         //    }
         //    catch (Exception)
         //    {
-
         //        throw;
         //    }
         //}
@@ -55,7 +42,6 @@ namespace API.Repositories
         //    {
         //        var sender = new SmtpSender(() => new SmtpClient("smtp.gmail.com")
         //        {
-
         //            Port = 587,
         //            EnableSsl = true,
 
@@ -64,14 +50,12 @@ namespace API.Repositories
         //        }) ;
         //        Email.DefaultSender = sender;
 
-
         //        var mail = Email
         //            .From("soetanqaweey@gmail.com", "Qaweey")
         //            .To("Sekinahdeleoladepo@gmail.com")
         //            .Subject("Hello my love")
         //            .Body("Thanks for everything you do my love");
         //        await mail.SendAsync();
-
 
         //    }
         //    catch (Exception)
@@ -105,8 +89,7 @@ namespace API.Repositories
         //        Credentials = credential,
         //        UseDefaultCredentials = _mailConfig.UseDefaultCredentials
         //    };
-        //    await smtp.SendMailAsync(mail); 
-
+        //    await smtp.SendMailAsync(mail);
 
         //}
         //private string GetEmailBody(string mailTemplate)
@@ -114,7 +97,7 @@ namespace API.Repositories
         //    var body = File.ReadAllText(string.Format(mailPath, mailTemplate));
         //    return body;
         //}
-        public  async Task EmailSender(string recipient, string Name)
+        public async Task EmailSender(string recipient, string Name)
         {
             try
             {
@@ -131,11 +114,8 @@ namespace API.Repositories
             }
             catch (Exception)
             {
-
                 throw;
             }
-
-            
         }
     }
 }

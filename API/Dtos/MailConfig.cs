@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace API.Dtos
+﻿namespace API.Dtos
 {
     public class MailConfig
     {
@@ -16,7 +11,5 @@ namespace API.Dtos
         public bool EnableSsL { get; set; }
         public bool UseDefaultCredentials { get; set; }
         public bool IsBodyHTML { get; set; }
-
-
     }
 }

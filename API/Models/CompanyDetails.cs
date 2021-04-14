@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace API.Models
 {
     [Keyless]
-    public partial class SystemDefault
+    public partial class CompanyDetails
     {
         [Required]
         [Column("companyName")]

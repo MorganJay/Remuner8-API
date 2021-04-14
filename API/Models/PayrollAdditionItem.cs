@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -6,6 +8,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API.Models
 {
+    [Index(nameof(AssigneeId), Name = "IX_PayrollAdditionItems_AssigneeTableAssigneeid")]
+    [Index(nameof(CategoryId), Name = "IX_PayrollAdditionItems_PayrollCategoryCategoryId")]
     public partial class PayrollAdditionItem
     {
         public PayrollAdditionItem()
