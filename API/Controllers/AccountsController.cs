@@ -29,7 +29,7 @@ namespace API.Controllers
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly Remuner8Context _remuner8Context;
 
-        public AccountController(UserManager<ApplicationUser> userManager, IOptionsMonitor<JwtSettings> jwtSettings,
+        public AccountsController(UserManager<ApplicationUser> userManager, IOptionsMonitor<JwtSettings> jwtSettings,
                 TokenValidationParameters tokenValidationParameters, Remuner8Context remuner8Context)
         {
             _userManager = userManager;
@@ -50,25 +50,20 @@ namespace API.Controllers
                     Message = "Email already in use. Try a different email address"
                 });
 
-                var user = new ApplicationUser
-                {
-                    UserName = model.UserName,
-                    Email = model.Email
-                };
 
-                var exist = await _userManager.FindByEmailAsync(model.Email);
+                var existingUser = await _userManager.FindByEmailAsync(model.Email);
 
-                if (exist is not null)
+                if (existingUser is not null)
                 {
                     return BadRequest(new Response { Status = "Not successful", Message = "That user already exists" , Success= false });
                 }
 
-                var newUser = new IdentityUser() { Email = user.Email, UserName = user.UserName };
-                var isCreated = await _userManager.CreateAsync(user, model.Password);
+                var newUser = new ApplicationUser() { Email = model.Email, UserName = model.UserName };
+                var isCreated = await _userManager.CreateAsync(newUser, model.Password);
                 if (isCreated.Succeeded)
                 {
-                    var jwtToken = GenerateJwtToken(newUser);
-                    return Ok(new RegistrationResponse { Success = true, Token = jwtToken, Status = "Success", Message = "You have been registered successfully" });
+                    var jwtToken = await GenerateJwtToken(newUser);
+                    return Ok(jwtToken);
 
                 }
                 else
@@ -98,7 +93,7 @@ namespace API.Controllers
                     if (verifyEmail is not null)
                     {
                         var verifyPassword = await _userManager.CheckPasswordAsync(verifyEmail, model.Password);
-                        if (verifyPassword)
+                        if (verifyPassword == true)
                         {
                             var jwtToken = await GenerateJwtToken(verifyEmail);
                             return Ok(jwtToken);
@@ -155,14 +150,14 @@ namespace API.Controllers
 
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new Claim[]
+                Subject = new ClaimsIdentity(new[]
                 {
-            new Claim("Id", user.Id),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
-            new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                    new Claim("Id", user.Id),
+                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             }),
-                Expires = DateTime.UtcNow.AddSeconds(30),
+                Expires = DateTime.UtcNow.AddHours(6),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -340,11 +335,6 @@ namespace API.Controllers
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
             return dtDateTime;
-        }
-
-    }
-}
-
         }
 
     }
