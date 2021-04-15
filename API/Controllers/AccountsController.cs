@@ -22,10 +22,10 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountsController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly JwtSettings _jwtSettings;
+        private readonly JwtSettings _jwtSettings; 
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly Remuner8Context _remuner8Context;
 
@@ -38,21 +38,24 @@ namespace API.Controllers
             _remuner8Context = remuner8Context;
         }
 
-        // GET: api/<AccountController>
-
         [HttpPost("Register")]
         public async Task<ActionResult> RegisterUser(RegisterDto model)
         {
             try
             {
-                if (!ModelState.IsValid) return BadRequest(new RegistrationResponse { Errors = new List<string>(){"Email already in use"},
-                    Success = false });
+                if (!ModelState.IsValid) return BadRequest(new RegistrationResponse
+                {
+                    Errors = new List<string>() { "Email already in use" },
+                    Success = false,
+                    Message = "Email already in use. Try a different email address"
+                });
 
                 var user = new ApplicationUser
                 {
                     UserName = model.UserName,
                     Email = model.Email
                 };
+
                 var exist = await _userManager.FindByEmailAsync(model.Email);
 
                 if (exist is not null)
@@ -64,20 +67,23 @@ namespace API.Controllers
                 var isCreated = await _userManager.CreateAsync(user, model.Password);
                 if (isCreated.Succeeded)
                 {
-                    var jwtToken = await GenerateJwtToken(newUser);
-                    return Ok(jwtToken);
-                  
+                    var jwtToken = GenerateJwtToken(newUser);
+                    return Ok(new RegistrationResponse { Success = true, Token = jwtToken, Status = "Success", Message = "You have been registered successfully" });
+
                 }
                 else
                 {
-                    return BadRequest(new RegistrationResponse { Errors = isCreated.Errors.Select(x => x.Description).ToList(), Success = false }
-                    );
+                    return BadRequest(new RegistrationResponse
+                    {
+                        Errors = isCreated.Errors.Select(x => x.Description).ToList(),
+                        Success = false,
+                        Status = "Error"
+                    });
                 }
-                //return Ok(new Response { Status = "Success", Message = "You have sucessfully registered", Success = true});
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
             }
         }
 
@@ -99,10 +105,41 @@ namespace API.Controllers
                         }
                     }
 
-                    return Unauthorized(new Response { Status = "Error", Message = "User does not exist" });
+                    return Unauthorized(new RegistrationResponse
+                    {
+                        Errors = new List<string>(){
+                        "Invalid login request"
+                    },
+                        Success = false
+                    });
                 }
 
-                return BadRequest(new Response { Status = "Error", Message = "The data is not valid please enter valid data" });
+                return BadRequest(new Response { Status = "Not sucessful", Message = "The data is not valid please enter valid data" });
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<RegisterReadDto>>> GetAllUsers()
+        {
+            try
+            {
+                var listOfUser = new List<RegisterReadDto>();
+                var users = await _userManager.Users.ToListAsync();
+                foreach (var item in users)
+                {
+                    var registeredUser = new RegisterReadDto()
+                    {
+                        Id = item.Id,
+                        UserName = item.UserName,
+                        Email = item.Email
+                    };
+                    listOfUser.Add(registeredUser);
+                }
+                return Ok(listOfUser);
             }
             catch (Exception ex)
             {
@@ -131,7 +168,6 @@ namespace API.Controllers
 
             var token = jwtTokenHandler.CreateToken(tokenDescriptor);
             var jwtToken = jwtTokenHandler.WriteToken(token);
-
             var refreshToken = new RefreshToken()
             {
                 JwtId = token.Id,
@@ -193,7 +229,7 @@ namespace API.Controllers
             });
 
         }
-      
+
         private async Task<RegistrationResponse> VerifyToken(TokenRequest tokenRequest)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
@@ -304,6 +340,11 @@ namespace API.Controllers
             System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
             return dtDateTime;
+        }
+
+    }
+}
+
         }
 
     }
