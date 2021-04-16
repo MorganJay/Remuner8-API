@@ -9,9 +9,9 @@ namespace API.Services
 {
     public interface IUserServices
     {
-        Task<RegistrationResponse> RegisterUserAsync(RegisterDto model);
-        Task<RegistrationResponse> LoginUserAsync(LoginDto model);
-        Task<RegistrationResponse> ConfirmEmailAsync(string userId, string token);
+        //Task<RegistrationResponse> RegisterUserAsync(RegisterDto model);
+        //Task<RegistrationResponse> LoginUserAsync(LoginDto model);
+        //Task<RegistrationResponse> ConfirmEmailAsync(string userId, string token);
         Task<RegistrationResponse> ForgetPasswordAsync(string email);
 
 
