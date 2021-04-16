@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
@@ -20,14 +18,17 @@ namespace API.Models
         [Column("pfaCode")]
         [StringLength(10)]
         public string PfaCode { get; set; }
+
         [Required]
         [Column("pfaName")]
         [StringLength(50)]
         public string PfaName { get; set; }
+
         [Required]
         [Column("accountNumber")]
         [StringLength(10)]
         public string AccountNumber { get; set; }
+
         [Required]
         [Column("address")]
         [StringLength(200)]

@@ -1,9 +1,7 @@
-﻿using API.Authentication;
-using API.Dtos;
+﻿using API.Dtos;
 using API.Models;
 using API.Repositories;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -66,7 +64,7 @@ namespace API.Controllers
             await _payrollCategoryRepository.CreateCategoryAsync(mappedModel);
             await _payrollCategoryRepository.SaveAsync();
             var createdReadModel = _mapper.Map<PayrollCategoryReadDto>(mappedModel);
-            return CreatedAtRoute(nameof(GetAsync),new {Id = createdReadModel.CategoryId}, createdReadModel);
+            return CreatedAtRoute(nameof(GetAsync), new { Id = createdReadModel.CategoryId }, createdReadModel);
         }
 
         // PUT api/<PayrollCategoryController>/5

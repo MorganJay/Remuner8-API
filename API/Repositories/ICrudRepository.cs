@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace API.Repositories
+﻿namespace API.Repositories
 {
-    interface ICrudRepository
+    internal interface ICrudRepository
     {
     }
 }

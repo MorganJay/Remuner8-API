@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 #nullable disable
 
@@ -14,12 +13,15 @@ namespace API.Models
         [Key]
         [Column("taxId")]
         public int TaxId { get; set; }
+
         [Required]
         [Column("employeeId")]
         [StringLength(10)]
         public string EmployeeId { get; set; }
+
         [Column("PAYE", TypeName = "decimal(19, 4)")]
         public decimal Paye { get; set; }
+
         [Column("pension", TypeName = "decimal(19, 4)")]
         public decimal Pension { get; set; }
 

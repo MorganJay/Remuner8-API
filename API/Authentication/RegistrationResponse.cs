@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace API.Authentication
+﻿namespace API.Authentication
 {
-    public class RegistrationResponse: Response
+    public class RegistrationResponse : Response
     {
     }
 }

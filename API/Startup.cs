@@ -13,6 +13,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 
 namespace API
@@ -102,18 +104,29 @@ namespace API
             services.AddScoped<IPayrollDeductionRepository, PayrollDeductionRepository>();
             services.AddScoped<IPayrollOvertimeItemRepository, PayrollOvertimeItemRepository>();
             services.AddScoped<ILeaveRepository, LeaveRepository>();
-            services.AddScoped<IEmploymentTypeRepo, EmploymentTypeRepository>();
-            services.AddScoped<IStatisticsRepository, StatisticsRepository>();
-            services.AddScoped<IPayrollRateRepository, PayrollRateRepository>();
-            services.AddScoped<IRequestsRepository, RequestsRepository>();
-            services.AddScoped<IPayrollCategoryRepository, PayrollCategoryRepository>();
-            services.AddScoped<IPayrollDefaultRepository, PayrollDefaultRepository>();
-            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IEmailSender, EmailSenderRepository>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
                                                                                               .AllowAnyMethod()
                                                                                               .AllowAnyHeader()));
+            var sender = Configuration.GetSection("MailConfig")["senderAddress"];
+            var senderName = Configuration.GetSection("MailConfig")["senderDisplayName"];
+
+            var port = Convert.ToInt32(Configuration.GetSection("MailConfig")["Port"]);
+            var password = Configuration.GetSection("MailConfig")["Password"];
+
+            services
+                .AddFluentEmail(sender, senderName)
+                .AddRazorRenderer()
+                .AddSmtpSender(new SmtpClient("smtp.gmail.com")
+                {
+                    Port = port,
+
+                    Credentials = new NetworkCredential(sender, password),
+                    EnableSsl = true,
+                    UseDefaultCredentials = false
+                });
             //services.AddMvc(option =>
             //{
             //    var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();

@@ -1,20 +1,18 @@
 ﻿using API.Dtos;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Repositories
 {
-     public interface IJobDescriptionRepository
+    public interface IJobDescriptionRepository
     {
         Task<JobDescriptionDto> AddJobDescriptionAsync(JobDescriptionDto model);
 
-        bool DeleteJobDescription(int  id);
+        bool DeleteJobDescription(int id);
 
-        Task<JobDescriptionDto> GetJobDescriptionByIdAsync(int  id);
+        Task<JobDescriptionDto> GetJobDescriptionByIdAsync(int id);
 
-       Task< JobDescriptionDto> UpdateJobDescription(JobDescriptionDto model);
+        Task<JobDescriptionDto> UpdateJobDescription(JobDescriptionDto model);
 
         Task<IEnumerable<JobDescriptionDto>> GetAllJobDescriptionAsync();
     }

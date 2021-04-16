@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -69,7 +68,7 @@ namespace API.Controllers
                 await _rateRepository.CreateRateAsync(mappedModel);
                 await _rateRepository.SaveAsync();
                 var createdReadModel = _mapper.Map<PayrollRateReadDto>(mappedModel);
-                return CreatedAtRoute(nameof(GetASync), new {Id = createdReadModel.RateId}, createdReadModel);
+                return CreatedAtRoute(nameof(GetASync), new { Id = createdReadModel.RateId }, createdReadModel);
             }
             catch (Exception ex)
             {
