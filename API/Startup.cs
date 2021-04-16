@@ -61,6 +61,7 @@ namespace API
             {
                 Options.LoginPath = "/Security/SignIn";
                 Options.AccessDeniedPath = "/Security/AccessDenied";
+                Options.ExpireTimeSpan = TimeSpan.FromSeconds(1500);
             });
 
             var key = Encoding.ASCII.GetBytes(Configuration["JwtSettings:Secret"]);
