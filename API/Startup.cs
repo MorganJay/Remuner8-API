@@ -105,6 +105,7 @@ namespace API
             services.AddScoped<IPayrollOvertimeItemRepository, PayrollOvertimeItemRepository>();
             services.AddScoped<ILeaveRepository, LeaveRepository>();
             services.AddScoped<IEmailSender, EmailSenderRepository>();
+            services.AddTransient<IMailServiceRepository, SendGridMailServiceRepository>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()

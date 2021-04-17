@@ -1,6 +1,7 @@
 ﻿using API.Authentication;
 using API.Dtos;
 using API.Models;
+using API.Repositories;
 using API.Settings;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -25,14 +26,16 @@ namespace API.Controllers
     public class AccountsController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMailServiceRepository _mailService;
         private readonly JwtSettings _jwtSettings;
         // private readonly IOptionsMonitor<JwtSettings> _optionsMonitor;
 
-        public AccountsController(UserManager<ApplicationUser> userManager, IOptionsMonitor<JwtSettings> optionsMonitor)
+        public AccountsController(UserManager<ApplicationUser> userManager, IMailServiceRepository mailService ,IOptionsMonitor<JwtSettings> optionsMonitor)
         {
             _userManager = userManager;
+            _mailService = mailService;
             _jwtSettings = optionsMonitor.CurrentValue;
-        }
+        } 
 
         [HttpPost("Register")]
         public async Task<ActionResult> RegisterUser(RegisterDto model)
@@ -59,11 +62,12 @@ namespace API.Controllers
                     return BadRequest(new Response { Status = "Error", Message = "That Email Address already exists", Success = false });
                 }
 
-                var newUser = new IdentityUser() { Email = user.Email, UserName = user.UserName };
+                //var newUser = new ApplicationUser() { Email = user.Email, UserName = user.UserName };
                 var isCreated = await _userManager.CreateAsync(user, model.Password);
                 if (isCreated.Succeeded)
                 {
-                    var jwtToken = GenerateJwtToken(newUser);
+                    var get = _userManager.
+                    var jwtToken = GenerateJwtToken(user);
                     return Ok(new RegistrationResponse { Success = true, Token = jwtToken, Status = "Success", Message = "You have been registered successfully" });
                 }
                 else
@@ -95,6 +99,8 @@ namespace API.Controllers
                         var verifyPassword = await _userManager.CheckPasswordAsync(verifyEmail, model.Password);
                         if (verifyPassword)
                         {
+
+                            await _mailService.SendEmailAsync(model.Email, "New login", "<h1>Hey!, new login to your account noticed</h1><p>New login to your account at " + DateTime.Now + "</p>");
                             var jwtToken = GenerateJwtToken(verifyEmail);
                             return Ok(new RegistrationResponse { Success = true, Token = jwtToken });
                         }

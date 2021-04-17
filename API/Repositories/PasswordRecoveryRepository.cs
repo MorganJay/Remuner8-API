@@ -13,13 +13,15 @@ namespace API.Repositories
 {
     public class PasswordRecoveryRepository : IPasswordRecoveryRepository
     {
-         private UserManager<ApplicationUser> _userManager;
-         private IConfiguration _configuration;
+         private readonly UserManager<ApplicationUser> _userManager;
+         private readonly IConfiguration _configuration;
+         private readonly EmailSenderRepository _emailSender;
 
-        public PasswordRecoveryRepository(UserManager<ApplicationUser> userManager, IConfiguration configuration)
+        public PasswordRecoveryRepository(UserManager<ApplicationUser> userManager, IConfiguration configuration, EmailSenderRepository emailSender)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _emailSender = emailSender;
         }
 
         public async Task<RegistrationResponse> ForgetPasswordAsync(string email)
@@ -33,10 +35,14 @@ namespace API.Repositories
                     Success = false
                 };
             }
+            return new RegistrationResponse { Success = true };
 
             var token = await _userManager.GeneratePasswordResetTokenAsync(user);
             var encodedToken = Encoding.UTF8.GetBytes(token);
             var validToken = WebEncoders.Base64UrlEncode(encodedToken);
+
+            string url = $"{_configuration["AppUrl"]}/resetpassword?email-{email}&token-{validToken}";
+            //await _emailSender.EmailSender(email, "Reset Password", "<hi>Follow the instructions to reset your Password</h1>");
 
         }
     }
