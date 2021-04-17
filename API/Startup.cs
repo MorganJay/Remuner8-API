@@ -56,14 +56,29 @@ namespace API
             })
                 .AddEntityFrameworkStores<Remuner8Context>()
                 .AddDefaultTokenProviders();
-
+            ;
             services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 
             services.ConfigureApplicationCookie(Options =>
             {
                 Options.LoginPath = "/Security/SignIn";
                 Options.AccessDeniedPath = "/Security/AccessDenied";
+                Options.ExpireTimeSpan = TimeSpan.FromSeconds(1500);
             });
+
+            var key = Encoding.ASCII.GetBytes(Configuration["JwtSettings:Secret"]);
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                RequireExpirationTime = false
+
+            };
+
+            services.AddSingleton(tokenValidationParameters);
 
             services.AddAuthentication(options =>
             {
@@ -71,20 +86,9 @@ namespace API
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(jwt =>
-            {
-                var key = Encoding.ASCII.GetBytes(Configuration["JwtSettings:Secret"]);
-
+            .AddJwtBearer(jwt => {
+                jwt.RequireHttpsMetadata = true;
                 jwt.SaveToken = true;
-                jwt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    RequireExpirationTime = false
-                };
             });
 
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -104,8 +108,13 @@ namespace API
             services.AddScoped<IPayrollDeductionRepository, PayrollDeductionRepository>();
             services.AddScoped<IPayrollOvertimeItemRepository, PayrollOvertimeItemRepository>();
             services.AddScoped<ILeaveRepository, LeaveRepository>();
-            services.AddScoped<IEmailSender, EmailSenderRepository>();
-            services.AddTransient<IMailServiceRepository, SendGridMailServiceRepository>();
+            services.AddScoped<IEmploymentTypeRepo, EmploymentTypeRepository>();
+            services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+            services.AddScoped<IPayrollRateRepository, PayrollRateRepository>();
+            services.AddScoped<IRequestsRepository, RequestsRepository>();
+            services.AddScoped<IPayrollCategoryRepository, PayrollCategoryRepository>();
+            services.AddScoped<IPayrollDefaultRepository, PayrollDefaultRepository>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
