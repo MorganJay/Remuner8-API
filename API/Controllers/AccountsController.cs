@@ -66,7 +66,6 @@ namespace API.Controllers
                 var isCreated = await _userManager.CreateAsync(user, model.Password);
                 if (isCreated.Succeeded)
                 {
-                    var get = _userManager.
                     var jwtToken = GenerateJwtToken(user);
                     return Ok(new RegistrationResponse { Success = true, Token = jwtToken, Status = "Success", Message = "You have been registered successfully" });
                 }
