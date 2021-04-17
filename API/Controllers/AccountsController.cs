@@ -26,6 +26,7 @@ namespace API.Controllers
     public class AccountsController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMailServiceRepository _mailService;
         private readonly JwtSettings _jwtSettings; 
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly Remuner8Context _remuner8Context;
@@ -34,6 +35,7 @@ namespace API.Controllers
                 TokenValidationParameters tokenValidationParameters, Remuner8Context remuner8Context)
         {
             _userManager = userManager;
+            _mailService = mailService;
             _jwtSettings = jwtSettings.CurrentValue;
             _tokenValidationParameters = tokenValidationParameters;
             _remuner8Context = remuner8Context;
@@ -96,6 +98,7 @@ namespace API.Controllers
                         var verifyPassword = await _userManager.CheckPasswordAsync(verifyEmail, model.Password);
                         if (verifyPassword == true)
                         {
+                            await _mailService.SendEmailAsync(model.Email, "New login", "<h1>Hey!, new login to your account noticed</h1><p>New login to your account at " + DateTime.Now + "</p>");
                             var jwtToken = await GenerateJwtToken(verifyEmail);
                             return Ok(jwtToken);
                         }

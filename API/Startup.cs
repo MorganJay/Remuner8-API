@@ -108,6 +108,10 @@ namespace API
             services.AddScoped<IPayrollDeductionRepository, PayrollDeductionRepository>();
             services.AddScoped<IPayrollOvertimeItemRepository, PayrollOvertimeItemRepository>();
             services.AddScoped<ILeaveRepository, LeaveRepository>();
+
+            services.AddScoped<IEmailSender, EmailSenderRepository>();
+            services.AddTransient<IMailServiceRepository, SendGridMailServiceRepository>();
+
             services.AddScoped<IEmploymentTypeRepo, EmploymentTypeRepository>();
             services.AddScoped<IStatisticsRepository, StatisticsRepository>();
             services.AddScoped<IPayrollRateRepository, PayrollRateRepository>();
@@ -115,6 +119,8 @@ namespace API
             services.AddScoped<IPayrollCategoryRepository, PayrollCategoryRepository>();
             services.AddScoped<IPayrollDefaultRepository, PayrollDefaultRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
+            
+
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
