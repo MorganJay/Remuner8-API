@@ -104,7 +104,10 @@ namespace API.Repositories
                     Success = false
                 };
 
-            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+            var decodedToken = WebEncoders.Base64UrlDecode(model.Token);
+            string normalToken = Encoding.UTF8.GetString(decodedToken);
+
+            var result = await _userManager.ResetPasswordAsync(user, normalToken, model.NewPassword);
 
             if (result.Succeeded)
                 return new RegistrationResponse
