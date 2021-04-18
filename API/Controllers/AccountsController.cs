@@ -35,7 +35,7 @@ namespace API.Controllers
         }
 
         [HttpPost("Register")]
-        public async Task<ActionResult> RegisterUser(RegisterDto model)
+        public async Task<IActionResult> RegisterUser(RegisterDto model)
         {
             try
             {
@@ -79,7 +79,7 @@ namespace API.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult> Login(LoginDto model)
+        public async Task<IActionResult> Login(LoginDto model)
         {
             try
             {
@@ -169,6 +169,23 @@ namespace API.Controllers
                 Success = false
             });
 
+        }
+
+        [HttpPost("ForgetPassword")]
+        public async Task<IActionResult> ForgetPassword(ApplicationUser user)
+        {
+            if (string.IsNullOrEmpty(user.Email))
+            {
+                return NotFound();
+            }
+
+            var result = await _mailService.ForgetPasswordAsync(user);
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
         }
 
     }

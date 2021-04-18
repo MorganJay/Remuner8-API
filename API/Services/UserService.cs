@@ -1,8 +1,10 @@
 ﻿using API.Authentication;
 using API.Models;
+using API.Repositories;
 using API.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -19,18 +21,23 @@ namespace API.Services
     {
         private readonly Remuner8Context _remuner8Context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IMailServiceRepository _mailService;
+        private readonly IConfiguration _configuration;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly JwtSettings _jwtSettings;
 
-        public UserService(Remuner8Context remuner8Context, IOptionsMonitor<JwtSettings> JwtSettings, UserManager<ApplicationUser> userManager, TokenValidationParameters tokenValidationParameters)
+        public UserService(Remuner8Context remuner8Context, IOptionsMonitor<JwtSettings> JwtSettings, UserManager<ApplicationUser> userManager, 
+            IMailServiceRepository mailService, IConfiguration configuration, TokenValidationParameters tokenValidationParameters)
         {
             _remuner8Context = remuner8Context;
             _userManager = userManager;
+            _mailService = mailService;
+            _configuration = configuration;
             _tokenValidationParameters = tokenValidationParameters;
             _jwtSettings = JwtSettings.CurrentValue;
         }
 
-        public async Task<RegistrationResponse> GenerateJwtToken(IdentityUser user)
+        public async Task<RegistrationResponse> GenerateJwtToken(ApplicationUser user)
         {
             var jwtTokenHandler = new JwtSecurityTokenHandler();
 
@@ -169,7 +176,7 @@ namespace API.Services
                 {
                     return new RegistrationResponse()
                     {
-                        Errors = new List<string>() { "the token doenst mateched the saved token" },
+                        Errors = new List<string>() { "the token doesn't match the saved token" },
                         Success = false
                     };
                 }
@@ -194,5 +201,6 @@ namespace API.Services
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
             return dtDateTime;
         }
+
     }
 }
