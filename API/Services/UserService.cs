@@ -21,8 +21,6 @@ namespace API.Services
     {
         private readonly Remuner8Context _remuner8Context;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IMailServiceRepository _mailService;
-        private readonly IConfiguration _configuration;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly JwtSettings _jwtSettings;
 
@@ -31,8 +29,6 @@ namespace API.Services
         {
             _remuner8Context = remuner8Context;
             _userManager = userManager;
-            _mailService = mailService;
-            _configuration = configuration;
             _tokenValidationParameters = tokenValidationParameters;
             _jwtSettings = JwtSettings.CurrentValue;
         }

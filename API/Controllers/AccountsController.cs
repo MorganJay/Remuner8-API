@@ -188,5 +188,21 @@ namespace API.Controllers
             return BadRequest(result);
         }
 
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromForm]PasswordReset model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _mailService.ResetPasswordAsync(model);
+
+                if (result.Success)
+                    return Ok(result);
+
+                return BadRequest(result);    
+            }
+
+            return BadRequest("Some properties are not valid");
+        }
     }
 }

@@ -11,7 +11,8 @@ namespace API.Repositories
     {
         Task SendEmailAsync(string toEmail, string subject, string content);
         Task<RegistrationResponse> ForgetPasswordAsync(ApplicationUser applicationUser);
-        
+        Task<RegistrationResponse> ResetPasswordAsync(PasswordReset model);
+
         //Task<RegistrationResponse> ConfirmEmailAsync(string userId, string token);
     }
 }

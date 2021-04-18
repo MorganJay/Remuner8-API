@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -83,8 +85,42 @@ namespace API.Repositories
                 Success = true
             };
 
-
         }
+
+        public async Task<RegistrationResponse> ResetPasswordAsync(PasswordReset model)
+        {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+                return new RegistrationResponse
+                {
+                    Message = "No user found associated with email",
+                    Success = false
+                };
+
+            if (model.NewPassword != model.ConfirmPassword)
+                return new RegistrationResponse
+                {
+                    Message = "Passwords do not match",
+                    Success = false
+                };
+
+            var result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+
+            if (result.Succeeded)
+                return new RegistrationResponse
+                {
+                    Message = "Password has been reset successfully!",
+                    Success = true
+                };
+
+            return new RegistrationResponse
+            {
+                Message = "Something went wrong",
+                Success = false,
+                Errors = new List<string>(result.Errors.Select(e => e.Description))
+            };
+        }
+
 
     }
 }
