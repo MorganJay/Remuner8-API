@@ -25,7 +25,7 @@ namespace API.Services
         private readonly JwtSettings _jwtSettings;
 
         public UserService(Remuner8Context remuner8Context, IOptionsMonitor<JwtSettings> JwtSettings, UserManager<ApplicationUser> userManager, 
-            IMailServiceRepository mailService, IConfiguration configuration, TokenValidationParameters tokenValidationParameters)
+                IConfiguration configuration, TokenValidationParameters tokenValidationParameters)
         {
             _remuner8Context = remuner8Context;
             _userManager = userManager;

@@ -6,10 +6,13 @@ using API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -23,15 +26,15 @@ namespace API.Controllers
         private readonly IUserService _userService;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IMailServiceRepository _mailService;
-        
+        private readonly IConfiguration _configuration;
 
-        public AccountsController(UserManager<ApplicationUser> userManager, IMailServiceRepository mailService,
+        public AccountsController(UserManager<ApplicationUser> userManager, IMailServiceRepository mailService, IConfiguration configuration,
                 IUserService userService)
         {
             _userService = userService;
             _userManager = userManager;
             _mailService = mailService;
-            
+            _configuration = configuration;
         }
 
         [HttpPost("Register")]
@@ -180,6 +183,14 @@ namespace API.Controllers
             }
 
             var result = await _mailService.ForgetPasswordAsync(user);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var encodedToken = Encoding.UTF8.GetBytes(token);
+            var validToken = WebEncoders.Base64UrlEncode(encodedToken);
+
+            string url = $"{_configuration["AppUrl"]}/ResetPassword?email={user.Email}&token={validToken}";
+
+            await _mailService.SendEmailAsync(user.Email, "Reset Password", "<h1>Follow the instructions to reset your password</h1>" +
+                $"<p>To reset your password <a href='{url}'>Click Here</a></p>");
 
             if (result.Success)
             {

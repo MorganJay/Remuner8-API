@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Repositories
+namespace API.Services
 {
     public interface IMailServiceRepository
     {

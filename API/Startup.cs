@@ -1,5 +1,6 @@
 using API.Models;
 using API.Repositories;
+using API.Services;
 using API.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -110,7 +111,6 @@ namespace API
             services.AddScoped<ILeaveRepository, LeaveRepository>();
 
             services.AddScoped<IEmailSender, EmailSenderRepository>();
-            services.AddTransient<IMailServiceRepository, SendGridMailServiceRepository>();
 
             services.AddScoped<IEmploymentTypeRepo, EmploymentTypeRepository>();
             services.AddScoped<IStatisticsRepository, StatisticsRepository>();
@@ -119,7 +119,9 @@ namespace API
             services.AddScoped<IPayrollCategoryRepository, PayrollCategoryRepository>();
             services.AddScoped<IPayrollDefaultRepository, PayrollDefaultRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
-            
+            services.AddScoped<IMailServiceRepository, MailServiceRepository>();
+            services.AddScoped<IUserService, UserService>();
+
 
 
             // Enable CORS

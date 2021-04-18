@@ -11,19 +11,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace API.Repositories
+namespace API.Services
 {
-    public class SendGridMailServiceRepository : IMailServiceRepository
+    public class MailServiceRepository : IMailServiceRepository
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly IConfiguration _configuration;
-        private readonly IMailServiceRepository _mailService;
 
-        public SendGridMailServiceRepository(UserManager<ApplicationUser> userManager, IConfiguration configuration, IMailServiceRepository mailService)
+        public MailServiceRepository(UserManager<ApplicationUser> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
             _configuration = configuration;
-            _mailService = mailService;
         }
 
         public async Task SendEmailAsync(string toEmail, string subject, string content)
@@ -60,7 +58,7 @@ namespace API.Repositories
 
         public async Task<RegistrationResponse> ForgetPasswordAsync(ApplicationUser applicationUser)
         {
-            var user = _userManager.FindByEmailAsync(applicationUser.Email);
+            var user = await _userManager.FindByEmailAsync(applicationUser.Email);
             if (user == null)
             {
                 return new RegistrationResponse
@@ -70,14 +68,14 @@ namespace API.Repositories
                     Success = false
                 };
             }
-            var token = await _userManager.GeneratePasswordResetTokenAsync(applicationUser);
-            var encodedToken = Encoding.UTF8.GetBytes(token);
-            var validToken = WebEncoders.Base64UrlEncode(encodedToken);
+            //var token = await _userManager.GeneratePasswordResetTokenAsync(applicationUser);
+            //var encodedToken = Encoding.UTF8.GetBytes(token);
+            //var validToken = WebEncoders.Base64UrlEncode(encodedToken);
 
-            string url = $"{_configuration["AppUrl"]}/ResetPassword?email={applicationUser.Email}&token={validToken}";
+            //string url = $"{_configuration["AppUrl"]}/ResetPassword?email={applicationUser.Email}&token={validToken}";
 
-            await _mailService.SendEmailAsync(applicationUser.Email, "Reset Password", "<h1>Follow the instructions to reset your password</h1>" +
-                $"<p>To reset your password <a href='{url}'>Click Here</a></p>");
+            //await _mailService.SendEmailAsync(applicationUser.Email, "Reset Password", "<h1>Follow the instructions to reset your password</h1>" +
+            //    $"<p>To reset your password <a href='{url}'>Click Here</a></p>");
 
             return new RegistrationResponse
             {
