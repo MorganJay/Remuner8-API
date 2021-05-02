@@ -1,8 +1,6 @@
 ﻿using API.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Repositories
@@ -19,14 +17,12 @@ namespace API.Repositories
         public async Task CreateDefaultAsync(PayrollDefault payrollDefault)
         {
             await _remuner8Context.PayrollDefaults.AddAsync(payrollDefault);
-
         }
 
         public void DeleteDefault(int id)
         {
             var item = _remuner8Context.PayrollDefaults.Find(id);
             _remuner8Context.PayrollDefaults.Remove(item);
-
         }
 
         public void EditDefaultAsync(int id, PayrollDefault payrollDefault)
@@ -38,7 +34,6 @@ namespace API.Repositories
         {
             var item = await _remuner8Context.PayrollDefaults.ToListAsync();
             return item;
-
         }
 
         public async Task<PayrollDefault> GetDefaultByIdAsync(int id)

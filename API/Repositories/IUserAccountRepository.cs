@@ -1,9 +1,4 @@
-﻿using API.Models;
-using Remuner8_Backend.EntityModels;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
-namespace API.Repositories
+﻿namespace API.Repositories
 {
     public interface IUserAccountRepository
     {

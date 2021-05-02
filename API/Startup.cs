@@ -1,5 +1,6 @@
 using API.Models;
 using API.Repositories;
+using API.Services;
 using API.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -13,6 +14,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 
 namespace API
@@ -41,7 +44,7 @@ namespace API
 
             services.AddDbContext<Remuner8Context>(options =>
                options.UseSqlServer(
-                   Configuration.GetConnectionString("DefaultConnection")));
+                   Configuration.GetConnectionString("Remuner8DB")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
@@ -54,14 +57,28 @@ namespace API
             })
                 .AddEntityFrameworkStores<Remuner8Context>()
                 .AddDefaultTokenProviders();
-
+            ;
             services.Configure<JwtSettings>(Configuration.GetSection("JwtSettings"));
 
             services.ConfigureApplicationCookie(Options =>
             {
                 Options.LoginPath = "/Security/SignIn";
                 Options.AccessDeniedPath = "/Security/AccessDenied";
+                Options.ExpireTimeSpan = TimeSpan.FromSeconds(1500);
             });
+
+            var key = Encoding.ASCII.GetBytes(Configuration["JwtSettings:Secret"]);
+            var tokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = false,
+                ValidateAudience = false,
+                ValidateLifetime = true,
+                RequireExpirationTime = false
+            };
+
+            services.AddSingleton(tokenValidationParameters);
 
             services.AddAuthentication(options =>
             {
@@ -71,18 +88,8 @@ namespace API
             })
             .AddJwtBearer(jwt =>
             {
-                var key = Encoding.ASCII.GetBytes(Configuration["JwtSettings:Secret"]);
-
+                jwt.RequireHttpsMetadata = true;
                 jwt.SaveToken = true;
-                jwt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
-                {
-                    ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    RequireExpirationTime = false
-                };
             });
 
             services.AddDatabaseDeveloperPageExceptionFilter();
@@ -102,6 +109,9 @@ namespace API
             services.AddScoped<IPayrollDeductionRepository, PayrollDeductionRepository>();
             services.AddScoped<IPayrollOvertimeItemRepository, PayrollOvertimeItemRepository>();
             services.AddScoped<ILeaveRepository, LeaveRepository>();
+
+            services.AddScoped<IEmailSender, EmailSenderRepository>();
+
             services.AddScoped<IEmploymentTypeRepo, EmploymentTypeRepository>();
             services.AddScoped<IStatisticsRepository, StatisticsRepository>();
             services.AddScoped<IPayrollRateRepository, PayrollRateRepository>();
@@ -109,11 +119,30 @@ namespace API
             services.AddScoped<IPayrollCategoryRepository, PayrollCategoryRepository>();
             services.AddScoped<IPayrollDefaultRepository, PayrollDefaultRepository>();
             services.AddScoped<ICompanyRepository, CompanyRepository>();
+            services.AddScoped<IMailServiceRepository, MailServiceRepository>();
+            services.AddScoped<IUserService, UserService>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
                                                                                               .AllowAnyMethod()
                                                                                               .AllowAnyHeader()));
+            var sender = Configuration.GetSection("MailConfig")["SenderAddress"];
+            var senderName = Configuration.GetSection("MailConfig")["SenderDisplayName"];
+
+            var port = Convert.ToInt32(Configuration.GetSection("MailConfig")["Port"]);
+            var password = Configuration.GetSection("MailConfig")["Password"];
+
+            services
+                .AddFluentEmail(sender, senderName)
+                .AddRazorRenderer()
+                .AddSmtpSender(new SmtpClient("smtp.gmail.com")
+                {
+                    Port = port,
+
+                    Credentials = new NetworkCredential(sender, password),
+                    EnableSsl = true,
+                    UseDefaultCredentials = false
+                });
             //services.AddMvc(option =>
             //{
             //    var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();

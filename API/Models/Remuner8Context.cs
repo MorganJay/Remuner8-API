@@ -18,6 +18,7 @@ namespace API.Models
         public virtual DbSet<EmployeeBiodata> EmployeeBiodatas { get; set; }
         public virtual DbSet<EmploymentType> EmploymentTypes { get; set; }
         public virtual DbSet<JobDescription> JobDescriptions { get; set; }
+        public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
         public virtual DbSet<LeaveType> LeaveTypes { get; set; }
         public virtual DbSet<PayrollAdditionItem> PayrollAdditionItems { get; set; }
         public virtual DbSet<PayrollAdditionItemsAssignment> PayrollAdditionItemsAssignments { get; set; }
@@ -41,7 +42,7 @@ namespace API.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Name=DefaultConnection");
+                optionsBuilder.UseSqlServer("Name=Remuner8DB");
             }
         }
 

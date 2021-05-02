@@ -1,8 +1,6 @@
 ﻿using API.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace API.Repositories
@@ -23,13 +21,11 @@ namespace API.Repositories
 
         public void DeleteRate(PayrollRate payrollRate)
         {
-           _remuner8Context.PayrollRates.Remove(payrollRate);
-
+            _remuner8Context.PayrollRates.Remove(payrollRate);
         }
 
         public void EditRate(int id, PayrollRate payrollRate)
         {
-            
         }
 
         public async Task<IEnumerable<PayrollRate>> GetAllRatesAsync()
@@ -42,12 +38,11 @@ namespace API.Repositories
         {
             var rate = await _remuner8Context.PayrollRates.FindAsync(id);
             return rate;
-
         }
 
         public async Task<bool> SaveAsync()
         {
-          return await _remuner8Context.SaveChangesAsync() >= 0;
+            return await _remuner8Context.SaveChangesAsync() >= 0;
         }
     }
 }

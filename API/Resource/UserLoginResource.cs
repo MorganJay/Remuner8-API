@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace API.Resource
+﻿namespace API.Resource
 {
     public class UserLoginResource
     {
@@ -12,4 +7,3 @@ namespace API.Resource
         public string Password { get; set; }
     }
 }
-

@@ -1,12 +1,4 @@
-﻿using API.Models;
-using Microsoft.EntityFrameworkCore;
-using Remuner8_Backend.EntityModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace API.Repositories
+﻿namespace API.Repositories
 {
     public class UserAccountsRepository : IUserAccountRepository
     {

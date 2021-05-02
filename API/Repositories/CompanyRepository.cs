@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
-using API.Models;
+﻿using API.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace API.Repositories
 {

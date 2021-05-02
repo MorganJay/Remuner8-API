@@ -1,18 +1,17 @@
 ﻿using API.Authentication;
 using API.Dtos;
 using API.Models;
-using API.Settings;
+using API.Repositories;
+using API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,18 +23,22 @@ namespace API.Controllers
     [ApiController]
     public class AccountsController : ControllerBase
     {
+        private readonly IUserService _userService;
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly JwtSettings _jwtSettings;
-        // private readonly IOptionsMonitor<JwtSettings> _optionsMonitor;
+        private readonly IMailServiceRepository _mailService;
+        private readonly IConfiguration _configuration;
 
-        public AccountsController(UserManager<ApplicationUser> userManager, IOptionsMonitor<JwtSettings> optionsMonitor)
+        public AccountsController(UserManager<ApplicationUser> userManager, IMailServiceRepository mailService, IConfiguration configuration,
+                IUserService userService)
         {
+            _userService = userService;
             _userManager = userManager;
-            _jwtSettings = optionsMonitor.CurrentValue;
+            _mailService = mailService;
+            _configuration = configuration;
         }
 
         [HttpPost("Register")]
-        public async Task<ActionResult> RegisterUser(RegisterDto model)
+        public async Task<IActionResult> RegisterUser(RegisterDto model)
         {
             try
             {
@@ -46,25 +49,19 @@ namespace API.Controllers
                     Message = "Email already in use. Try a different email address"
                 });
 
-                var user = new ApplicationUser
-                {
-                    UserName = model.UserName,
-                    Email = model.Email
-                };
+                var existingUser = await _userManager.FindByEmailAsync(model.Email);
 
-                var exist = await _userManager.FindByEmailAsync(model.Email);
-
-                if (exist is not null)
+                if (existingUser is not null)
                 {
-                    return BadRequest(new Response { Status = "Error", Message = "That Email Address already exists", Success = false });
+                    return BadRequest(new Response { Status = "Not successful", Message = "That user already exists", Success = false });
                 }
 
-                var newUser = new IdentityUser() { Email = user.Email, UserName = user.UserName };
-                var isCreated = await _userManager.CreateAsync(user, model.Password);
+                var newUser = new ApplicationUser() { Email = model.Email, UserName = model.UserName };
+                var isCreated = await _userManager.CreateAsync(newUser, model.Password);
                 if (isCreated.Succeeded)
                 {
-                    var jwtToken = GenerateJwtToken(newUser);
-                    return Ok(new RegistrationResponse { Success = true, Token = jwtToken, Status = "Success", Message = "You have been registered successfully" });
+                    var jwtToken = await _userService.GenerateJwtToken(newUser);
+                    return Ok(jwtToken);
                 }
                 else
                 {
@@ -83,7 +80,7 @@ namespace API.Controllers
         }
 
         [HttpPost("Login")]
-        public async Task<ActionResult> Login(LoginDto model)
+        public async Task<IActionResult> Login(LoginDto model)
         {
             try
             {
@@ -93,10 +90,11 @@ namespace API.Controllers
                     if (verifyEmail is not null)
                     {
                         var verifyPassword = await _userManager.CheckPasswordAsync(verifyEmail, model.Password);
-                        if (verifyPassword)
+                        if (verifyPassword == true)
                         {
-                            var jwtToken = GenerateJwtToken(verifyEmail);
-                            return Ok(new RegistrationResponse { Success = true, Token = jwtToken });
+                            await _mailService.SendEmailAsync(model.Email, "New login", "<h1>Hey!, new login to your account noticed</h1><p>New login to your account at " + DateTime.Now + "</p>");
+                            var jwtToken = await _userService.GenerateJwtToken(verifyEmail);
+                            return Ok(jwtToken);
                         }
                     }
 
@@ -138,30 +136,79 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new RegistrationResponse { Status = "Error", Message = ex.Source });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Source });
             }
         }
 
-        private string GenerateJwtToken(IdentityUser user)
+        [HttpPost("RefreshToken")]
+        public async Task<IActionResult> RefreshToken([FromBody] TokenRequest tokenRequest)
         {
-            var jwtTokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_jwtSettings.Secret);
-            var tokenDescriptor = new SecurityTokenDescriptor
+            if (ModelState.IsValid)
             {
-                Subject = new ClaimsIdentity(new[]
-                {
-                    new Claim("Id", user.Id),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
-                }),
-                Expires = DateTime.UtcNow.AddHours(6),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
+                var res = await _userService.VerifyToken(tokenRequest);
 
-            var token = jwtTokenHandler.CreateToken(tokenDescriptor);
-            var jwtToken = jwtTokenHandler.WriteToken(token);
-            return jwtToken;
+                if (res == null)
+                {
+                    return BadRequest(new RegistrationResponse()
+                    {
+                        Errors = new List<string>() {
+                    "Invalid tokens"
+                },
+                        Success = false
+                    });
+                }
+
+                return Ok(res);
+            }
+
+            return BadRequest(new RegistrationResponse()
+            {
+                Errors = new List<string>() {
+                "Invalid payload"
+            },
+                Success = false
+            });
+        }
+
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword(ApplicationUser user)
+        {
+            if (string.IsNullOrEmpty(user.Email))
+            {
+                return NotFound();
+            }
+
+            var result = await _mailService.ForgetPasswordAsync(user);
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var encodedToken = Encoding.UTF8.GetBytes(token);
+            var validToken = WebEncoders.Base64UrlEncode(encodedToken);
+
+            string url = $"{_configuration["AppUrl"]}/ResetPassword?email={user.Email}&token={validToken}";
+
+            await _mailService.SendEmailAsync(user.Email, "Reset Password", "<h1>Follow the instructions to reset your password</h1>" +
+                $"<p>To reset your password <a href='{url}'>Click Here</a></p>");
+
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
+
+        [HttpPost("ResetPassword")]
+        public async Task<IActionResult> ResetPassword([FromForm] PasswordReset model)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _mailService.ResetPasswordAsync(model);
+
+                if (result.Success)
+                    return Ok(result);
+
+                return BadRequest(result);
+            }
+
+            return BadRequest("Some properties are not valid");
         }
     }
 }

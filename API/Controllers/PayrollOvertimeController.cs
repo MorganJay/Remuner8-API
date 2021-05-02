@@ -76,7 +76,7 @@ namespace API.Controllers
                     await _payrollOvertimeItemRepository.AddItemAsync(model);
                     await _payrollOvertimeItemRepository.SaveAsync();
                     var createdReadModel = _mapper.Map<PayrollOvertimeItemReadDto>(model);
-                    return CreatedAtRoute(nameof(GetItem), new {Id = createdReadModel.Id}, createdReadModel);
+                    return CreatedAtRoute(nameof(GetItem), new { Id = createdReadModel.Id }, createdReadModel);
                 }
                 return StatusCode(StatusCodes.Status400BadRequest, new Response { Status = "Error", Message = "Entry Already Exists" });
             }
