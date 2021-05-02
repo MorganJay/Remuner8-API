@@ -126,8 +126,8 @@ namespace API
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
                                                                                               .AllowAnyMethod()
                                                                                               .AllowAnyHeader()));
-            var sender = Configuration.GetSection("MailConfig")["senderAddress"];
-            var senderName = Configuration.GetSection("MailConfig")["senderDisplayName"];
+            var sender = Configuration.GetSection("MailConfig")["SenderAddress"];
+            var senderName = Configuration.GetSection("MailConfig")["SenderDisplayName"];
 
             var port = Convert.ToInt32(Configuration.GetSection("MailConfig")["Port"]);
             var password = Configuration.GetSection("MailConfig")["Password"];

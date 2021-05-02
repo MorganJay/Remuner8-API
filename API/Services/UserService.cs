@@ -1,6 +1,5 @@
 ﻿using API.Authentication;
 using API.Models;
-using API.Repositories;
 using API.Settings;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +23,7 @@ namespace API.Services
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly JwtSettings _jwtSettings;
 
-        public UserService(Remuner8Context remuner8Context, IOptionsMonitor<JwtSettings> JwtSettings, UserManager<ApplicationUser> userManager, 
+        public UserService(Remuner8Context remuner8Context, IOptionsMonitor<JwtSettings> JwtSettings, UserManager<ApplicationUser> userManager,
                 IConfiguration configuration, TokenValidationParameters tokenValidationParameters)
         {
             _remuner8Context = remuner8Context;
@@ -74,7 +73,6 @@ namespace API.Services
                 Success = true,
                 RefreshToken = refreshToken.Token
             };
-
         }
 
         public string RandomString(int length)
@@ -84,7 +82,6 @@ namespace API.Services
             return new string(Enumerable.Repeat(chars, length)
             .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-
 
         public async Task<RegistrationResponse> VerifyToken(TokenRequest tokenRequest)
         {
@@ -129,7 +126,7 @@ namespace API.Services
                 {
                     return new RegistrationResponse()
                     {
-                        Errors = new List<string>() { "refresh token doesnt exist" },
+                        Errors = new List<string>() { "refresh token doesn't exist" },
                         Success = false
                     };
                 }
@@ -193,10 +190,9 @@ namespace API.Services
         public DateTime UnixTimeStampToDateTime(double unixTimeStamp)
         {
             // Unix timestamp is seconds past epoch
-            System.DateTime dtDateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, System.DateTimeKind.Utc);
+            DateTime dtDateTime = new(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
             return dtDateTime;
         }
-
     }
 }
