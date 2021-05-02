@@ -49,12 +49,11 @@ namespace API.Controllers
                     Message = "Email already in use. Try a different email address"
                 });
 
-
                 var existingUser = await _userManager.FindByEmailAsync(model.Email);
 
                 if (existingUser is not null)
                 {
-                    return BadRequest(new Response { Status = "Not successful", Message = "That user already exists" , Success= false });
+                    return BadRequest(new Response { Status = "Not successful", Message = "That user already exists", Success = false });
                 }
 
                 var newUser = new ApplicationUser() { Email = model.Email, UserName = model.UserName };
@@ -63,7 +62,6 @@ namespace API.Controllers
                 {
                     var jwtToken = await _userService.GenerateJwtToken(newUser);
                     return Ok(jwtToken);
-
                 }
                 else
                 {
@@ -142,7 +140,6 @@ namespace API.Controllers
             }
         }
 
-
         [HttpPost("RefreshToken")]
         public async Task<IActionResult> RefreshToken([FromBody] TokenRequest tokenRequest)
         {
@@ -171,11 +168,10 @@ namespace API.Controllers
             },
                 Success = false
             });
-
         }
 
-        [HttpPost("ForgetPassword")]
-        public async Task<IActionResult> ForgetPassword(ApplicationUser user)
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword(ApplicationUser user)
         {
             if (string.IsNullOrEmpty(user.Email))
             {
@@ -199,9 +195,8 @@ namespace API.Controllers
             return BadRequest(result);
         }
 
-
         [HttpPost("ResetPassword")]
-        public async Task<IActionResult> ResetPassword([FromForm]PasswordReset model)
+        public async Task<IActionResult> ResetPassword([FromForm] PasswordReset model)
         {
             if (ModelState.IsValid)
             {
@@ -210,7 +205,7 @@ namespace API.Controllers
                 if (result.Success)
                     return Ok(result);
 
-                return BadRequest(result);    
+                return BadRequest(result);
             }
 
             return BadRequest("Some properties are not valid");

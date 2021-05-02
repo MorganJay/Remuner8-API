@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,11 +30,10 @@ namespace API.Services
             var from = new EmailAddress("remuner8payrollapp@gmail.com", "JWT Auth Demo");
             var to = new EmailAddress(toEmail);
             var msg = MailHelper.CreateSingleEmail(from, to, subject, content, content);
-            var response = await client.SendEmailAsync(msg);
+            await client.SendEmailAsync(msg);
         }
 
-
-        //Comfirm Email 
+        //Confirm Email
         //public async Task<RegistrationResponse> ConfirmEmailAsync(string userId, string token)
         //{
         //    var user = await _userManager.FindByIdAsync(userId);
@@ -52,9 +50,8 @@ namespace API.Services
         //        return new RegistrationResponse { Message = "Email confirmed successfully", Success = true };
         //    }
 
-        //    return new RegistrationResponse { Success = false, Message ="Email could not be confirmed", Errors = new List<string>(result.Errors.Select(e => e.Description)) };
+        //    return new RegistrationResponse { Success = false, Message = "Email could not be confirmed", Errors = new List<string>(result.Errors.Select(e => e.Description)) };
         //}
-
 
         public async Task<RegistrationResponse> ForgetPasswordAsync(ApplicationUser applicationUser)
         {
@@ -82,7 +79,6 @@ namespace API.Services
                 Message = "Reset password link has been sent to your email successfully!",
                 Success = true
             };
-
         }
 
         public async Task<RegistrationResponse> ResetPasswordAsync(PasswordReset model)
@@ -121,7 +117,5 @@ namespace API.Services
                 Errors = new List<string>(result.Errors.Select(e => e.Description))
             };
         }
-
-
     }
 }

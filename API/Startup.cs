@@ -44,7 +44,7 @@ namespace API
 
             services.AddDbContext<Remuner8Context>(options =>
                options.UseSqlServer(
-                   Configuration.GetConnectionString("DefaultConnection")));
+                   Configuration.GetConnectionString("Remuner8DB")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
@@ -76,7 +76,6 @@ namespace API
                 ValidateAudience = false,
                 ValidateLifetime = true,
                 RequireExpirationTime = false
-
             };
 
             services.AddSingleton(tokenValidationParameters);
@@ -87,7 +86,8 @@ namespace API
                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(jwt => {
+            .AddJwtBearer(jwt =>
+            {
                 jwt.RequireHttpsMetadata = true;
                 jwt.SaveToken = true;
             });
@@ -121,8 +121,6 @@ namespace API
             services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IMailServiceRepository, MailServiceRepository>();
             services.AddScoped<IUserService, UserService>();
-
-
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()

@@ -42,7 +42,7 @@ namespace API.Models
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Name=DefaultConnection");
+                optionsBuilder.UseSqlServer("Name=Remuner8DB");
             }
         }
 
