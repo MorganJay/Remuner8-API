@@ -39,7 +39,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
 
@@ -59,7 +59,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
 
@@ -76,13 +76,13 @@ namespace API.Controllers
                     await _payrollOvertimeItemRepository.AddItemAsync(model);
                     await _payrollOvertimeItemRepository.SaveAsync();
                     var createdReadModel = _mapper.Map<PayrollOvertimeItemReadDto>(model);
-                    return CreatedAtRoute(nameof(GetItem), new { Id = createdReadModel.Id }, createdReadModel);
+                    return CreatedAtRoute(nameof(GetItem), new { createdReadModel.Id }, createdReadModel);
                 }
-                return StatusCode(StatusCodes.Status400BadRequest, new Response { Status = "Error", Message = "Entry Already Exists" });
+                return StatusCode(StatusCodes.Status400BadRequest, new Response { Success = false, Message = "Entry Already Exists" });
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
 
@@ -108,7 +108,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
 
@@ -121,15 +121,15 @@ namespace API.Controllers
                 var item = await _payrollOvertimeItemRepository.GetItemAsync(id);
                 if (item == null)
                 {
-                    return NotFound(new Response { Status = "Error", Message = "Entry Not Found!" });
+                    return NotFound(new Response { Success = false, Message = "Entry Not Found!" });
                 }
                 await _payrollOvertimeItemRepository.DeleteItem(item.Id);
                 await _payrollOvertimeItemRepository.SaveAsync();
-                return Ok(new Response { Status = "Success", Message = "Entry Deleted Successfully!" });
+                return Ok(new Response { Success = true, Message = "Entry Deleted Successfully!" });
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
     }

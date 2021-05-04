@@ -36,7 +36,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
 
@@ -49,13 +49,13 @@ namespace API.Controllers
                 var getTimeSheetById = await timeSheetRepository.GetTimeSheetByIdAsync(id);
                 if (getTimeSheetById == null)
                 {
-                    return BadRequest(new Response { Status = "Error", Message = $"The timesheet with id={id} cannot be found" });
+                    return BadRequest(new Response { Success = false, Message = $"The timesheet with id={id} cannot be found" });
                 }
                 return Ok(getTimeSheetById);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
 
@@ -76,7 +76,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
 
@@ -89,13 +89,13 @@ namespace API.Controllers
                 var updatedTimeSheet = await timeSheetRepository.UpdateTimeSheetAsync(model);
                 if (updatedTimeSheet)
                 {
-                    return Ok(new Response { Status = "Success", Message = "The Update was Successful" });
+                    return Ok(new Response { Success = true, Message = "The Update was Successful" });
                 }
-                return BadRequest(new Response { Status = "Unsuccessful", Message = "The Update was not Successful" });
+                return BadRequest(new Response { Success = false, Message = "The Update was not Successful" });
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
 
@@ -108,13 +108,13 @@ namespace API.Controllers
                 var deletedTimeSheet = await timeSheetRepository.DeleteTimeSheetAsync(id);
                 if (deletedTimeSheet)
                 {
-                    return Ok(new Response { Status = "Successful", Message = "The Time sheet was deleted Successfully" });
+                    return Ok(new Response { Success = true, Message = "The Time sheet was deleted Successfully" });
                 }
-                return BadRequest(new Response { Status = "Unsuccessful", Message = "The process was not Successful" });
+                return BadRequest(new Response { Success = false, Message = "The process was not Successful" });
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
     }

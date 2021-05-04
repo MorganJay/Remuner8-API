@@ -53,14 +53,16 @@ namespace API.Controllers
 
                 if (existingUser is not null)
                 {
-                    return BadRequest(new Response { Status = "Not successful", Message = "That user already exists", Success = false });
+                    return BadRequest(new Response { Message = "That user already exists", Success = false });
                 }
 
-                var newUser = new ApplicationUser() { Email = model.Email, UserName = model.UserName };
+                var newUser = new ApplicationUser { Email = model.Email, UserName = model.UserName };
                 var isCreated = await _userManager.CreateAsync(newUser, model.Password);
                 if (isCreated.Succeeded)
                 {
                     var jwtToken = await _userService.GenerateJwtToken(newUser);
+                    jwtToken.Message = "User created successfully";
+                    jwtToken.UserName = newUser.Email;
                     return Ok(jwtToken);
                 }
                 else
@@ -68,14 +70,13 @@ namespace API.Controllers
                     return BadRequest(new RegistrationResponse
                     {
                         Errors = isCreated.Errors.Select(x => x.Description).ToList(),
-                        Success = false,
-                        Status = "Error"
+                        Success = false
                     });
                 }
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = ex.Message });
             }
         }
 
@@ -94,6 +95,7 @@ namespace API.Controllers
                         {
                             await _mailService.SendEmailAsync(model.Email, "New login", "<h1>Hey!, new login to your account noticed</h1><p>New login to your account at " + DateTime.Now + "</p>");
                             var jwtToken = await _userService.GenerateJwtToken(verifyEmail);
+                            jwtToken.UserName = verifyEmail.UserName;
                             return Ok(jwtToken);
                         }
                     }
@@ -107,11 +109,11 @@ namespace API.Controllers
                     });
                 }
 
-                return BadRequest(new Response { Status = "Not sucessful", Message = "The data is not valid please enter valid data" });
+                return BadRequest(new Response { Message = "The data is not valid please enter valid data", Success = false });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = ex.Message });
             }
         }
 
@@ -136,7 +138,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Source });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = ex.Source });
             }
         }
 
@@ -152,8 +154,8 @@ namespace API.Controllers
                     return BadRequest(new RegistrationResponse()
                     {
                         Errors = new List<string>() {
-                    "Invalid tokens"
-                },
+                        "Invalid token"
+                    },
                         Success = false
                     });
                 }

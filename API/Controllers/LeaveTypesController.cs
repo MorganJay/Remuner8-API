@@ -79,7 +79,7 @@ namespace API.Controllers
         public async Task<ActionResult> DeleteLeaveType(int id)
         {
             var leaveTypeFromRepo = await _leaveType.GetLeaveById(id);
-            if (leaveTypeFromRepo is null) return NotFound(new Response { Status = "Error", Message = $"The leave type with ID: {id} does not exist." });
+            if (leaveTypeFromRepo is null) return NotFound(new Response { Success = false, Message = $"The leave type with ID: {id} does not exist." });
 
             await _leaveType.DeleteLeaveTypeAsync(id);
             await _leaveType.SaveChanges();

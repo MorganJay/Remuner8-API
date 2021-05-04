@@ -36,7 +36,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Not Successful", Message = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = ex.Message });
             }
         }
 
@@ -47,12 +47,12 @@ namespace API.Controllers
             try
             {
                 var getById = await _jobDescriptionRepository.GetJobDescriptionByIdAsync(id);
-                if (getById is null) return NotFound(new Response { Status = "Unsuccessful", Message = $"The job description with ID:{id} does not exist" });
+                if (getById is null) return NotFound(new Response { Success = false, Message = $"The job description with ID:{id} does not exist" });
                 return Ok(getById);
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Not Successful", Message = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = ex.Message });
             }
         }
 
@@ -68,15 +68,15 @@ namespace API.Controllers
                     var location = _linkGenerator.GetPathByAction("GetJobDescriptionById", "JobDescription", new { id = model.JobDescriptionId });
                     if (string.IsNullOrWhiteSpace(location))
                     {
-                        return BadRequest(new Response { Status = "Error", Message = "The uri is not available" });
+                        return BadRequest(new Response { Success = false, Message = "The uri is not available" });
                     }
                     return Created(location, addedJobDescription);
                 }
-                return BadRequest(new Response { Status = "", Message = "Invalid data" });
+                return BadRequest(new Response { Success = false, Message = "Invalid data" });
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status406NotAcceptable, new Response { Status = "not sussessful", Message = "Error occured" });
+                return StatusCode(StatusCodes.Status406NotAcceptable, new Response { Success = false, Message = "Error occured" });
             }
         }
 
@@ -91,7 +91,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status304NotModified, new Response { Status = "not sussessful", Message = "Error occured" });
+                return StatusCode(StatusCodes.Status304NotModified, new Response { Success = false, Message = "Error occured" });
             }
         }
 
@@ -102,11 +102,11 @@ namespace API.Controllers
             try
             {
                 _jobDescriptionRepository.DeleteJobDescription(id);
-                return Ok(new Response { Message = "The operation is successful", Status = "Success" });
+                return Ok(new Response { Message = "The operation is successful", Success = true });
             }
             catch (Exception)
             {
-                return BadRequest(new Response { Message = "The operation is not successful" });
+                return BadRequest(new Response { Success = false, Message = "The operation is not successful" });
             }
         }
     }

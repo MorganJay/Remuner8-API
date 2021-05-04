@@ -39,7 +39,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = ex.Message });
             }
         }
 
@@ -52,12 +52,12 @@ namespace API.Controllers
                 var employeeModel = await _employeeRepository.GetEmployeeByIdAsync(id);
                 if (employeeModel is not null) return Ok(_employeeMapper.Map<EmployeeBiodataReadDto>(employeeModel));
 
-                return NotFound(new Response { Status = "Error", Message = $"The employee with ID: {id} was not found" });
+                return NotFound(new Response { Success = false, Message = $"The employee with ID: {id} was not found" });
             }
             catch (Exception ex)
             {
                 // throw;
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = ex.Message });
             }
         }
 
@@ -77,7 +77,7 @@ namespace API.Controllers
             catch (Exception)
             {
                 throw;
-                // return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                // return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
 
@@ -88,7 +88,7 @@ namespace API.Controllers
             try
             {
                 var employeeModel = await _employeeRepository.GetEmployeeByIdAsync(id);
-                if (employeeModel is null) return NotFound(new Response { Status = "Error", Message = $"The employee with ID {id} does not exist" });
+                if (employeeModel is null) return NotFound(new Response { Success = false, Message = $"The employee with ID {id} does not exist" });
 
                 var employeeToPatch = _employeeMapper.Map<EmployeeBiodataCreateDto>(employeeModel);
                 patchDocument.ApplyTo(employeeToPatch, ModelState);
@@ -112,7 +112,7 @@ namespace API.Controllers
         public async Task<ActionResult> FullUpdateEmployeeAsync(string id, EmployeeBiodataCreateDto employeeBiodataCreateDto)
         {
             var employeeModel = await _employeeRepository.GetEmployeeByIdAsync(id);
-            if (employeeModel is null) return NotFound(new Response { Status = "Error", Message = $"The employee with ID {id} could not be found." });
+            if (employeeModel is null) return NotFound(new Response { Success = false, Message = $"The employee with ID {id} could not be found." });
 
             _employeeMapper.Map(employeeBiodataCreateDto, employeeModel);
 
@@ -126,13 +126,13 @@ namespace API.Controllers
         public async Task<ActionResult> DeleteEmployee(string id)
         {
             var employeeModel = await _employeeRepository.GetEmployeeByIdAsync(id);
-            if (employeeModel is null) return NotFound(new Response { Status = "Error", Message = $"The employee with ID {id} could not be found." });
+            if (employeeModel is null) return NotFound(new Response { Success = false, Message = $"The employee with ID {id} could not be found." });
 
             await _employeeRepository.DeleteEmployeeAsync(employeeModel);
 
             await _employeeRepository.SaveChangesAsync();
 
-            return StatusCode(StatusCodes.Status204NoContent, new Response { Status = "Success", Message = "Employee deleted successfully" });
+            return StatusCode(StatusCodes.Status204NoContent, new Response { Success = true, Message = "Employee deleted successfully" });
         }
     }
 }

@@ -88,15 +88,15 @@ namespace API.Controllers
             {
                 _employmentTypeRepo.DeleteEmploymentType(id);
                 _employmentTypeRepo.SaveAsync();
-                return Ok(new Response { Status = "Success", Message = "Employment Type deleted successfully" });
+                return Ok(new Response { Success = true, Message = "Employment Type deleted successfully" });
             }
             catch (DbUpdateException ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new Response { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new Response { Success = false, Message = ex.Message });
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new Response { Status = "Error", Message = ex.InnerException.Message });
+                return StatusCode(StatusCodes.Status400BadRequest, new Response { Success = false, Message = ex.InnerException.Message });
             }
         }
     }

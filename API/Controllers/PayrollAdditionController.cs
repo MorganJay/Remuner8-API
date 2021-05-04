@@ -39,7 +39,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
 
@@ -53,13 +53,13 @@ namespace API.Controllers
                 var entry = await _payrollItemsRepository.GetEntryAsync(id);
                 if (entry == null)
                 {
-                    return StatusCode(StatusCodes.Status204NoContent, new Response { Status = "Error", Message = "User Entry Does Not Exist" });
+                    return StatusCode(StatusCodes.Status204NoContent, new Response { Success = false, Message = "User Entry Does Not Exist" });
                 }
                 return Ok(entry);
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
 
@@ -78,7 +78,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
 
@@ -104,7 +104,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
             throw new ArgumentNullException();
         }
@@ -118,11 +118,11 @@ namespace API.Controllers
             {
                 await _payrollItemsRepository.RemoveEntryAsync(id);
                 await _payrollItemsRepository.SavechangesAsync();
-                return Ok(new Response { Status = "Success", Message = "Entry Deleted Successfully" });
+                return Ok(new Response { Success = true, Message = "Entry Deleted Successfully" });
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
     }
