@@ -25,7 +25,7 @@ namespace API.Services
 
         public async Task SendEmailAsync(string toEmail, string subject, string content)
         {
-            var apiKey = _configuration["SendGridApiKey"];
+            var apiKey = _configuration["SendGrid:SendGridApiKey"];
             var client = new SendGridClient(apiKey);
             var from = new EmailAddress("remuner8payrollapp@gmail.com", "JWT Auth Demo");
             var to = new EmailAddress(toEmail);
@@ -39,7 +39,7 @@ namespace API.Services
         //    var user = await _userManager.FindByIdAsync(userId);
         //    if (user == null)
         //    {
-        //        return new RegistrationResponse { Status = "Error", Message = "User not found", Success = false };
+        //        return new RegistrationResponse { Message = "User not found", Success = false };
         //    }
         //    var decodedToken = WebEncoders.Base64UrlDecode(token);
         //    string normalToken = Encoding.UTF8.GetString(decodedToken);
@@ -60,7 +60,6 @@ namespace API.Services
             {
                 return new RegistrationResponse
                 {
-                    Status = "Error",
                     Message = "No user associated with email exists",
                     Success = false
                 };

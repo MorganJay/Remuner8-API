@@ -39,7 +39,7 @@ namespace API.Controllers
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Server Error" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "Server Error" });
             }
         }
 
@@ -53,7 +53,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "Server Error" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "Server Error" });
             }
         }
 
@@ -73,7 +73,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new Response { Status = "Error", Message = ex.Message });
+                return BadRequest(new Response { Success = false, Message = ex.Message });
             }
         }
 
@@ -88,7 +88,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status304NotModified, new Response { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status304NotModified, new Response { Success = false, Message = ex.Message });
             }
         }
 
@@ -100,9 +100,9 @@ namespace API.Controllers
             {
                 if (_bonusRepository.DeleteBonus(id))
                 {
-                    return Ok(new Response { Status = "Success", Message = "The process was successsful" });
+                    return Ok(new Response { Success = true, Message = "The process was successsful" });
                 }
-                return BadRequest(new Response { Status = "Error", Message = "The process was not  successsful" });
+                return BadRequest(new Response { Success = false, Message = "The process was not successsful" });
             }
             catch (Exception)
             {

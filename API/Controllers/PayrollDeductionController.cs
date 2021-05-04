@@ -39,7 +39,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
 
@@ -59,7 +59,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
 
@@ -76,13 +76,13 @@ namespace API.Controllers
                     await _payrollDeductionRepository.AddItemsAsync(model);
                     await _payrollDeductionRepository.SaveChangesAsync();
                     var createdReadModel = _imapper.Map<PayrollDeductionItemReadDto>(model);
-                    return CreatedAtRoute(nameof(GetItemAsync), new { Id = createdReadModel.Id }, createdReadModel);
+                    return CreatedAtRoute(nameof(GetItemAsync), new { createdReadModel.Id }, createdReadModel);
                 }
-                return StatusCode(StatusCodes.Status400BadRequest, new Response { Status = "Error", Message = "Entry Already Exists" });
+                return StatusCode(StatusCodes.Status400BadRequest, new Response { Success = false, Message = "Entry Already Exists" });
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Internal Server Error", Message = "Server Error Occured" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "Server Error Occured" });
             }
         }
 
@@ -94,7 +94,7 @@ namespace API.Controllers
                 var entrymodel = await _payrollDeductionRepository.GetItemAsync(id);
                 if (entrymodel == null)
                 {
-                    return NotFound(new Response { Status = "Error", Message = $"The payroll item with ID {id} could not be found." });
+                    return NotFound(new Response { Success = false, Message = $"The payroll item with ID {id} could not be found." });
                 }
                 var entryToPatch = _imapper.Map<PayrollDeductionItemCreateDto>(entrymodel);
                 patchDoc.ApplyTo(entryToPatch, ModelState);
@@ -108,7 +108,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
 
@@ -123,13 +123,13 @@ namespace API.Controllers
                 {
                     await _payrollDeductionRepository.RemoveItemAsync(id);
                     await _payrollDeductionRepository.SaveChangesAsync();
-                    return StatusCode(StatusCodes.Status200OK, new Response { Status = "Success", Message = "Entry Successfully Deleted" });
+                    return StatusCode(StatusCodes.Status200OK, new Response { Success = true, Message = "Entry Successfully Deleted" });
                 }
-                return NotFound(new Response { Status = "Error", Message = "Entry Not Found!" });
+                return NotFound(new Response { Success = false, Message = "Entry Not Found!" });
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
         }
     }

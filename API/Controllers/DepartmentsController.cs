@@ -43,7 +43,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = ex.Message });
             }
         }
 
@@ -55,7 +55,7 @@ namespace API.Controllers
 
             if (department is not null) return Ok(_mapper.Map<DepartmentDto>(department));
 
-            return NotFound(new Response { Status = "Error", Message = $"The department with ID: {id} does not exist." });
+            return NotFound(new Response { Success = false, Message = $"The department with ID: {id} does not exist." });
         }
 
         // POST: api/Departments
@@ -65,7 +65,7 @@ namespace API.Controllers
         {
             if (await DepartmentNameExists(departmentCreateDto.DepartmentName))
                 return StatusCode(StatusCodes.Status400BadRequest,
-                    new Response { Status = "Error", Message = "A department with that name already exists" });
+                    new Response { Success = false, Message = "A department with that name already exists" });
 
             var department = _mapper.Map<Department>(departmentCreateDto);
             await _departmentsRepo.CreateDepartmentAsync(department);
@@ -93,7 +93,7 @@ namespace API.Controllers
             catch (DbUpdateConcurrencyException ex)
             {
                 if (departmentFromRepo is null) return NotFound();
-                else return StatusCode(StatusCodes.Status500InternalServerError, new Response { Status = "Error", Message = ex.Message });
+                else return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = ex.Message });
             }
 
             return NoContent();
@@ -104,7 +104,7 @@ namespace API.Controllers
         public async Task<ActionResult> DeleteDepartment(int id)
         {
             var departmentFromRepo = await _departmentsRepo.GetDepartmentByIdAsync(id);
-            if (departmentFromRepo is null) return NotFound(new Response { Status = "Error", Message = $"The department with ID: {id} does not exist." });
+            if (departmentFromRepo is null) return NotFound(new Response { Success = false, Message = $"The department with ID: {id} does not exist." });
 
             await _departmentsRepo.DeleteDepartmentAsync(departmentFromRepo);
             await _departmentsRepo.SaveChangesAsync();

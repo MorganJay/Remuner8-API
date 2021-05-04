@@ -23,7 +23,7 @@ namespace API.Controllers
             var getPaySlipById = await _payslipRepository.GetPayslipByIdAsync(id);
             if (getPaySlipById is null)
             {
-                return BadRequest(new Response { Status = "Error", Message = $"The information with id={id} is not found" });
+                return BadRequest(new Response { Success = false, Message = $"The information with id={id} is not found" });
             }
             return Ok(getPaySlipById);
         }
