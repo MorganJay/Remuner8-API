@@ -25,7 +25,7 @@ namespace API.Controllers
     public class AccountsController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly JwtSettings _jwtSettings; 
+        private readonly JwtSettings _jwtSettings;
         private readonly TokenValidationParameters _tokenValidationParameters;
         private readonly Remuner8Context _remuner8Context;
 
@@ -50,12 +50,11 @@ namespace API.Controllers
                     Message = "Email already in use. Try a different email address"
                 });
 
-
                 var existingUser = await _userManager.FindByEmailAsync(model.Email);
 
                 if (existingUser is not null)
                 {
-                    return BadRequest(new Response { Status = "Not successful", Message = "That user already exists" , Success= false });
+                    return BadRequest(new Response { Status = "Not successful", Message = "That user already exists", Success = false });
                 }
 
                 var newUser = new ApplicationUser() { Email = model.Email, UserName = model.UserName };
@@ -64,7 +63,6 @@ namespace API.Controllers
                 {
                     var jwtToken = await GenerateJwtToken(newUser);
                     return Ok(jwtToken);
-
                 }
                 else
                 {
@@ -105,7 +103,9 @@ namespace API.Controllers
                         Errors = new List<string>(){
                         "Invalid login request"
                     },
-                        Success = false
+                        Success = false,
+                        Message = "Wrong Username or Password",
+                        Status = "error"
                     });
                 }
 
@@ -113,6 +113,7 @@ namespace API.Controllers
             }
             catch (Exception)
             {
+                throw;
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
         }
@@ -183,7 +184,6 @@ namespace API.Controllers
                 Success = true,
                 RefreshToken = refreshToken.Token
             };
-
         }
 
         public static string RandomString(int length)
@@ -222,7 +222,6 @@ namespace API.Controllers
             },
                 Success = false
             });
-
         }
 
         private async Task<RegistrationResponse> VerifyToken(TokenRequest tokenRequest)
@@ -336,6 +335,5 @@ namespace API.Controllers
             dtDateTime = dtDateTime.AddSeconds(unixTimeStamp).ToLocalTime();
             return dtDateTime;
         }
-
     }
 }

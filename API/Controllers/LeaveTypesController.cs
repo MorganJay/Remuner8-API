@@ -4,6 +4,7 @@ using API.Authentication;
 using API.Dtos;
 using API.Models;
 using API.Repositories;
+using API.Repository;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,75 +15,58 @@ namespace API.Controllers
     [ApiController]
     public class LeaveTypesController : ControllerBase
     {
-        private readonly ILeaveRepository _leaveType;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public LeaveTypesController(ILeaveRepository leaveType, IMapper mapper)
+        public LeaveTypesController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _leaveType = leaveType;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
-        //GET api/LeaveType
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LeaveTypeReadDto>>> GetAllLeaveType()
+        public async Task<IActionResult> GetAllLeaveType()
         {
-            var leaveItems = await _leaveType.GetAllLeaveTypeAsync();
-            var model = _mapper.Map<IEnumerable<LeaveTypeReadDto>>(leaveItems);
-            return Ok(model);
+            var leaveItems = await _unitOfWork.LeaveType.GetAll();
+            var results = _mapper.Map<IList<LeaveTypeReadDto>>(leaveItems);
+            return Ok(results);
         }
 
-        //GET api/leavetype/{id}
-        [HttpGet("{id}", Name = "GetLeaveTypeById")]
-        public async Task<ActionResult<LeaveTypeReadDto>> GetLeaveTypeByIdAsync(int id)
+        [HttpGet("{id:int}", Name = "GetLeaveTypeById")]
+        public async Task<IActionResult> GetLeaveTypeById(int id)
         {
-            var leaveItem = await _leaveType.GetLeaveById(id);
-            if (leaveItem is not null)
+            var leave = await _unitOfWork.LeaveType.Get(query => query.Id == id);
+            if (leave != null)
             {
-                return Ok(_mapper.Map<LeaveTypeReadDto>(leaveItem));
+                return Ok(_mapper.Map<LeaveTypeReadDto>(leave));
             }
             return NotFound();
         }
 
-        //POST api/leavetype
         [HttpPost]
-        public async Task<ActionResult<LeaveTypeReadDto>> CreateLeaveTypeAsync(LeaveTypeCreateDto leaveTypeCreateDto)
+        public async Task<IActionResult> CreateLeaveType([FromBody] LeaveTypeCreateDto leaveTypeCreateDto)
         {
-            var leaveItems = _mapper.Map<LeaveType>(leaveTypeCreateDto);
-            await _leaveType.CreateLeaveTypeAsync(leaveItems);
-            await _leaveType.SaveChanges();
+            var leave = _mapper.Map<LeaveType>(leaveTypeCreateDto);
+            await _unitOfWork.LeaveType.Insert(leave);
+            await _unitOfWork.Save();
 
-            var leaveReadDto = _mapper.Map<LeaveTypeReadDto>(leaveItems);
-
-            return CreatedAtRoute(nameof(GetLeaveTypeByIdAsync), new { id = leaveReadDto.Id }, leaveReadDto);
+            return CreatedAtRoute("GetLeaveTypeById", new { id = leave.Id }, leave);
         }
 
-        //PUT api/leavetype{id}
-        [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateLeaveTypeDto(int id, LeaveTypeCreateDto leaveTypeUpdate)
+        [HttpDelete("{id:int}")]
+        public async Task<IActionResult> DeleteLeave(int id)
         {
-            var leaveFromRepo = await _leaveType.GetLeaveById(id);
-            if (leaveFromRepo is null)
+            if (id < 1)
             {
-                return NotFound();
+                return BadRequest();
             }
-            _mapper.Map(leaveTypeUpdate, leaveFromRepo);
-
-            _leaveType.UpdateLeaveType(leaveFromRepo);
-            await _leaveType.SaveChanges();
-
-            return NoContent();
-        }
-
-        // DELETE api/leavetype/{id}
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteLeaveType(int id)
-        {
-            var leaveTypeFromRepo = await _leaveType.GetLeaveById(id);
-            if (leaveTypeFromRepo is null) return NotFound(new Response { Status = "Error", Message = $"The leave type with ID: {id} does not exist." });
-
-            await _leaveType.DeleteLeaveTypeAsync(id);
-            await _leaveType.SaveChanges();
+            var leave = await _unitOfWork.LeaveType.Get(query => query.Id == id);
+            if (leave == null)
+            {
+                return BadRequest("Submitted Data Id Invalid");
+            }
+            await _unitOfWork.LeaveType.Delete(id);
+            await _unitOfWork.Save();
 
             return NoContent();
         }
