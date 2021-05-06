@@ -1,7 +1,6 @@
 ﻿using API.Authentication;
 using API.Dtos;
 using API.Models;
-using API.Repositories;
 using API.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -62,7 +61,7 @@ namespace API.Controllers
                 {
                     var jwtToken = await _userService.GenerateJwtToken(newUser);
                     jwtToken.Message = "User created successfully";
-                    jwtToken.UserName = newUser.Email;
+                    jwtToken.UserName = newUser.UserName;
                     return Ok(jwtToken);
                 }
                 else
