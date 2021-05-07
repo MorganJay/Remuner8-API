@@ -104,7 +104,9 @@ namespace API.Controllers
                         Errors = new List<string>(){
                         "Invalid login request"
                     },
-                        Success = false
+                        Success = false,
+                        Message = "Wrong Username or Password",
+                        Status = "error"
                     });
                 }
 

@@ -1,6 +1,7 @@
 using API.Models;
 using API.Repositories;
 using API.Services;
+using API.Repository;
 using API.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -94,31 +95,15 @@ namespace API
 
             services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddAutoMapper(typeof(AutomapperProfile));
+            services.AddAutoMapper(typeof(MapperInitializer));
+
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddControllersWithViews();
-            services.AddScoped<IBonusRepository, BonusRepository>();
-            services.AddScoped<ICompanyRepository, CompanyRepository>();
-            services.AddScoped<IJobDescriptionRepository, JobDescriptionRepository>();
+
             services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
-            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
-            services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
-            services.AddScoped<IPayslipRepository, PayslipRepo>();
-            services.AddScoped<IPayrollItemsRepository, PayrollItemsRepository>();
-            services.AddScoped<IPayrollDeductionRepository, PayrollDeductionRepository>();
-            services.AddScoped<IPayrollOvertimeItemRepository, PayrollOvertimeItemRepository>();
-            services.AddScoped<ILeaveRepository, LeaveRepository>();
-
             services.AddScoped<IEmailSender, EmailSenderRepository>();
-
-            services.AddScoped<IEmploymentTypeRepo, EmploymentTypeRepository>();
             services.AddScoped<IStatisticsRepository, StatisticsRepository>();
-            services.AddScoped<IPayrollRateRepository, PayrollRateRepository>();
-            services.AddScoped<IRequestsRepository, RequestsRepository>();
-            services.AddScoped<IPayrollCategoryRepository, PayrollCategoryRepository>();
-            services.AddScoped<IPayrollDefaultRepository, PayrollDefaultRepository>();
-            services.AddScoped<ICompanyRepository, CompanyRepository>();
             services.AddScoped<IMailServiceRepository, MailServiceRepository>();
             services.AddScoped<IUserService, UserService>();
 
