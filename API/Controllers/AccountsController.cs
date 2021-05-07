@@ -105,8 +105,7 @@ namespace API.Controllers
                         "Invalid login request"
                     },
                         Success = false,
-                        Message = "Wrong Username or Password",
-                        Status = "error"
+                        Message = "Wrong Username or Password"
                     });
                 }
 
