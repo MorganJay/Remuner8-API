@@ -1,14 +1,10 @@
-﻿using API.Authentication;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using API.Dtos;
 using API.Models;
-using API.Repositories;
+using API.Repository;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,29 +14,29 @@ namespace API.Controllers
     [ApiController]
     public class EmploymentTypeController : ControllerBase
     {
-        private readonly IEmploymentTypeRepo _employmentTypeRepo;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public EmploymentTypeController(IEmploymentTypeRepo employmentTypeRepo, IMapper mapper)
+        public EmploymentTypeController(IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _employmentTypeRepo = employmentTypeRepo;
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         // GET: api/<EmploymentTypeController>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EmploymentTypeReadDto>>> GetAll()
+        public async Task<IActionResult> GetAllEmploymentType()
         {
-            var employmentType = await _employmentTypeRepo.GetEmploymentTypeAsync();
-            var mappedModel = _mapper.Map<IEnumerable<EmploymentTypeReadDto>>(employmentType);
-            return Ok(mappedModel);
+            var employmentType = await _unitOfWork.EmployementType.GetAll();
+            var result = _mapper.Map<IList<EmploymentTypeReadDto>>(employmentType);
+            return Ok(result);
         }
 
         // GET api/<EmploymentTypeController>/5
-        [HttpGet("{id}", Name = "GetEmploymentTypeByIdAsync")]
-        public async Task<ActionResult<EmploymentTypeReadDto>> Get(int id)
+        [HttpGet("{id}", Name = "GetEmploymentTypeById")]
+        public async Task<IActionResult> GetEmplomentTypeById(int id)
         {
-            var getEmploymentItem = await _employmentTypeRepo.GetEmploymentTypeByIdAsync(id);
+            var getEmploymentItem = await _unitOfWork.EmployementType.Get(query => query.EmploymentTypeId == id);
             if (getEmploymentItem is not null)
             {
                 return Ok(_mapper.Map<EmploymentTypeReadDto>(getEmploymentItem));
@@ -50,54 +46,52 @@ namespace API.Controllers
 
         // POST api/<EmploymentTypeController>
         [HttpPost]
-        public async Task<ActionResult> Post(EmploymentTypeCreateDto employmentTypeCreateDto)
+        public async Task<IActionResult> CreateEmployemntType([FromBody] EmploymentTypeCreateDto employmentTypeCreateDto)
         {
-            var mappedModel = _mapper.Map<EmploymentType>(employmentTypeCreateDto);
-            await _employmentTypeRepo.CreateEmploymentTypeAsync(mappedModel);
-            await _employmentTypeRepo.SaveAsync();
-            return Ok();
+            var employmentType = _mapper.Map<EmploymentType>(employmentTypeCreateDto);
+            await _unitOfWork.EmployementType.Insert(employmentType);
+            await _unitOfWork.Save();
+
+            return CreatedAtRoute("GetEmploymentTypeById", new { id = employmentType.EmploymentTypeId }, employmentType);
         }
 
         // PUT api/<EmploymentTypeController>/5
         [HttpPut("{id}")]
-        public async Task<ActionResult> Put(int id, EmploymentTypeCreateDto employmentTypeCreateDto)
+        public async Task<IActionResult> UpdateEmploymentType(int id, [FromBody] EmploymentTypeReadDto employmentTypeReadDto)
         {
-            try
+            if (id < 1)
             {
-                var employmentType = await _employmentTypeRepo.GetEmploymentTypeByIdAsync(id);
-                if (employmentType is null)
-                {
-                    return NotFound();
-                }
-                var newEmploymentType = _mapper.Map(employmentTypeCreateDto, employmentType);
-                _employmentTypeRepo.UpdateEmploymentTypeAsync(id, employmentType);
-                await _employmentTypeRepo.SaveAsync();
-                return Ok(newEmploymentType);
+                return BadRequest();
             }
-            catch (Exception)
+            var employmentType = await _unitOfWork.EmployementType.Get(m => m.EmploymentTypeId == id);
+            if (employmentType == null)
             {
-                throw;
+                return BadRequest();
             }
+            _mapper.Map(employmentTypeReadDto, employmentType);
+            _unitOfWork.EmployementType.Update(employmentType);
+            await _unitOfWork.Save();
+
+            return NoContent();
         }
 
         // DELETE api/<EmploymentTypeController>/5
         [HttpDelete("{id}")]
-        public ActionResult Delete(int id)
+        public async Task<IActionResult> DeleteEmploymentType(int id)
         {
-            try
+            if (id < 1)
             {
-                _employmentTypeRepo.DeleteEmploymentType(id);
-                _employmentTypeRepo.SaveAsync();
-                return Ok(new Response { Success = true, Message = "Employment Type deleted successfully" });
+                return BadRequest();
             }
-            catch (DbUpdateException ex)
+            var employmentType = await _unitOfWork.EmployementType.Get(query => query.EmploymentTypeId == id);
+            if (employmentType == null)
             {
-                return StatusCode(StatusCodes.Status400BadRequest, new Response { Success = false, Message = ex.Message });
+                return BadRequest("Submitted Data Is Invalid");
             }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, new Response { Success = false, Message = ex.InnerException.Message });
-            }
+            await _unitOfWork.LeaveType.Delete(id);
+            await _unitOfWork.Save();
+
+            return NoContent();
         }
     }
 }

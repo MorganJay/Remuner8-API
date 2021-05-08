@@ -25,7 +25,7 @@ namespace API
             CreateMap<IPayrollDeductionRepository, PayrollDeductionRepository>().ReverseMap();
             CreateMap<IPayrollOvertimeItemRepository, PayrollOvertimeItemRepository>().ReverseMap();
             CreateMap<LeaveType, LeaveTypeCreateDto>().ReverseMap();
-            CreateMap<IEmploymentTypeRepo, EmploymentTypeRepository>().ReverseMap();
+            CreateMap<EmploymentType, EmploymentTypeCreateDto>().ReverseMap();
             CreateMap<IStatisticsRepository, StatisticsRepository>().ReverseMap();
             CreateMap<IPayrollRateRepository, PayrollRateRepository>().ReverseMap();
             CreateMap<IRequestsRepository, RequestsRepository>().ReverseMap();
