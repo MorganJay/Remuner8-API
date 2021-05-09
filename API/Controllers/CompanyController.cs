@@ -40,7 +40,7 @@ namespace API.Controllers
             var mappedModel = _mapper.Map<CompanyDetails>(companyDto);
             await _companyRepository.CreateCompanyAsync(mappedModel);
             await _companyRepository.SaveAllAsync();
-            return Ok();
+            return Ok(mappedModel);
         }
 
         // PUT api/<CompanyController>
