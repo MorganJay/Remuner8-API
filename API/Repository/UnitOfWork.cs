@@ -32,6 +32,7 @@ namespace API.Repository
         private IGenericRepository<StatutoryDeduction> _statutoryDeduction;
         private IGenericRepository<Tax> _tax;
         private IGenericRepository<TimeSheet> _timeSheet;
+        private IGenericRepository<EmploymentType> _employmentType;
 
         public UnitOfWork(Remuner8Context context)
         {
@@ -85,6 +86,8 @@ namespace API.Repository
         public IGenericRepository<Tax> Tax => _tax ??= new GenericRepository<Tax>(_context);
 
         public IGenericRepository<TimeSheet> TimeSheet => _timeSheet ??= new GenericRepository<TimeSheet>(_context);
+
+        public IGenericRepository<EmploymentType> EmployementType => new GenericRepository<EmploymentType>(_context);
 
         public void Dispose()
         {

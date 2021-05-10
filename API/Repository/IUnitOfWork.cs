@@ -13,6 +13,7 @@ namespace API.Repository
         IGenericRepository<CompanyDetails> CompanyDetails { get; }
         IGenericRepository<Department> Department { get; }
         IGenericRepository<EmployeeBiodata> EmployeeBiodata { get; }
+        IGenericRepository<EmploymentType> EmployementType { get; }
         IGenericRepository<JobDescription> JobDescrition { get; }
         IGenericRepository<LeaveType> LeaveType { get; }
         IGenericRepository<PayrollAdditionItem> PayrollAdditionItem { get; }
