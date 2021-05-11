@@ -14,7 +14,7 @@ namespace API
         public MapperInitializer()
         {
             CreateMap<IBonusRepository, BonusRepository>().ReverseMap();
-            CreateMap<ICompanyRepository, CompanyRepository>().ReverseMap();
+            CreateMap<CompanyDetails, CompanyDto>().ReverseMap();
             CreateMap<IJobDescriptionRepository, JobDescriptionRepository>().ReverseMap();
             CreateMap<IUserAccountRepository, UserAccountsRepository>().ReverseMap();
             CreateMap<IEmployeeRepository, EmployeeRepository>().ReverseMap();
@@ -31,7 +31,6 @@ namespace API
             CreateMap<IRequestsRepository, RequestsRepository>().ReverseMap();
             CreateMap<IPayrollCategoryRepository, PayrollCategoryRepository>().ReverseMap();
             CreateMap<IPayrollDefaultRepository, PayrollDefaultRepository>().ReverseMap();
-            CreateMap<ICompanyRepository, CompanyRepository>().ReverseMap();
         }
     }
 }
