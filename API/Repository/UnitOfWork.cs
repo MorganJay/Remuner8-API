@@ -87,7 +87,7 @@ namespace API.Repository
 
         public IGenericRepository<TimeSheet> TimeSheet => _timeSheet ??= new GenericRepository<TimeSheet>(_context);
 
-        public IGenericRepository<EmploymentType> EmployementType => new GenericRepository<EmploymentType>(_context);
+        public IGenericRepository<EmploymentType> EmployementType => _employmentType ??= new GenericRepository<EmploymentType>(_context);
 
         public void Dispose()
         {
