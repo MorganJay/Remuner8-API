@@ -10,6 +10,9 @@ namespace API.Models
     [Keyless]
     public partial class CompanyDetails
     {
+        [Key]
+        public int CompanyId { get; set; }
+
         [Required]
         [Column("companyName")]
         [StringLength(30)]
