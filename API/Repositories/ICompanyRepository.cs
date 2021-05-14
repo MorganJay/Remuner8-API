@@ -5,12 +5,12 @@ namespace API.Repositories
 {
     public interface ICompanyRepository
     {
-        Task<CompanyDetails> GetCompanyDetailsAsync();
+        Task<SystemDefault> GetCompanyDetailsAsync();
 
-        Task CreateCompanyAsync(CompanyDetails systemDefault);
+        Task CreateCompanyAsync(SystemDefault systemDefault);
 
         Task<bool> SaveAllAsync();
 
-        void UpdateAsync(CompanyDetails Company);
+        void UpdateAsync(SystemDefault Company);
     }
 }

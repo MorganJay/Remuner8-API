@@ -10,7 +10,7 @@ namespace API
         public MapperInitializer()
         {
             CreateMap<IBonusRepository, BonusRepository>().ReverseMap();
-            CreateMap<CompanyDetails, CompanyDto>().ReverseMap();
+            CreateMap<SystemDefault, SystemDefaultDto>().ReverseMap();
             CreateMap<IJobDescriptionRepository, JobDescriptionRepository>().ReverseMap();
             CreateMap<IUserAccountRepository, UserAccountsRepository>().ReverseMap();
             CreateMap<IEmployeeRepository, EmployeeRepository>().ReverseMap();

@@ -10,7 +10,7 @@ namespace API.Repository
 
         private IGenericRepository<AssigneeTable> _assigneetable;
         private IGenericRepository<Bonus> _bonus;
-        private IGenericRepository<CompanyDetails> _companyDetails;
+        private IGenericRepository<SystemDefault> _systemDefaults;
         private IGenericRepository<Department> _department;
         private IGenericRepository<EmployeeBiodata> _employeeBiodata;
         private IGenericRepository<JobDescription> _jobDescription;
@@ -43,7 +43,7 @@ namespace API.Repository
 
         public IGenericRepository<Bonus> Bonus => _bonus ??= new GenericRepository<Bonus>(_context);
 
-        public IGenericRepository<CompanyDetails> CompanyDetails => _companyDetails ??= new GenericRepository<CompanyDetails>(_context);
+        public IGenericRepository<SystemDefault> SystemDefault => _systemDefaults ??= new GenericRepository<SystemDefault>(_context);
 
         public IGenericRepository<Department> Department => _department ??= new GenericRepository<Department>(_context);
 

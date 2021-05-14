@@ -1,6 +1,5 @@
 ﻿using API.Dtos;
 using API.Models;
-using API.Repositories;
 using API.Repository;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +13,12 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CompanyDetailsController : ControllerBase
+    public class SystemDefaultsController : ControllerBase
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public CompanyDetailsController(IUnitOfWork unitOfWork, IMapper mapper)
+        public SystemDefaultsController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -27,37 +26,37 @@ namespace API.Controllers
 
         // GET: api/<CompanyController>
         [HttpGet]
-        public async Task<IActionResult> GetAllCompanyDetails()
+        public async Task<IActionResult> GetAllSystemDefaults()
         {
-            var companyDetails = await _unitOfWork.CompanyDetails.GetAll();
-            var result = _mapper.Map<IList<CompanyDto>>(companyDetails);
+            var SystemDefaults = await _unitOfWork.SystemDefault.GetAll();
+            var result = _mapper.Map<IList<SystemDefaultDto>>(SystemDefaults);
             return Ok(result);
         }
 
         // POST api/<CompanyController>
         [HttpPost]
-        public async Task<IActionResult> PostCompanyDetails([FromBody] CompanyDto companyDto)
+        public async Task<IActionResult> PostSystemDefaults([FromBody] SystemDefaultDto companyDto)
         {
-            var mappedModel = _mapper.Map<CompanyDetails>(companyDto);
-            await _unitOfWork.CompanyDetails.Insert(mappedModel);
+            var mappedModel = _mapper.Map<SystemDefault>(companyDto);
+            await _unitOfWork.SystemDefault.Insert(mappedModel);
             await _unitOfWork.Save();
 
-            return CreatedAtRoute("GetAllCompanyDetails", new { id = mappedModel.CompanyId }, mappedModel);
+            return CreatedAtRoute("GetAllSystemDefaults", new { id = mappedModel.CompanyId }, mappedModel);
         }
 
         // PUT api/<CompanyController>
         [HttpPut]
-        public async Task<ActionResult> Put(int id, [FromBody] CompanyDto companyDto)
+        public async Task<ActionResult> PutSystemDefault(int id, [FromBody] SystemDefaultDto companyDto)
         {
             try
             {
-                var companyItem = await _unitOfWork.CompanyDetails.Get(m => m.CompanyId == id);
+                var companyItem = await _unitOfWork.SystemDefault.Get(m => m.CompanyId == id);
                 if (companyItem == null)
                 {
                     return NotFound();
                 }
                 var newCompanyType = _mapper.Map(companyDto, companyItem);
-                _unitOfWork.CompanyDetails.Update(newCompanyType);
+                _unitOfWork.SystemDefault.Update(newCompanyType);
                 await _unitOfWork.Save();
                 return Ok(newCompanyType);
             }

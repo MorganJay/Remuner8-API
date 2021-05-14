@@ -34,7 +34,7 @@ namespace API.Models
         public virtual DbSet<PensionFundAdministration> PensionFundAdministrations { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<StatutoryDeduction> StatutoryDeductions { get; set; }
-        public virtual DbSet<CompanyDetails> SystemDefaults { get; set; }
+        public virtual DbSet<SystemDefault> SystemDefaults { get; set; }
         public virtual DbSet<Tax> Taxes { get; set; }
         public virtual DbSet<TimeSheet> TimeSheets { get; set; }
 
@@ -363,7 +363,7 @@ namespace API.Models
                     .HasConstraintName("FK__Statutory__pfaCo__412EB0B6");
             });
 
-            modelBuilder.Entity<CompanyDetails>(entity =>
+            modelBuilder.Entity<SystemDefault>(entity =>
             {
                 entity.Property(e => e.Address).IsUnicode(false);
 

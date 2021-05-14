@@ -10,7 +10,7 @@ namespace API.Repository
     {
         IGenericRepository<AssigneeTable> Assigneetable { get; }
         IGenericRepository<Bonus> Bonus { get; }
-        IGenericRepository<CompanyDetails> CompanyDetails { get; }
+        IGenericRepository<SystemDefault> SystemDefault { get; }
         IGenericRepository<Department> Department { get; }
         IGenericRepository<EmployeeBiodata> EmployeeBiodata { get; }
         IGenericRepository<EmploymentType> EmployementType { get; }

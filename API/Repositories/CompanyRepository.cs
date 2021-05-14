@@ -14,12 +14,12 @@ namespace API.Repositories
             context = company;
         }
 
-        public async Task CreateCompanyAsync(CompanyDetails systemDefault)
+        public async Task CreateCompanyAsync(SystemDefault systemDefault)
         {
             await context.SystemDefaults.AddAsync(systemDefault);
         }
 
-        public async Task<CompanyDetails> GetCompanyDetailsAsync()
+        public async Task<SystemDefault> GetCompanyDetailsAsync()
         {
             return await context.SystemDefaults.FirstOrDefaultAsync();
         }
@@ -29,7 +29,7 @@ namespace API.Repositories
             return await context.SaveChangesAsync() >= 0;
         }
 
-        public void UpdateAsync(CompanyDetails company)
+        public void UpdateAsync(SystemDefault company)
         {
         }
     }
