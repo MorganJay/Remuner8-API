@@ -103,6 +103,7 @@ namespace API
 
             services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
             services.AddScoped<IEmailSender, EmailSenderRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IStatisticsRepository, StatisticsRepository>();
             services.AddScoped<IMailServiceRepository, MailServiceRepository>();
             services.AddScoped<IUserService, UserService>();

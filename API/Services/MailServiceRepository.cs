@@ -23,14 +23,16 @@ namespace API.Services
             _configuration = configuration;
         }
 
-        public async Task SendEmailAsync(string toEmail, string subject, string content)
+        public async Task<SendGrid.Response> SendEmailAsync(string toEmail, string subject, string content)
         {
             var apiKey = _configuration["SendGrid:SendGridApiKey"];
             var client = new SendGridClient(apiKey);
-            var from = new EmailAddress("remuner8payrollapp@gmail.com", "JWT Auth Demo");
+            var from = new EmailAddress("james.morgan@thebulb.africa", "Remuner8");
             var to = new EmailAddress(toEmail);
             var msg = MailHelper.CreateSingleEmail(from, to, subject, content, content);
-            await client.SendEmailAsync(msg);
+            var response = await client.SendEmailAsync(msg);
+
+            return response;
         }
 
         //Confirm Email
