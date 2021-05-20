@@ -1,5 +1,5 @@
-﻿using API.Authentication;
-using API.Repositories;
+﻿using API.Infrastructure.Authentication;
+using API.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;

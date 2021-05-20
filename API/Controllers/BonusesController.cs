@@ -1,6 +1,6 @@
-﻿using API.Authentication;
-using API.Dtos;
-using API.Repositories;
+﻿using API.Infrastructure.Authentication;
+using API.Core.Dtos;
+using API.Core.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

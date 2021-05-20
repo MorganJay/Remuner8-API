@@ -1,7 +1,6 @@
-﻿using API.Authentication;
-using API.Dtos;
-using API.Models;
-using API.Services;
+﻿using API.Infrastructure.Authentication;
+using API.Core.Dtos;
+using API.Infrastructure.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using API.Core.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 

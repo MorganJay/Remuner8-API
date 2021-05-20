@@ -1,8 +1,6 @@
-using API.Models;
-using API.Repositories;
-using API.Services;
-using API.Repository;
-using API.Settings;
+using API.Core.Interfaces;
+using API.Infrastructure.Services;
+using API.Infrastructure.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,12 +10,16 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
 using System;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using API.Core.Entities;
+using API.Infrastructure.Data.EntityFramework;
+using API.Infrastructure.Data.Mapping;
+using API.Infrastructure.Data.EntityFramework.Repositories;
+using Microsoft.OpenApi.Models;
 
 namespace API
 {
@@ -101,7 +103,7 @@ namespace API
 
             services.AddControllersWithViews();
 
-            services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
+            //services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
             services.AddScoped<IEmailSender, EmailSenderRepository>();
             services.AddScoped<IEmployeeRepository, EmployeeRepository>();
             services.AddScoped<IStatisticsRepository, StatisticsRepository>();

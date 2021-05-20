@@ -1,6 +1,6 @@
-﻿using API.Dtos;
-using API.Models;
-using API.Repository;
+﻿using API.Core.Dtos;
+using API.Core.Entities;
+using API.Core.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System;
