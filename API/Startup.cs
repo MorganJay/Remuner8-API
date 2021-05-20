@@ -102,7 +102,6 @@ namespace API
 
             services.AddControllersWithViews();
 
-            //services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
             services.AddScoped<IEmailSender, EmailSenderRepository>();
             services.AddScoped<IMailServiceRepository, MailServiceRepository>();
             services.AddScoped<IUserService, UserService>();
