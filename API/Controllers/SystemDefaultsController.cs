@@ -33,6 +33,17 @@ namespace API.Controllers
             return Ok(result);
         }
 
+        [HttpGet("{id}", Name = "GetSystemDefaultsById")]
+        public async Task<IActionResult> GetSystemDefaultsById(int id)
+        {
+            var systemDefault = await _unitOfWork.SystemDefault.Get(query => query.CompanyId == id);
+            if (systemDefault != null)
+            {
+                return Ok(_mapper.Map<SystemDefaultDto>(systemDefault));
+            }
+            return NotFound();
+        }
+
         // POST api/<CompanyController>
         [HttpPost]
         public async Task<IActionResult> PostSystemDefaults([FromBody] SystemDefaultDto companyDto)
@@ -41,11 +52,11 @@ namespace API.Controllers
             await _unitOfWork.SystemDefault.Insert(mappedModel);
             await _unitOfWork.Save();
 
-            return CreatedAtRoute("GetAllSystemDefaults", new { id = mappedModel.CompanyId }, mappedModel);
+            return CreatedAtRoute("GetSystemDefaultsById", new { id = mappedModel.CompanyId }, mappedModel);
         }
 
         // PUT api/<CompanyController>
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<ActionResult> PutSystemDefault(int id, [FromBody] SystemDefaultDto companyDto)
         {
             try
