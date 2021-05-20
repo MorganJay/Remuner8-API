@@ -1,7 +1,7 @@
-﻿using API.Authentication;
-using API.Dtos;
-using API.Models;
-using API.Repositories;
+﻿using API.Infrastructure.Authentication;
+using API.Core.Dtos;
+using API.Core.Entities;
+using API.Core.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;

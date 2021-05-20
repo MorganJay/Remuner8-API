@@ -1,12 +1,10 @@
-﻿using API.Authentication;
-using API.Dtos;
-using API.Models;
-using API.Repositories;
-using API.Repository;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using API.Core.Dtos;
+using API.Core.Entities;
+using API.Core.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -32,7 +30,7 @@ namespace API.Controllers
             return Ok(results);
         }
 
-        [HttpGet("{id:int}", Name = "GetLeaveTypeById")]
+        [HttpGet("{id}", Name = "GetLeaveTypeById")]
         public async Task<IActionResult> GetLeaveTypeById(int id)
         {
             var leave = await _unitOfWork.LeaveType.Get(query => query.Id == id);
@@ -53,7 +51,26 @@ namespace API.Controllers
             return CreatedAtRoute("GetLeaveTypeById", new { id = leave.Id }, leave);
         }
 
-        [HttpDelete("{id:int}")]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateLeaveType(int id, [FromBody] LeaveTypeReadDto leave)
+        {
+            if (id < 1)
+            {
+                return BadRequest();
+            }
+            var leaveType = await _unitOfWork.LeaveType.Get(m => m.Id == id);
+            if (leaveType == null)
+            {
+                return BadRequest();
+            }
+            _mapper.Map(leave, leaveType);
+            _unitOfWork.LeaveType.Update(leaveType);
+            await _unitOfWork.Save();
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteLeave(int id)
         {
             if (id < 1)
@@ -63,7 +80,7 @@ namespace API.Controllers
             var leave = await _unitOfWork.LeaveType.Get(query => query.Id == id);
             if (leave == null)
             {
-                return BadRequest("Submitted Data Id Invalid");
+                return BadRequest("Submitted Data Is Invalid");
             }
             await _unitOfWork.LeaveType.Delete(id);
             await _unitOfWork.Save();

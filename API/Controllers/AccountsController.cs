@@ -1,7 +1,6 @@
-﻿using API.Authentication;
-using API.Dtos;
-using API.Models;
-using API.Services;
+﻿using API.Infrastructure.Authentication;
+using API.Core.Dtos;
+using API.Infrastructure.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using API.Core.Entities;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -52,6 +52,11 @@ namespace API.Controllers
                 var isCreated = await _userManager.CreateAsync(newUser, model.Password);
                 if (isCreated.Succeeded)
                 {
+                    var response = await _mailService.SendEmailAsync(newUser.Email, "Welcome to Remuner8!", "Thank you for signing up on <strong>Remuner8</strong>.<p>Your life is about to change for the better.</p>");
+                    if (!response.IsSuccessStatusCode)
+                        return StatusCode(StatusCodes.Status500InternalServerError,
+                            new { Success = false, Message = "Mail Service failed", Response = response.Body });
+
                     var jwtToken = await _userService.GenerateJwtToken(newUser);
                     jwtToken.Message = "User created successfully";
                     jwtToken.UserName = newUser.UserName;
@@ -68,7 +73,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = $"{ex.Message} {ex.StackTrace}" });
             }
         }
 
@@ -85,7 +90,7 @@ namespace API.Controllers
                         var verifyPassword = await _userManager.CheckPasswordAsync(verifyEmail, model.Password);
                         if (verifyPassword == true)
                         {
-                            await _mailService.SendEmailAsync(model.Email, "New login", "<h1>Hey!, new login to your account noticed</h1><p>New login to your account at " + DateTime.Now + "</p>");
+                            await _mailService.SendEmailAsync(model.Email, "New Login", "<h1>Hey!, new login to your account noticed</h1><p>New login to your account at " + DateTime.Now + "</p>");
                             var jwtToken = await _userService.GenerateJwtToken(verifyEmail);
                             jwtToken.UserName = verifyEmail.UserName;
                             return Ok(jwtToken);
@@ -106,7 +111,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = $"{ex.Message} {ex.StackTrace}" });
             }
         }
 
@@ -131,7 +136,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = ex.Source });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = $"{ex.Message} {ex.StackTrace}" });
             }
         }
 

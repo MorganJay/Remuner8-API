@@ -1,7 +1,7 @@
-﻿using API.Authentication;
-using API.Dtos;
-using API.Models;
-using API.Repositories;
+﻿using API.Infrastructure.Authentication;
+using API.Core.Dtos;
+using API.Core.Entities;
+using API.Core.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
@@ -20,11 +20,13 @@ namespace API.Controllers
     {
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IMapper _employeeMapper;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public EmployeesController(IEmployeeRepository employeeRepository, IMapper mapper)
+        public EmployeesController(IUnitOfWork unitOfWork, IMapper mapper, IEmployeeRepository employeeRepository)
         {
             _employeeRepository = employeeRepository;
             _employeeMapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Employees
@@ -34,6 +36,7 @@ namespace API.Controllers
             try
             {
                 var employees = await _employeeRepository.GetAllEmployeesAsync();
+                //var employees = await _unitOfWork.EmployeeBiodata.GetAll();
 
                 return Ok(_employeeMapper.Map<IEnumerable<EmployeeBiodataReadDto>>(employees));
             }
@@ -56,8 +59,7 @@ namespace API.Controllers
             }
             catch (Exception ex)
             {
-                // throw;
-                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = $"{ex.Message} {ex.StackTrace}" });
             }
         }
 
@@ -74,10 +76,9 @@ namespace API.Controllers
                 var employeeReadDto = _employeeMapper.Map<EmployeeBiodataReadDto>(employeeModel);
                 return CreatedAtRoute(nameof(GetEmployeeById), new { employeeReadDto.EmployeeId }, employeeReadDto);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
-                // return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = $"{ex.Message} {ex.StackTrace}" });
             }
         }
 
@@ -101,9 +102,9 @@ namespace API.Controllers
 
                 return NoContent();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw;
+                return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = $"{ex.Message} {ex.StackTrace}" });
             }
         }
 

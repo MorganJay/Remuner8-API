@@ -1,8 +1,15 @@
-using API.Models;
-using API.Repositories;
-using API.Services;
-using API.Repository;
-using API.Settings;
+using System;
+using System.Net;
+using System.Net.Mail;
+using System.Text;
+using API.Core.Entities;
+using API.Core.Interfaces;
+using API.Infrastructure.Data.EntityFramework;
+using API.Infrastructure.Data.Mapping;
+using API.Infrastructure.Services;
+using API.Infrastructure.Settings;
+using API.Infrastructure.Data.EntityFramework.Repositories;
+using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,12 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Net;
-using System.Net.Mail;
-using System.Text;
 
 namespace API
 {
@@ -44,8 +46,7 @@ namespace API
             });
 
             services.AddDbContext<Remuner8Context>(options =>
-               options.UseSqlServer(
-                   Configuration.GetConnectionString("Remuner8DB")));
+                     options.UseSqlServer(Configuration.GetConnectionString("Remuner8DB")));
 
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
@@ -101,11 +102,25 @@ namespace API
 
             services.AddControllersWithViews();
 
-            services.AddScoped<IUserAccountRepository, UserAccountsRepository>();
             services.AddScoped<IEmailSender, EmailSenderRepository>();
-            services.AddScoped<IStatisticsRepository, StatisticsRepository>();
             services.AddScoped<IMailServiceRepository, MailServiceRepository>();
             services.AddScoped<IUserService, UserService>();
+
+            // To be implemented in unit of work/generic repo/controller and then expunged
+            services.AddScoped<IBonusRepository, BonusRepository>();
+            services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IJobDescriptionRepository, JobDescriptionRepository>();
+            services.AddScoped<IPayrollCategoryRepository, PayrollCategoryRepository>();
+            services.AddScoped<IPayrollDeductionRepository, PayrollDeductionRepository>();
+            services.AddScoped<IPayrollDefaultRepository, PayrollDefaultRepository>();
+            services.AddScoped<IPayrollItemsRepository, PayrollItemsRepository>();
+            services.AddScoped<IPayrollOvertimeItemRepository, PayrollOvertimeItemRepository>();
+            services.AddScoped<IPayrollRateRepository, PayrollRateRepository>();
+            services.AddScoped<IPayslipRepository, PayslipRepo>();
+            services.AddScoped<IRequestsRepository, RequestsRepository>();
+            services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+            services.AddScoped<ITimeSheetRepository, TimeSheetRepository>();
 
             // Enable CORS
             services.AddCors(options => options.AddPolicy("AllowEverthing", builder => builder.AllowAnyOrigin()
@@ -117,17 +132,16 @@ namespace API
             var port = Convert.ToInt32(Configuration.GetSection("MailConfig")["Port"]);
             var password = Configuration.GetSection("MailConfig")["Password"];
 
-            services
-                .AddFluentEmail(sender, senderName)
-                .AddRazorRenderer()
-                .AddSmtpSender(new SmtpClient("smtp.gmail.com")
-                {
-                    Port = port,
+            services.AddFluentEmail(sender, senderName)
+                    .AddRazorRenderer()
+                    .AddSmtpSender(new SmtpClient("smtp.gmail.com")
+                    {
+                        Port = port,
 
-                    Credentials = new NetworkCredential(sender, password),
-                    EnableSsl = true,
-                    UseDefaultCredentials = false
-                });
+                        Credentials = new NetworkCredential(sender, password),
+                        EnableSsl = true,
+                        UseDefaultCredentials = false
+                    });
             //services.AddMvc(option =>
             //{
             //    var authorizationPolicy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();

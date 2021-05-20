@@ -1,6 +1,6 @@
-﻿using API.Dtos;
-using API.Models;
-using API.Repositories;
+﻿using API.Core.Dtos;
+using API.Core.Entities;
+using API.Core.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -49,7 +49,7 @@ namespace API.Controllers
             await _payrollDefaultRepository.CreateDefaultAsync(mappedModel);
             await _payrollDefaultRepository.SaveAsync();
             var createdReadModel = _mapper.Map<PayrollDefaultReadDto>(mappedModel);
-            return CreatedAtRoute(nameof(Get), new { Id = createdReadModel.Id }, createdReadModel);
+            return CreatedAtRoute(nameof(Get), new { createdReadModel.Id }, createdReadModel);
         }
 
         // PUT api/<PayrollDefaultController>/5

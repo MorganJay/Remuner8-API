@@ -1,7 +1,7 @@
-﻿using API.Authentication;
-using API.Data_Models.Dtos;
-using API.Models;
-using API.Repositories;
+﻿using API.Infrastructure.Authentication;
+using API.Core.Dtos;
+using API.Core.Entities;
+using API.Core.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
@@ -106,7 +106,6 @@ namespace API.Controllers
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, new Response { Success = false, Message = "An Error Occurred!" });
             }
-            throw new ArgumentNullException();
         }
 
         // DELETE api/<PayrollAddition>/5
